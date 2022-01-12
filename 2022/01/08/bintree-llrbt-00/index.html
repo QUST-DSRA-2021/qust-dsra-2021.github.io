@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>左偏红黑树稽古 O 二叉查找树与（二叉）平衡树的简易开启方式 | QUST Data Science Research Association</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="之前笔者简单谈过了二叉树的基础构造与遍历相关操作，这回我们稍微说一说二叉树的简易应用——二叉查找树，以及其进阶——（二叉）平衡树。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="左偏红黑树稽古 O 二叉查找树与（二叉）平衡树的简易开启方式">
+<meta property="og:url" content="https://qust-dsra.github.io/2022/01/08/bintree-llrbt-00/index.html">
+<meta property="og:site_name" content="QUST Data Science Research Association">
+<meta property="og:description" content="之前笔者简单谈过了二叉树的基础构造与遍历相关操作，这回我们稍微说一说二叉树的简易应用——二叉查找树，以及其进阶——（二叉）平衡树。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/01/08/bintree-llrbt-00/edge-rotation.jpeg">
+<meta property="article:published_time" content="2022-01-08T15:41:31.000Z">
+<meta property="article:modified_time" content="2022-01-12T13:28:01.654Z">
+<meta property="article:author" content="Data Scholars from QUST">
+<meta property="article:tag" content="Notes">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qust-dsra.github.io/2022/01/08/bintree-llrbt-00/edge-rotation.jpeg">
+  
+    <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">QUST Data Science Research Association</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">青岛科技大学 数据科学研究协会</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qust-dsra.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-bintree-llrbt-00" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/01/08/bintree-llrbt-00/" class="article-date">
+  <time class="dt-published" datetime="2022-01-08T15:41:31.000Z" itemprop="datePublished">2022-01-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      左偏红黑树稽古 O 二叉查找树与（二叉）平衡树的简易开启方式
+    </h1>
+  
+
+
+  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>CZK</code></h2>
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>之前笔者简单谈过了二叉树的基础构造与遍历相关操作，这回我们稍微说一说二叉树的简易应用——二叉查找树，以及其进阶——（二叉）平衡树。</p>
+<span id="more"></span>
+<h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p><strong><em>二叉查找树<sup><a href="#fn_1" id="reffn_1">1</a></sup></em></strong> (<strong>B</strong>inary <strong>S</strong>earch <strong>T</strong>ree，简称BST)，是一类对节点与其左右孩子关系具有约束的二叉树的统称。<br>其最明显的性质是如若该树不为空，则其 <strong><em>任何节点的值大于其左孩子的值、小于其右孩子的值</em></strong> （反之即<code>左孩子&gt;本体&gt;右孩子</code>亦然，但一般很少反过来定义，因为效果其实没什么两样）。<br>基于这一性质，我们能明显地看出来这样一棵树的中序遍历是递增的，因此这也经常作为一种有序数据结构，用于对元素的排序。</p>
+<p><strong><em>（二叉）平衡树</em></strong> (<strong>B</strong>alanced <strong>T</strong>ree，简称BT)，是一类对节点数量加以约束的二叉查找树的统称。<br>这一类查找树的特点在于会尽量避免查找树某个节点一侧的节点量过大、节点过多，从而在某些极端情况下也能避免查找时的时间复杂度过高。</p>
+<h2 id="BST"><a href="#BST" class="headerlink" title="BST"></a>BST</h2><p>二叉查找树的简介。</p>
+<p>二叉查找树是一种树形数据结构，满足以下特征：</p>
+<ol>
+<li>空树是二叉查找树；</li>
+<li>任何节点的值（如若左孩子存在）大于其左孩子的值、（如若右孩子存在）小于其右孩子的值；</li>
+<li>正如二叉树是递归定义的一样，二叉查找树也是递归定义的一样——二叉查找树的左右子树也是二叉查找树，也满足相关性质。</li>
+</ol>
+<p>因为二叉查找树本质上也是二叉树，没有需要特殊结构才能实现的功能，因此其节点的定义与二叉树是一样的：</p>
+<figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">parent</span>, *<span class="title">lchild</span>, *<span class="title">rchild</span>;</span></span><br><span class="line">&#125; *root;</span><br><span class="line"><span class="function">struct Node * <span class="title">new_node</span><span class="params">(<span class="keyword">int</span> _value)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 类比高级语言中的对象构造函数并加以简单封装。</span></span><br><span class="line">    <span class="comment">// 除了指向母亲节点与左右孩子的指针外，目前的节点结构中没有除了`val`之外其他的成员，</span></span><br><span class="line">    <span class="comment">//  因此此处初始化中，仅需要对`val`进行赋值。</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> * <span class="title">q</span> =</span> (struct Node *)<span class="built_in">malloc</span>(<span class="built_in"><span class="keyword">sizeof</span></span>(struct Node));</span><br><span class="line">    q-&gt;val = _value;</span><br><span class="line">    q-&gt;lchild = <span class="literal">nullptr</span>;</span><br><span class="line">    q-&gt;rchild = <span class="literal">nullptr</span>;</span><br><span class="line">    q-&gt;parent = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">return</span> q;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用结构体数组模拟的静态实现、使用Python等高级语言的对象引用机制的实现当中的定义与上面的相似，于此不再赘述。<br>因此二叉查找树的遍历也与普通的二叉树相仿，在此列举出先序遍历与中序遍历的方法。</p>
+<figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> __preorder(struct Node *rt) &#123;</span><br><span class="line">    <span class="keyword">if</span> (rt != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot; %d,&quot;</span>, rt-&gt;val);</span><br><span class="line">        __preorder(rt-&gt;lchild);</span><br><span class="line">        __preorder(rt-&gt;rchild);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> __inorder(struct Node *rt) &#123;</span><br><span class="line">    <span class="keyword">if</span> (rt != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        __inorder(rt-&gt;lchild);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot; %d,&quot;</span>, rt-&gt;val);</span><br><span class="line">        __inorder(rt-&gt;rchild);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printall</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    __preorder(root);   <span class="built_in">putchar</span>(<span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">    __inorder(root);    <span class="built_in">putchar</span>(<span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Searching"><a href="#Searching" class="headerlink" title="Searching"></a>Searching</h3><p>作为二叉查找树，其与应用最为直接相关的功能即为<code>search</code>。<br>根据性质3知道我们可以递归遍历二叉查找树以寻找所求值，性质2决定遍历时每一步的方向，性质1用于部分情况的判断。<br>大致的思路如下：</p>
+<ul>
+<li>如若这个节点<code>==nullptr</code>，则以其为根的树是空树，所以遍历到该节点后，便找不到所求的<code>_target</code>值，此时返回<code>nullptr</code>以表示在树上不存在带有所求值得节点；</li>
+<li>如若当前节点带有的值即为所求，即返回当前节点的位置；</li>
+<li>如若当前节点带有的值<code>!=</code>所求值，则<ul>
+<li>所求值<code>&lt;</code>当前节点带有的值<code>-&gt;</code>在左子树中继续寻找，</li>
+<li>所求值<code>&gt;</code>当前节点带有的值<code>-&gt;</code>在右子树中继续寻找。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> * __<span class="title">search</span>(<span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">rt</span>, <span class="title">int</span> _<span class="title">target</span>) &#123;</span></span><br><span class="line">    <span class="keyword">if</span> (rt == <span class="literal">nullptr</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (_target == rt-&gt;val)</span><br><span class="line">        <span class="keyword">return</span> rt;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (_target &lt; rt-&gt;val)</span><br><span class="line">            <span class="keyword">return</span> __search(rt-&gt;lchild, _target);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> __search(rt-&gt;rchild, _target);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="function"><span class="keyword">inline</span> <span class="keyword">bool</span> <span class="title">search</span><span class="params">(<span class="keyword">int</span> _target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> __search(root, _target) != <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这里我们容易看出，函数<code>__search</code>返回的是带有值<code>_target</code>的节点所在的位置，然后函数<code>search</code>通过审察该位置是否存在节点以判断树中是否存在所求的值<code>_target</code>。</p>
+<h3 id="Insertion"><a href="#Insertion" class="headerlink" title="Insertion"></a>Insertion</h3><p>二叉查找树所模拟的是一个集合，因此其中所有的元素如若存在，则唯一。<br>为了保证这一点，我们再插入之前应当先判断行将插入的元素是否已经存在于该树当中，如若不存在，则再插入它。</p>
+<figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> * __<span class="title">insert</span>(<span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">rt</span>, <span class="title">int</span> _<span class="title">value</span>) &#123;</span></span><br><span class="line">    <span class="keyword">if</span> (rt == <span class="literal">nullptr</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">new_node</span>(_value);</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (rt-&gt;val != _value) &#123;</span><br><span class="line">            <span class="keyword">if</span> (_value &lt; rt-&gt;val) &#123;</span><br><span class="line">                rt-&gt;lchild = __insert(rt-&gt;lchild, _value);</span><br><span class="line">                rt-&gt;lchild-&gt;parent = rt;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                rt-&gt;rchild = __insert(rt-&gt;rchild, _value);</span><br><span class="line">                rt-&gt;rchild-&gt;parent = rt;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> rt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> _value)</span> </span>&#123;</span><br><span class="line">    root = __insert(root, _value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上过程中，递归的每一步中，函数<code>__insert</code>返回的是节点<code>rt</code>本身的位置，这个返回过程像是在确认 <strong><em>我就是我，我的左孩子就是我左下方那位、有孩子就是我右下方那位</em></strong> 一样，这个过程会在后面涉及到旋转操作的平衡树中用到。</p>
+<h3 id="Rotation"><a href="#Rotation" class="headerlink" title="Rotation"></a>Rotation</h3><p>一般而言只有在部分平衡树中会用到的操作，<strong><em>旋边</em></strong>。<br>~~但笔者对二叉查找树的删除操作进行了优化，其中可能会用到，故于此进行简单讲解。 ~~<br>由于笔者在构思时出了一点错误，所以关于该方法，在此暂不进行讲述。<br><img src="/2022/01/08/bintree-llrbt-00/edge-rotation.jpeg" alt><br>二叉树的旋边是针对边(edge)进行的操作，分为左旋和右旋两种。</p>
+<p>旋边有一条非常重要而且好用的性质，那就是：<strong><em>旋边不改变中序遍历顺序！ </em></strong><br>这一点很容易看出来，其相关证明笔者不在此赘述。</p>
+<h4 id="Left-Rotate"><a href="#Left-Rotate" class="headerlink" title="Left Rotate"></a>Left Rotate</h4><p>如上图，左旋是对某一个节点及其右孩子进行的操作。<br>左旋时，连接节点与其右孩子的边逆时针旋转，使节点成为原本右孩子的左孩子，而后接管其左孩子，使之成为自己的右孩子。</p>
+<figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">struct Node * <span class="title">rotate</span><span class="params">(struct Node *rt)</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Left Rotate an Edge...</span></span><br><span class="line"><span class="comment">     *        [1]               [2]</span></span><br><span class="line"><span class="comment">     *        / \               / \</span></span><br><span class="line"><span class="comment">     *       *  [2]    ==&gt;    [1]  *</span></span><br><span class="line"><span class="comment">     *          / \           / \</span></span><br><span class="line"><span class="comment">     *         O   *         *   O</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Node * newroot = rt-&gt;rchild;</span><br><span class="line">    <span class="keyword">if</span> (newroot != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        <span class="comment">// 处理被旋边所连接的两个节点指向母亲与孩子的指针。</span></span><br><span class="line">        rt-&gt;rchild = newroot-&gt;lchild;</span><br><span class="line">        newroot-&gt;lchild = rt;</span><br><span class="line">        newroot-&gt;parent = rt-&gt;parent;</span><br><span class="line">        rt-&gt;parent = newroot;</span><br><span class="line">        <span class="comment">// 如若需要接管的孩子不为空，则更新其指向母亲节点的指针。</span></span><br><span class="line">        <span class="keyword">if</span> (rt-&gt;rchild != <span class="literal">nullptr</span>)</span><br><span class="line">            rt-&gt;rchild-&gt;parent = rt;</span><br><span class="line">        <span class="keyword">return</span> newroot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>于是，当我们需要左旋连接节点<code>node</code>及其右孩子的边的时候，如下形式调用函数<code>rotate</code>即可完成旋边操作：</p>
+<figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node = <span class="built_in">rotate</span>(node);</span><br></pre></td></tr></table></figure>
+<h4 id="Right-Rotate"><a href="#Right-Rotate" class="headerlink" title="Right Rotate"></a>Right Rotate</h4><p>右旋操作与上方左旋操作类似。</p>
+<figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">struct Node * <span class="title">rotrev</span><span class="params">(struct Node *rt)</span> </span>&#123;</span><br><span class="line">    Node * newroot = rt-&gt;lchild;</span><br><span class="line">    <span class="keyword">if</span> (newroot != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        rt-&gt;lchild = newroot-&gt;rchild;</span><br><span class="line">        newroot-&gt;rchild = rt;</span><br><span class="line">        newroot-&gt;parent = rt-&gt;parent;</span><br><span class="line">        rt-&gt;parent = newroot;</span><br><span class="line">        <span class="keyword">if</span> (rt-&gt;lchild != <span class="literal">nullptr</span>)</span><br><span class="line">            rt-&gt;lchild-&gt;parent = rt;</span><br><span class="line">        <span class="keyword">return</span> newroot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// For Instance ...</span></span><br><span class="line">node = <span class="built_in">rotrev</span>(node);</span><br></pre></td></tr></table></figure>
+<h3 id="Removing"><a href="#Removing" class="headerlink" title="Removing"></a>Removing</h3><p>二叉查找树的删除操作需要在进行的时候维持相关的性质。<br>对于部分二叉查找树，删除过程会被特化为两种，一种是如同对优先队列进行<code>pop</code>操作的删除最小值<code>remove_min</code>，另一种是删除指定值，即<code>remove</code>。</p>
+<p>对于待删除节点，由于二叉树、二叉查找树都是递归定义的数据结构，所以往往需要维护其左右子树在该节点被删除后不破坏二叉查找树的性质。<br>对于朴素二叉树，此时要考虑左子树是否存在、右子树是否存在两个相互独立的问题所组成的四种情形：</p>
+<ol>
+<li>左右子树皆不存在：待删除节点为一片叶子：此时的解决方案便是直接删除该节点，无需考虑左右子树的维护问题；</li>
+<li>右子树不存在，待删除节点有且仅有左子树：此时的解决方案便是使左孩子取代待删除节点，若待删除的并非根节点，便由母亲节点接管其左子树；</li>
+<li>仅左子树不存在的情况，可以类比如上方法；</li>
+<li>左右子树皆存在，此种情况的处理较为复杂。传统的处理便是保留其左子树，使其右孩子取代待删除的节点，即把右孩子的值复制到待删除节点上，然后递归删除右孩子（保留右子树并以左孩子进行取代亦可）。但笔者在此想到一种方案，便是把同时具有左右子树的节点通过旋边变成仅仅具有左子树的节点，实现其的操作便是左旋连接待删除节点与其右孩子的边。旋边后待删除节点会携左子树移动到原本左孩子的位置上，而原本的右孩子成为待删除节点的母亲节点。如若原本的右孩子的左子树不为空，则会由待删除节点接管并成为其右子树，此时则继续旋边，直到待删除节点不具有右子树为止。然后如<code>2.</code>中所言，以其左孩子取代待删除节点即可。</li>
+</ol>
+<p>具体程式笔者在此不再赘述。</p>
+<h2 id="BT"><a href="#BT" class="headerlink" title="BT"></a>BT</h2><p>何为平衡？为何平衡？在考虑这些问题之前请让我们先审察一种情形：</p>
+<p>当我们从某时起，向二叉查找树加入的元素总是加入在上一个加入的元素下方，从某一个节点开始便会只具有左孩子或右孩子，从而形成一条“长链”。<br>此时的二叉查找树中以某一个节点为根的子树便会退化为一条线性表（链表），极端不理想情况下，沿着那一条“长链”遍历的时间复杂度便会升至<code>O(m)</code>。<br>如若能够控制从根节点出发的每一条路径长度都大致相等，则不理想情况下，遍历的时间复杂度也能控制在<code>O(log m)</code>左右。<br>由此便引入二叉查找树中的一个重要概念，那便是，<strong><em>平衡</em></strong>。</p>
+<p>我们可以先感性地理解一下：所谓平衡树便是每个节点左右子树大致相当的二叉查找树。<br>但对于不同种类的平衡树，其所定义的平衡也不一样，以下将简单介绍两种常见的二叉查找树的平衡：</p>
+<ol>
+<li>弱平衡（期望平衡）：多见于<code>Treap</code><sup><a href="#fn_2" id="reffn_2">2</a></sup>或<code>Splay</code><sup><a href="#fn_3" id="reffn_3">3</a></sup>；</li>
+<li>高度平衡：多见于<code>AVL</code><sup><a href="#fn_4" id="reffn_4">4</a></sup>平衡树，其核心在于任意节点的左右子树高度差不超过一。</li>
+</ol>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p>笔者引用的一些参考文献，以及希望给出的一些相关资料与题目，供大家辅助参考理解二叉查找树与平衡树的相关概念。</p>
+<ul>
+<li><blockquote id="fn_1">
+<sup>1</sup>. <code>OI-Wiki</code> 章节 <a target="_blank" rel="noopener" href="https://oi-wiki.org/ds/bst/">二叉查找树 简介</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<ul>
+<li><blockquote id="fn_2">
+<sup>2</sup>. <code>OI-Wiki</code> 章节 <a target="_blank" rel="noopener" href="https://oi-wiki.org/ds/treap/">普通平衡树 <code>Treap</code></a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3369"><code>Luogu P3369</code> 「模板」普通平衡树</a></li>
+<li><a target="_blank" rel="noopener" href="https://loj.ac/p/104/"><code>LOJ #104</code> 普通平衡树</a></li>
+<li><a target="_blank" rel="noopener" href="https://ezoj.org.cn/problem/7/"><code>EZOJ #7</code> 「模板」普通平衡树</a></li>
+</ul>
+</li>
+<li><blockquote id="fn_3">
+<sup>3</sup>. <code>OI-Wiki</code> 章节 <a target="_blank" rel="noopener" href="https://oi-wiki.org/ds/splay/">文艺平衡树 <code>Splay</code></a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3391"><code>Luogu P3391</code> 「模板」文艺平衡树</a></li>
+<li><a target="_blank" rel="noopener" href="https://loj.ac/p/105/"><code>LOJ #105</code> 文艺平衡树</a></li>
+</ul>
+</li>
+<li><blockquote id="fn_4">
+<sup>4</sup>. <code>OI-Wiki</code> 章节 <a target="_blank" rel="noopener" href="https://oi-wiki.org/ds/avl/">高度平衡树 <code>AVL</code></a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+</li>
+<li><code>OI-Wiki</code> 章节 <a target="_blank" rel="noopener" href="https://oi-wiki.org/ds/llrbt/">左偏红黑树</a></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qust-dsra.github.io/2022/01/08/bintree-llrbt-00/" data-id="ckyblj02l0004sotu70tmdcxl" data-title="左偏红黑树稽古 O 二叉查找树与（二叉）平衡树的简易开启方式" class="article-share-link">分享</a>
+      
+      
+        <a href="/2022/01/08/bintree-llrbt-00/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2022/01/08/bintree-llrbt-00/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/01/11/bintree-llrbt-01/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          左偏红黑树稽古 I 这就是红黑树吗真的没有搞错吗
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/11/24/bintree-03/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">二叉树札记 III 尝试写一棵静态的二叉查找树</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+  <section id="comments" class="vcomment">
+
+  </section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Notes/" style="font-size: 10px;">Notes</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/11/bintree-llrbt-03/">左偏红黑树稽古 III 插入节点的修正方法</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/11/bintree-llrbt-02/">左偏红黑树稽古 II 红黑树的节点与神乎其技的旋边</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/11/bintree-llrbt-01/">左偏红黑树稽古 I 这就是红黑树吗真的没有搞错吗</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/08/bintree-llrbt-00/">左偏红黑树稽古 O 二叉查找树与（二叉）平衡树的简易开启方式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/24/bintree-03/">二叉树札记 III 尝试写一棵静态的二叉查找树</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Data Scholars from QUST<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+<script>
+    var GUEST_INFO = ['nick','mail','link'];
+    var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+        return GUEST_INFO.indexOf(item) > -1
+    });
+    var notify = 'false' == true;
+    var verify = 'false' == true;
+    new Valine({
+        el: '.vcomment',
+        notify: notify,
+        verify: verify,
+        appId: "BJvasWrnRIBUV00qcgQGbLKo-gzGzoHsz",
+        appKey: "MojnnrK48CIUxLurDH2W3uj9",
+        placeholder: "Just tell and share your feelings...",
+        pageSize:'10',
+        avatar:'mm',
+        lang:'zh-cn'
+    });
+</script>
+
+  </div>
+</body>
+</html>

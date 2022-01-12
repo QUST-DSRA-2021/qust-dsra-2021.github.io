@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>二叉树札记 I 基础构造 | QUST Data Science Research Association</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="二叉树的概念等基础知识大部分已在离散数学中学过，在此不再重复或赘述。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二叉树札记 I 基础构造">
+<meta property="og:url" content="https://qust-dsra.github.io/2021/11/22/bintree-01/index.html">
+<meta property="og:site_name" content="QUST Data Science Research Association">
+<meta property="og:description" content="二叉树的概念等基础知识大部分已在离散数学中学过，在此不再重复或赘述。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-22T10:58:15.000Z">
+<meta property="article:modified_time" content="2022-01-12T13:24:57.480Z">
+<meta property="article:author" content="Data Scholars from QUST">
+<meta property="article:tag" content="Notes">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">QUST Data Science Research Association</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">青岛科技大学 数据科学研究协会</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qust-dsra.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-bintree-01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/11/22/bintree-01/" class="article-date">
+  <time class="dt-published" datetime="2021-11-22T10:58:15.000Z" itemprop="datePublished">2021-11-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      二叉树札记 I 基础构造
+    </h1>
+  
+
+
+  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>CZK</code></h2>
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>二叉树的概念等基础知识大部分已在离散数学中学过，在此不再重复或赘述。</p>
+<span id="more"></span>
+<h2 id="Basic-Construction"><a href="#Basic-Construction" class="headerlink" title="Basic Construction"></a>Basic Construction</h2><figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> val; <span class="comment">// 亦可以其他数据类型，只需把`int`替换为`float`或`char`等</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">parent</span>;</span> <span class="comment">// 指向母亲节点的指针</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">lchild</span>;</span> <span class="comment">// 指向左孩子的指针</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">rchild</span>;</span> <span class="comment">// 指向右孩子的指针</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>为了方便构造，我们使用向指针分配动态内存的形式来构造节点，申请方法很简单，只需要</p>
+<figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> * <span class="title">newnode</span> =</span> (struct Node *)<span class="built_in">malloc</span>(<span class="built_in"><span class="keyword">sizeof</span></span>(struct Node));</span><br></pre></td></tr></table></figure>
+<p>即可向名为<code>newnode</code>的节点指针分配一个节点所需要的空间。</p>
+<p>对于某一个节点所不具有的成分，我们让指向该成分的指针指空，<br>例如在刚刚构造的时候，我们往往不知道它的左右孩子是谁，此时就让它的左右孩子皆指空</p>
+<figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">newnode-&gt;lchild = <span class="literal">nullptr</span>;</span><br><span class="line">newnode-&gt;rchild = <span class="literal">nullptr</span>;</span><br></pre></td></tr></table></figure>
+<p>又如对于没有母亲节点的根节点，其母亲节点指针亦作指控处理，我们在构造之时往往操作如下</p>
+<figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root-&gt;parent = <span class="literal">nullptr</span>;</span><br></pre></td></tr></table></figure>
+<p>但是对于其他的节点，则需要设置它的母亲节点，并在它的母亲节点上设置左孩子或有孩子，<br>例如新节点<code>newnode</code>是节点<code>herparent</code>的左孩子，则操作如下</p>
+<figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">newnode-&gt;parent = herparent;</span><br><span class="line">herparent-&gt;lchild = newnode;</span><br></pre></td></tr></table></figure>
+<p>以此建立双向连接，右孩子同理，只需要把<code>lchild</code>替换为<code>rchild</code>。</p>
+<p>根据离散数学中的相关知识，二叉树<sup><a href="#fn_1" id="reffn_1">1</a></sup>中的节点可以分为<strong>根(root)</strong>、<strong>茎</strong>、<strong>叶(leaf)</strong>，这三种节点。其中</p>
+<ul>
+<li>根：没有母亲节点的节点（这个描述听上去怎么那么像在骂人x</li>
+<li>叶：没有孩子的节点</li>
+<li>其他的既不是根亦不是叶，它们都既有母亲节点亦有孩子</li>
+</ul>
+<p>此外，对于某些<code>茎</code>而言，它仅仅具有左子树或右子树，此时它的右孩子或左孩子指针指空。</p>
+<p>至此，二叉树的基本构造方法已讲解完毕，下面会附赠一个实例，希望能有助于大家理解。</p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>构造二叉树如下</p>
+<pre><code>root: 39 (根节点)
+     /
+    7
+     \
+      128
+</code></pre><ul>
+<li><p>如图所示，根节点的值为<code>39</code>，其含有一个左孩子，值为<code>7</code>，该节点含有一个叶子作为右孩子，其值为<code>128</code></p>
+</li>
+<li><p>解</p>
+  <figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> __gnu_cxx;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">parent</span>, *<span class="title">lchild</span>, *<span class="title">rchild</span>;</span></span><br><span class="line">&#125; *root, *node0, *node1;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 构造根节点，其值为 39</span></span><br><span class="line">    root = (struct Node *)<span class="built_in">malloc</span>(<span class="built_in"><span class="keyword">sizeof</span></span>(struct Node));</span><br><span class="line">    root-&gt;val = <span class="number">39</span>;</span><br><span class="line">    root-&gt;parent = <span class="literal">nullptr</span>; <span class="comment">// 由于根节点没有母亲节点，所以母亲节点指针指空</span></span><br><span class="line">    root-&gt;lchild = <span class="literal">nullptr</span>; <span class="comment">// 左右孩子待定，指空</span></span><br><span class="line">    root-&gt;rchild = <span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构造根节点的左孩子，其值为 7</span></span><br><span class="line">    node0 = (struct Node *)<span class="built_in">malloc</span>(<span class="built_in"><span class="keyword">sizeof</span></span>(struct Node));</span><br><span class="line">    node0-&gt;val = <span class="number">7</span>;</span><br><span class="line">    node0-&gt;parent = root; <span class="comment">// 它是根节点的左孩子，</span></span><br><span class="line">                          <span class="comment">//  但必须先声明它本身的母亲节点是根节点</span></span><br><span class="line">    node0-&gt;lchild = <span class="literal">nullptr</span>;</span><br><span class="line">    node0-&gt;rchild = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 笔者个人认为这里需要多说一点</span></span><br><span class="line"><span class="comment">     *  刚才在设置根节点和 node0 的时候，统一把左右孩子皆进行指空处理</span></span><br><span class="line"><span class="comment">     *   即 root-&gt;lchild = root-&gt;rchild = nullptr;</span></span><br><span class="line"><span class="comment">     *   与 node0-&gt;lchild = node0-&gt;rchild = nullptr;</span></span><br><span class="line"><span class="comment">     *  这样做背后的道理便是，在构造时刻，先假设它是一片叶子，</span></span><br><span class="line"><span class="comment">     *  如若还有孩子的话，再往上添加，像下面这一步</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    root-&gt;lchild = node0;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构造该节点的右孩子，其值为 128</span></span><br><span class="line">    node1 = (struct Node *)<span class="built_in">malloc</span>(<span class="built_in"><span class="keyword">sizeof</span></span>(struct Node));</span><br><span class="line">    node1-&gt;val = <span class="number">128</span>;</span><br><span class="line">    node1-&gt;parent = node0;</span><br><span class="line">    node1-&gt;lchild = <span class="literal">nullptr</span>;</span><br><span class="line">    node1-&gt;rchild = <span class="literal">nullptr</span>;</span><br><span class="line">    node0-&gt;rchild = node1;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 下面输出几个树上节点的值，</span></span><br><span class="line"><span class="comment">     * 对于不知道是否存在的孩子，可以先检查其是否存在，再进行操作处理</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">if</span> (root-&gt;lchild != <span class="literal">nullptr</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, root-&gt;lchild-&gt;val);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;The Node `root` has no children on the left!\n&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;rchild != <span class="literal">nullptr</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, root-&gt;rchild-&gt;val);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;The Node `root` has no children on the right!\n&quot;</span>);</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 后面的就不检查直接输出了。</span></span><br><span class="line"><span class="comment">     * 由于我们设置的node1就是node0的右孩子，</span></span><br><span class="line"><span class="comment">     * 而node0又是root的左孩子，</span></span><br><span class="line"><span class="comment">     * 所以下面三个输出的应该是同一个值</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, node1-&gt;val);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, node0-&gt;rchild-&gt;val);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, root-&gt;lchild-&gt;rchild-&gt;val);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输出</p>
+<pre><code>  7
+  The Node `root` has no children on the right!
+  128
+  128
+</code></pre></li>
+</ul>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
+<sup>1</sup>. 百度百科词条 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/二叉树/1602879">二叉树</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qust-dsra.github.io/2021/11/22/bintree-01/" data-id="ckyblj02b0000sotu1ath0s12" data-title="二叉树札记 I 基础构造" class="article-share-link">分享</a>
+      
+      
+        <a href="/2021/11/22/bintree-01/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2021/11/22/bintree-01/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/11/23/bintree-02/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          二叉树札记 II 树的遍历
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+
+  <section id="comments" class="vcomment">
+
+  </section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Notes/" style="font-size: 10px;">Notes</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/11/bintree-llrbt-03/">左偏红黑树稽古 III 插入节点的修正方法</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/11/bintree-llrbt-02/">左偏红黑树稽古 II 红黑树的节点与神乎其技的旋边</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/11/bintree-llrbt-01/">左偏红黑树稽古 I 这就是红黑树吗真的没有搞错吗</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/08/bintree-llrbt-00/">左偏红黑树稽古 O 二叉查找树与（二叉）平衡树的简易开启方式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/24/bintree-03/">二叉树札记 III 尝试写一棵静态的二叉查找树</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Data Scholars from QUST<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+<script>
+    var GUEST_INFO = ['nick','mail','link'];
+    var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+        return GUEST_INFO.indexOf(item) > -1
+    });
+    var notify = 'false' == true;
+    var verify = 'false' == true;
+    new Valine({
+        el: '.vcomment',
+        notify: notify,
+        verify: verify,
+        appId: "BJvasWrnRIBUV00qcgQGbLKo-gzGzoHsz",
+        appKey: "MojnnrK48CIUxLurDH2W3uj9",
+        placeholder: "Just tell and share your feelings...",
+        pageSize:'10',
+        avatar:'mm',
+        lang:'zh-cn'
+    });
+</script>
+
+  </div>
+</body>
+</html>
