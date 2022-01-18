@@ -6,19 +6,27 @@
   
   <title>一点简短的convlstm笔记 | QUST Data Science Research Association</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="如题，是一份slides。等有空整理出来。">
+  <meta name="description" content="如题，是一份slides。等有空整理出来。 Download 其实真写出来感觉学过的人不用看，给没学过的人看也没讲清楚。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一点简短的convlstm笔记">
 <meta property="og:url" content="https://qust-dsra.github.io/2022/01/15/brief-convlstm/index.html">
 <meta property="og:site_name" content="QUST Data Science Research Association">
-<meta property="og:description" content="如题，是一份slides。等有空整理出来。">
+<meta property="og:description" content="如题，是一份slides。等有空整理出来。 Download 其实真写出来感觉学过的人不用看，给没学过的人看也没讲清楚。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/01/15/brief-convlstm/fc.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/01/15/brief-convlstm/rnn.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/01/15/brief-convlstm/lstm-01.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/01/15/brief-convlstm/lstm-02.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/01/15/brief-convlstm/lstm-03.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/01/15/brief-convlstm/conv.gif">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/01/15/brief-convlstm/convlstm.jpeg">
 <meta property="article:published_time" content="2022-01-15T05:36:26.000Z">
-<meta property="article:modified_time" content="2022-01-15T05:45:07.042Z">
+<meta property="article:modified_time" content="2022-01-18T15:51:53.773Z">
 <meta property="article:author" content="Data Scholars from QUST">
 <meta property="article:tag" content="Notes">
 <meta property="article:tag" content="RNN (循环神经网络)">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qust-dsra.github.io/2022/01/15/brief-convlstm/fc.jpeg">
   
     <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
   
@@ -105,14 +113,94 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>如题，是一份<code>slides</code>。<br>等有空整理出来。</p>
-<span id="more"></span>
 <p><a href="czk-convlstm.pptx"><code>Download</code></a></p>
 <p><del>其实真写出来感觉学过的人不用看，给没学过的人看也没讲清楚。</del></p>
+<span id="more"></span>
+<h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p><code>ConvLSTM</code><sup><a href="#fn_1" id="reffn_1">1</a></sup>是由 Xingjian Shi 博士提出的深度学习模型。其定义是递进的，为了说明什么是<code>ConvLSTM</code>，笔者将会先后浅谈以下几个模型：</p>
+<ul>
+<li><code>FC</code> (Full Connection, 全连接层)</li>
+<li><code>RNN</code> (Recurrent Neural Network, 循环神经网络)</li>
+<li><code>LSTM</code> (Long-Short Term Memory, 长短期记忆网络)</li>
+<li><code>ConvLSTM</code></li>
+</ul>
+<p>但之所以要从<code>FC</code>倒着讲回<code>ConvLSTM</code>，原因在于：<br><code>ConvLSTM</code>是<code>LSTM</code>中使用卷积运算代替矩阵乘法的模型，<br><code>LSTM</code>是<code>RNN</code>中引入「细胞状态」的模型，<br><code>RNN</code>是<code>FC</code>对时间序列特化形成的模型，<br>而<code>FC</code>是神经网络的基础结构。</p>
+<h2 id="FC"><a href="#FC" class="headerlink" title="FC"></a>FC</h2><p><code>FC</code>的全称为 Full Connection ，是意为全连接层的结构。<br>最为早期的神经网络是输入、输出矢量，矢量中的每一个分量在网络中根据不同的加权，进行线性组合形成新的矢量。</p>
+<p><img src="/2022/01/15/brief-convlstm/fc.jpeg" alt></p>
+<p>以上图为例，当我们输入矢量 $x = (x_1, x_2, \cdots, x_n )^\mathrm{T}$ 之后，矢量<code>x</code>会经过如下变换：</p>
+<script type="math/tex; mode=display">\left \{
+\begin{aligned}
+a_1 & = & w_{1,1}x_1 & + & w_{1,2}x_2 & + & \cdots & + & w_{1,n}x_n, \\
+a_2 & = & w_{2,1}x_1 & + & w_{2,2}x_2 & + & \cdots & + & w_{2,n}x_n, \\
+    &   &            &   &            &   & \vdots &   &             \\
+a_m & = & w_{m,1}x_1 & + & w_{m,2}x_2 & + & \cdots & + & w_{m,n}x_n
+\end{aligned}
+\right.</script><p>亦即：</p>
+<script type="math/tex; mode=display">a_k = w_{k,1}x_1 + w_{k,2}x_2 + \cdots + w_{k,n}x_n = \sum_{l=1}^n w_{k,l}x_l , (k = 1, 2, \cdots , m)</script><p>上式可以表示为矩阵乘法：</p>
+<script type="math/tex; mode=display">\vec{a} = W\vec{x}</script><p>在上图中对应着的超参数 <code>m=500, n=800</code> ，分别为输出节点数（矢量维数）与输入节点数（矢量维数），亦是权重矩阵<code>W</code>的尺寸。<br>但全连接层在使用时除了权重矩阵<code>W</code>外，也会常常结合偏置矢量(bias)<code>b</code>与激励函数<sup><a href="#fn_2" id="reffn_2">2</a></sup>(activation)<code>f</code>使用，此时真正的输出为：</p>
+<script type="math/tex; mode=display">\vec{a} = \psi(W\vec{x} + \vec{b})</script><p>关于偏置矢量与激励函数，笔者在此暂不赘述。</p>
+<h2 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h2><p>在考虑何为<code>LSTM</code>之前让我们先明确一下<code>RNN</code>。<br>众所周知<code>RNN</code>是一种机器学习模型，用于处理时间序列，这里的时间顺序不仅可以是传统意义上的时间顺序，也可以认为是借由因果关系串联而成的事情发展顺序。</p>
+<blockquote>
+<p>例如「随着某课程章节推进，每一章作业量所组成的序列」，在此选取的每个元素即「每一章节的作业量」所对应的时间间隔并不均匀（课程中讲解重点的章节所花费的时间远比一般的章节要长），所以此处的「时间」为课程中章节的推进而非传统的年月日时分秒等…</p>
+</blockquote>
+<p>而<code>RNN</code>是为了方便处理时间序列而对<code>FC</code>进行优化后的机器学习模型，其引入了一个非常重要的「时间」维度，并以一个单独的矢量存储每一时刻的状态。</p>
+<p><img src="/2022/01/15/brief-convlstm/rnn.jpeg" alt></p>
+<p>刚才提到全连接层的实质就是矩阵乘法，那么从上图我们可以看到权重矩阵 <code>U, W, V</code> 形成了三个以全连接层为<strong>基础</strong>的结构。</p>
+<p>现在我们来解释为什么<code>RNN</code>是<code>FC</code>对时间序列的「特化」：</p>
+<script type="math/tex; mode=display">\left \{
+\begin{aligned}
+\vec{o_t} & = g(V\vec{s_t}), \\
+\vec{s_t} & = f(U\vec{x_t} + W\vec{s_{t-1}})
+\end{aligned}
+\right.</script><p>我们可以看到比起<code>FC</code>，<code>RNN</code>在中间插入了一个隐藏层，其对应着矢量 $\vec{s_t}$ ， $\vec{s_t}$ 同时受 $\vec{s_{t-1}}$ 与 $\vec{x_t}$ 的影响，这便是随着<code>t</code>不断变化，这便是用于存储「时间」状态的变量。</p>
+<p>同时我们可以看出，<code>FC</code>输入时接收的是一个矢量 $\vec{x}$ ，而<code>RNN</code>输入的时候接收的是多个矢量组成的序列 $\vec{x_1}, \vec{x_2}, \cdots, \vec{x_T}$ 。</p>
+<p>根据前面讲过的式子，对于每一个时刻<code>t</code>，都会根据 $\vec{s_t}$ 产生相应的 $\vec{o_t}$ ，这也对应着每一个时刻相应的输入 $\vec{x_t}$ 。</p>
+<p>如何理解？</p>
+<ul>
+<li><p>我们先来看一例由Keras实现的<code>FC</code>：</p>
+  <figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> keras</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>model = keras.Sequential([</span><br><span class="line">    keras.layers.Dense(</span><br><span class="line">        units = <span class="number">128</span>,</span><br><span class="line">        input_shape = (<span class="number">32</span>,),</span><br><span class="line">        ),</span><br><span class="line">    ])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>model.summary()</span><br></pre></td></tr></table></figure>
+<p>  通过调用<code>.summary()</code>查看其结构：</p>
+  <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">_________________________________________________________________</span><br><span class="line">Layer (<span class="built_in">type</span>)                 Output Shape              Param <span class="comment">#</span></span><br><span class="line">=================================================================</span><br><span class="line">dense_1 (Dense)              (<span class="literal">None</span>, <span class="number">128</span>)               <span class="number">4224</span></span><br><span class="line">=================================================================</span><br><span class="line">Total params: <span class="number">4</span>,<span class="number">224</span></span><br><span class="line">Trainable params: <span class="number">4</span>,<span class="number">224</span></span><br><span class="line">Non-trainable params: <span class="number">0</span></span><br><span class="line">_________________________________________________________________</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>再看一例由Keras实现的SimpleRNN</p>
+  <figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> keras</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>model = keras.Sequential([</span><br><span class="line">    keras.layers.Embedding(<span class="number">10000</span>, <span class="number">32</span>),</span><br><span class="line">    keras.layers.SimpleRNN(</span><br><span class="line">        units = <span class="number">128</span>,</span><br><span class="line">        return_sequences = <span class="literal">True</span>,</span><br><span class="line">        ),</span><br><span class="line">    ])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>model.summary()</span><br></pre></td></tr></table></figure>
+<p>  通过调用<code>.summary()</code>查看其结构：</p>
+  <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">_________________________________________________________________</span><br><span class="line">Layer (<span class="built_in">type</span>)                 Output Shape              Param <span class="comment">#</span></span><br><span class="line">=================================================================</span><br><span class="line">embedding_1 (Embedding)      (<span class="literal">None</span>, <span class="literal">None</span>, <span class="number">32</span>)          <span class="number">320000</span></span><br><span class="line">_________________________________________________________________</span><br><span class="line">simple_rnn_1 (SimpleRNN)     (<span class="literal">None</span>, <span class="literal">None</span>, <span class="number">128</span>)         <span class="number">20608</span></span><br><span class="line">=================================================================</span><br><span class="line">Total params: <span class="number">340</span>,<span class="number">608</span></span><br><span class="line">Trainable params: <span class="number">340</span>,<span class="number">608</span></span><br><span class="line">Non-trainable params: <span class="number">0</span></span><br><span class="line">_________________________________________________________________</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>相比于<code>FC</code>的输出形状<code>(None, 128)</code>，<code>RNN</code>的输出形状<code>(None, None, 128)</code>中间多了一个<code>None</code>分量，代表着每次<code>RNN</code>不像<code>FC</code>一样只输出一个矢量，其输出的也是一个矢量序列，且该矢量序列的长度可以不固定。</p>
+<p>所以我们可以看出，不同于对输入的一个矢量进行处理的<code>FC</code>，<code>RNN</code>是对输入的一个矢量序列进行处理的模型，其中存在着以（随时间变化）矢量 $\vec{s_t}$ 用于存储模型随时间的状态改变，这是<code>RNN</code>能够处理时间序列的结构基础。</p>
+<p>虽然<code>RNN</code>输入的是一个矢量序列，但如若只需要最后时刻的结果，其输出的也可以只是输出的矢量序列中最后一个，相当于舍弃了前面的 $\vec{o_1}, \vec{o_2}, \cdots, \vec{o_{T-1}}$ 从而只保留 $\vec{o_T}$ 一个矢量。</p>
+<p>Keras也可以实现只返回最后一个输出向量的<code>RNN</code>：</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> keras</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>model = keras.Sequential([</span><br><span class="line">    keras.layers.Embedding(<span class="number">10000</span>, <span class="number">32</span>),</span><br><span class="line">    keras.layers.SimpleRNN(</span><br><span class="line">        units = <span class="number">128</span>,</span><br><span class="line">        return_sequences = <span class="literal">False</span>,</span><br><span class="line">        ),</span><br><span class="line">    ])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>model.summary()</span><br></pre></td></tr></table></figure>
+<p>通过调用<code>.summary()</code>查看其结构：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">_________________________________________________________________</span><br><span class="line">Layer (<span class="built_in">type</span>)                 Output Shape              Param <span class="comment">#</span></span><br><span class="line">=================================================================</span><br><span class="line">embedding_2 (Embedding)      (<span class="literal">None</span>, <span class="literal">None</span>, <span class="number">32</span>)          <span class="number">320000</span></span><br><span class="line">_________________________________________________________________</span><br><span class="line">simple_rnn_2 (SimpleRNN)     (<span class="literal">None</span>, <span class="number">128</span>)               <span class="number">20608</span></span><br><span class="line">=================================================================</span><br><span class="line">Total params: <span class="number">340</span>,<span class="number">608</span></span><br><span class="line">Trainable params: <span class="number">340</span>,<span class="number">608</span></span><br><span class="line">Non-trainable params: <span class="number">0</span></span><br><span class="line">_________________________________________________________________</span><br></pre></td></tr></table></figure>
+<h2 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h2><p>LSTM的诞生来源于在表示时间状态的向量 $\vec{h_t}$ 不断变化时，输入时刻靠前的输入向量的特征较早吸收，但会被后来者「冲淡」。<br>为了解决这一问题，保证靠前的输入向量的特征也能较好地吸收，<code>LSTM</code>应运而生。</p>
+<p><img src="/2022/01/15/brief-convlstm/lstm-01.jpeg" alt></p>
+<p>解决的方式很简单， $\vec{h_t}$ 是一个不断接收上一时刻 $\vec{h_{t-1}}$ 与此时刻输入向量 $\vec{x_t}$ 的状态向量，那么我们引入一个与之不同，只随着上一时刻的 $\vec{c_{t-1}}$ 变化、不<strong>直接</strong>接收此时的输入向量 $\vec{x_t}$ 的另一个状态向量 $\vec{c_t}$ 即可。</p>
+<p><img src="/2022/01/15/brief-convlstm/lstm-02.jpeg" alt></p>
+<p>从图中我们可以看到 $\vec{c_t}$ 为 $\vec{c_{t-1}}$ 吸取经过处理的 $\vec{h_{t-1}}$ 与 $\vec{x_t}$ 的特征而不断迭代的状态向量，而 $\vec{h_t}$ 的每一次迭代为根据 $\vec{h_{t-1}}$ 与 $\vec{x_t}$ 的重构，其迭代过程远比 $\vec{c_t}$ 的要复杂，因此变化也比 $\vec{c_t}$ 要剧烈，变化更快。<br>不同于 $\vec{c_t}$ 变化缓慢，带有的记忆更长， $\vec{h_t}$ 所带有的记忆更短，变化更快。<br>这是<code>LSTM</code>能够同时记住近期与早期输入数据特征，使靠前的输入向量的特征也能较好吸收的关键结构。</p>
+<p><img src="/2022/01/15/brief-convlstm/lstm-03.jpeg" alt></p>
+<p>整理一下：</p>
+<ul>
+<li>$\vec{h_t}$ 的变化所受因素更多，迭代程度更剧烈、迭代速度更快，构成<code>LSTM</code>的短期记忆；</li>
+<li>$\vec{c_t}$ 的变化所受因素较少，迭代程度不明显、迭代速度更慢，构成<code>LSTM</code>的长期记忆。</li>
+</ul>
+<p>所以这个模型被称为 <strong>L</strong>ong-<strong>S</strong>hort <strong>T</strong>erm <strong>M</strong>emory ，长短期记忆网络。</p>
+<h2 id="ConvLSTM"><a href="#ConvLSTM" class="headerlink" title="ConvLSTM"></a>ConvLSTM</h2><p>在进入LSTM之前，我们先看一看卷积(Convolution)，一种特殊的矩阵间乘法运算。<br>虽然说是乘法运算，但对于参与卷积运算的两个矩阵，其两者位置不能随意交换。<br>因为卷积运算可以视为由尺寸较小的一个矩阵在尺寸较大的矩阵上「取样」，把不同位置取到的结果根据相对位置关系排列为新的矩阵。<br>我们看如下的动图简单理解一下：</p>
+<p><img src="/2022/01/15/brief-convlstm/conv.gif" alt></p>
+<p>当我们的输入为向量序列的时候，每一时刻输入模型的是该时刻的向量，在进行乘法的时候直接使用矩阵乘法即可，但是矩阵乘法的实质（于右位而言）是对矩阵中不同列的线性变换与组合，无法提取不同行之间的相关特征，因此在输入为矩阵序列而非向量序列的时候，我们使用卷积替代传统的矩阵乘法。</p>
+<p><img src="/2022/01/15/brief-convlstm/convlstm.jpeg" alt></p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
+<sup>1</sup>. X. Shi, Z. Chen, H. Wang, D.-Y. Yeung, W.-K. Wong, and W.-C. Woo, “Convolutional LSTM Network: A Machine Learning Approach for Precipitation Nowcasting”, 2015, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1506.04214v2">arXiv: <code>1506.04214</code></a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. 百度百科词条 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/激活函数/2520792">激活函数</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qust-dsra.github.io/2022/01/15/brief-convlstm/" data-id="ckyfeog2y000zrgtufer7e0jx" data-title="一点简短的convlstm笔记" class="article-share-link">分享</a>
+      <a data-url="https://qust-dsra.github.io/2022/01/15/brief-convlstm/" data-id="ckykaovsj000wx4tueovmfwi6" data-title="一点简短的convlstm笔记" class="article-share-link">分享</a>
       
       
         <a href="/2022/01/15/brief-convlstm/#comments" class="article-comment-link">
@@ -277,5 +365,20 @@
 </script>
 
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
