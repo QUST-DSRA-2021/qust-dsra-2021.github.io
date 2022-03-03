@@ -4,24 +4,21 @@
   <meta charset="utf-8">
   
   
-  <title>左偏红黑树稽古 I 这就是红黑树吗真的没有搞错吗 | QUST Data Science Research Association</title>
+  <title>概率统计 I 随机事件与概率 | QUST Data Science Research Association</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="简单介绍完二叉查找树与平衡树之后，我们现在来审察平衡树中一种特殊的平衡方式，那便是红黑树。">
+  <meta name="description" content="概率论是数理统计的基础, 数理统计是概率论的应用.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="左偏红黑树稽古 I 这就是红黑树吗真的没有搞错吗">
-<meta property="og:url" content="https://qust-dsra.github.io/2022/01/11/bintree-llrbt-01/index.html">
+<meta property="og:title" content="概率统计 I 随机事件与概率">
+<meta property="og:url" content="https://qust-dsra.github.io/2022/03/01/probstat-01/index.html">
 <meta property="og:site_name" content="QUST Data Science Research Association">
-<meta property="og:description" content="简单介绍完二叉查找树与平衡树之后，我们现在来审察平衡树中一种特殊的平衡方式，那便是红黑树。">
+<meta property="og:description" content="概率论是数理统计的基础, 数理统计是概率论的应用.">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://qust-dsra.github.io/2022/01/11/bintree-llrbt-01/rbtree.jpeg">
-<meta property="article:published_time" content="2022-01-10T16:27:58.000Z">
-<meta property="article:modified_time" content="2022-01-12T13:51:14.792Z">
+<meta property="article:published_time" content="2022-03-01T08:39:39.000Z">
+<meta property="article:modified_time" content="2022-03-03T07:16:45.073Z">
 <meta property="article:author" content="Data Scholars from QUST">
-<meta property="article:tag" content="Notes">
-<meta property="article:tag" content="Binary Tree (二叉树)">
-<meta property="article:tag" content="BST &amp; BT (二叉查找树&amp;平衡树)">
+<meta property="article:tag" content="Preliminary Examination">
+<meta property="article:tag" content="Probability &amp; Statistic (概率论与数理统计)">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://qust-dsra.github.io/2022/01/11/bintree-llrbt-01/rbtree.jpeg">
   
     <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
   
@@ -82,10 +79,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-bintree-llrbt-01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-probstat-01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2022/01/11/bintree-llrbt-01/" class="article-date">
-  <time class="dt-published" datetime="2022-01-10T16:27:58.000Z" itemprop="datePublished">2022-01-11</time>
+    <a href="/2022/03/01/probstat-01/" class="article-date">
+  <time class="dt-published" datetime="2022-03-01T08:39:39.000Z" itemprop="datePublished">2022-03-01</time>
 </a>
     
   </div>
@@ -96,7 +93,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      左偏红黑树稽古 I 这就是红黑树吗真的没有搞错吗
+      概率统计 I 随机事件与概率
     </h1>
   
 
@@ -107,40 +104,56 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>简单介绍完二叉查找树与平衡树之后，我们现在来审察平衡树中一种特殊的平衡方式，那便是红黑树。</p>
+        <p>概率论是数理统计的<strong>基础</strong>, 数理统计是概率论的<strong>应用</strong>.</p>
 <span id="more"></span>
-<h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p><strong><em>红黑树<sup><a href="#fn_1" id="reffn_1">1</a></sup></em></strong>（<strong>R</strong>ed-<strong>B</strong>lack <strong>T</strong>ree，简称RBT） 之所以叫红黑树是因为其节点具有<code>红</code>与<code>黑</code>两种颜色，可以视为“被染色”和“未染色”两种状态。<br>红黑树通过控制红黑两种节点的排列来保证其平衡，为此，一棵红黑树满足以下特征：</p>
-<ol>
-<li>节点为红色或黑色；</li>
-<li>红色的节点的所有儿子的颜色必须是黑色，即从每个叶子到根的所有路径上不能有两个连续的红色节点；</li>
-<li>从任一节点到其子树中的每个叶子的所有简单路径上都包含相同数目的黑色节点（黑高平衡）。</li>
-</ol>
-<p>这保证了从根节点到任意叶子的最长路径（红黑交替）不会超过最短路径（全黑）的二倍，从而保证了树的平衡性。</p>
-<p><img src="/2022/01/11/bintree-llrbt-01/rbtree.jpeg" alt></p>
-<p>如图所示便是一棵红黑树，满足以上各项性质。</p>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
-<sup>1</sup>. <code>OI-Wiki</code> 章节 <a target="_blank" rel="noopener" href="https://oi-wiki.org/ds/llrbt/#_1">左偏红黑树-红黑树</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
-</blockquote>
-<blockquote id="fn_2">
-<sup>2</sup>. 13 Red Black Trees <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av14050857">Bilibili: <code>av14050857</code></a> 2017-09-01<a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
-</blockquote>
-<blockquote id="fn_3">
-<sup>3</sup>. 「JDK源码剖析之红黑树TreeMap」子空kosora+七月在线 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av23890827">Bilibili: <code>av23890827</code></a> 2018-05-25<a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
-</blockquote>
-
+<h2 id="Definitions"><a href="#Definitions" class="headerlink" title="Definitions"></a>Definitions</h2><ul>
+<li>随机现象 (Natural Phenomenon), 确定性现象;</li>
+<li><strong>随机试验 (Random Experiment) <code>E</code></strong>: 对在相同条件下可以重复的随机现象的<strong>观察, 记录, 实验</strong>, 但也有很多随机现象是不能重复的. 即随机试验满足<strong>明确性</strong>与<strong>随机性</strong>, 其中部分满足<strong>重复性</strong>而部分不满足;</li>
+<li><strong>样本空间<code>S=&#123;e&#125;</code></strong>: 随机现象的一切可能基本结果组成的集合, 亦可记为 $ \Omega = \{ \omega \} $, 分为<strong>离散样本空间</strong>和<strong>连续样本空间</strong>;</li>
+<li><strong>样本点 (Sample Point) <code>e</code></strong>: 抽样的最基本单元, 即上文所述的基本结果, 亦可记为 $ \omega $;</li>
+<li><strong>(随机)事件 (Random Event)</strong>: 随机现象的某些样本点所组成的<strong>集合</strong>, 常用大写字母 $ A, B, C, \cdots $ 进行表示;</li>
+<li>Venn图;</li>
+<li>基本事件 (Elementary Event), 必然事件 (Certain Event), 不可能事件 (Impossible Event);</li>
+<li><strong>随机变量 (Random Variable)</strong>: 用于表示随机现象结果的变量, 常用大写字母 $ X, Y, Z, \cdots $ 进行表示;</li>
+</ul>
+<h2 id="between-Events"><a href="#between-Events" class="headerlink" title="between Events"></a>between Events</h2><h3 id="Relations"><a href="#Relations" class="headerlink" title="Relations"></a>Relations</h3><p>事件(集合)之间的关系.</p>
+<h4 id="Inclusive"><a href="#Inclusive" class="headerlink" title="Inclusive"></a>Inclusive</h4><p>如若事件<code>A</code>的样本点必属于<code>B</code>则称<code>A</code>被包含于<code>B</code>中, 或称<code>B</code>包含<code>A</code>, 这样的关系被称为<strong>包含关系</strong>, 记作 $ A \subset B $ 或 $ B \supset A $. 用概率论的语言叙述: 事件<code>A</code>发生必然导致事件<code>B</code>发生;</p>
+<h4 id="Equal"><a href="#Equal" class="headerlink" title="Equal"></a>Equal</h4><p>如若事件<code>A</code>与<code>B</code>满足: 属于<code>A</code>的样本点必属于<code>B</code>, 而且属于<code>B</code>的样本点必属于<code>A</code>, 即 $ A \subset B $ 且 $ B \subset A $, 则称事件<code>A</code>与<code>B</code><strong>相等</strong>, 记为<code>A=B</code>;</p>
+<h4 id="Exclusive"><a href="#Exclusive" class="headerlink" title="Exclusive"></a>Exclusive</h4><p>如若<code>A</code>与<code>B</code>没有相同的样本点, 则称<code>A</code>与<code>B</code><strong>互不相容(互斥)</strong>. 用概率论的语言叙述: <code>A</code>与<code>B</code>互不相容就是事件<code>A</code>与事件<code>B</code>不可能同时发生.</p>
+<p>利用事件之间的运算可表示为 $ A \cap B = \varnothing $;</p>
+<h3 id="Operations"><a href="#Operations" class="headerlink" title="Operations"></a>Operations</h3><ul>
+<li>事件之间的<strong>并 (Union)</strong>: $ A \cup B $;</li>
+<li>事件之间的<strong>交 (Intersection)</strong>: $ A \cap B = AB $;</li>
+<li>事件之间的<strong>差 (Difference)</strong>: $ A - B = A \cap \overline{B} $;</li>
+<li><strong>对立事件 (Opposite Event)</strong>: $ \overline{A} = \Omega - A $;<ul>
+<li>$ \overline{\overline{A}} = A $;</li>
+<li>$ \overline{\Omega} = \varnothing , \Omega = \overline{\varnothing} $;</li>
+</ul>
+</li>
+</ul>
+<h3 id="Laws-of"><a href="#Laws-of" class="headerlink" title="Laws of"></a>Laws of</h3><h4 id="Commutation"><a href="#Commutation" class="headerlink" title="Commutation"></a>Commutation</h4><p>交换律</p>
+<script type="math/tex; mode=display">A \cup B = B \cup A,</script><script type="math/tex; mode=display">AB = BA;</script><h4 id="Association"><a href="#Association" class="headerlink" title="Association"></a>Association</h4><p>结合律</p>
+<script type="math/tex; mode=display">(A \cup B) \cup C = A \cup (B \cup C),</script><script type="math/tex; mode=display">(AB)C = A(BC);</script><h4 id="Distribution"><a href="#Distribution" class="headerlink" title="Distribution"></a>Distribution</h4><p>分配律</p>
+<script type="math/tex; mode=display">(A \cup B) \cap C = (AC) \cup (BC),</script><script type="math/tex; mode=display">(A \cap B) \cup C = (A \cup C) \cap (B \cup C);</script><h4 id="de-Morgan"><a href="#de-Morgan" class="headerlink" title="de Morgan"></a>de Morgan</h4><p>德·摩根公式 (对偶律, 反演律)</p>
+<script type="math/tex; mode=display">\overline{A \cup B} = \overline{A} \cap \overline{B},</script><script type="math/tex; mode=display">\overline{A \cap B} = \overline{A} \cup \overline{B};</script><p>求证</p>
+<p>$ 设 \omega \in \overline{A \cup B}, 这表明 \omega 既不属于 A, 也不属于 B, 这意味着 \omega \notin A 与 \omega \notin B 同时成立, 所以 \omega \in \overline{A} 与 \omega \in \overline{B} 同时成立, 于是有 \omega \in \overline{A} \cap \overline{B}, 这说明 $</p>
+<script type="math/tex; mode=display">\overline{A \cup B} \subset \overline{A} \cap \overline{B},</script><p>$ 反之, 设 \omega \in \overline{A} \cap \overline{B}, 即同时又 \omega \notin A 与 \omega \notin B, 这意味着 \omega 不属于 A 与 B 中的任何一个, 即 \omega \notin A \cup B, 亦即 \omega \in \overline{A \cup B}, 这说明 $</p>
+<script type="math/tex; mode=display">\overline{A \cup B} \supset \overline{A} \cap \overline{B},</script><p>$ 因此有 \overline{A \cup B} = \overline{A} \cap \overline{B}; $</p>
+<p>推广</p>
+<script type="math/tex; mode=display">\overline{\bigcup_{k=1}^m A_k} = \bigcap_{k=1}^m \overline{A_k},</script><script type="math/tex; mode=display">\overline{\bigcup_{k=1}^{\infty} A_k} = \bigcap_{k=1}^{\infty} \overline{A_k},</script><script type="math/tex; mode=display">\overline{\bigcap_{k=1}^m A_k} = \bigcup_{k=1}^m \overline{A_k},</script><script type="math/tex; mode=display">\overline{\bigcap_{k=1}^{\infty} A_k} = \bigcup_{k=1}^{\infty} \overline{A_k};</script>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qust-dsra.github.io/2022/01/11/bintree-llrbt-01/" data-id="cl0b187iw0005h0tu6zg81zh9" data-title="左偏红黑树稽古 I 这就是红黑树吗真的没有搞错吗" class="article-share-link">分享</a>
+      <a data-url="https://qust-dsra.github.io/2022/03/01/probstat-01/" data-id="cl0b187j8000fh0tu15rwbtom" data-title="概率统计 I 随机事件与概率" class="article-share-link">分享</a>
       
       
-        <a href="/2022/01/11/bintree-llrbt-01/#comments" class="article-comment-link">
-          <span class="post-comments-count valine-comment-count" data-xid="/2022/01/11/bintree-llrbt-01/" itemprop="commentCount"></span>
+        <a href="/2022/03/01/probstat-01/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2022/03/01/probstat-01/" itemprop="commentCount"></span>
           留言
         </a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">BST & BT (二叉查找树&平衡树)</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">Binary Tree (二叉树)</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Preliminary-Examination/" rel="tag">Preliminary Examination</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Probability-Statistic-%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/" rel="tag">Probability & Statistic (概率论与数理统计)</a></li></ul>
 
     </footer>
   </div>
@@ -148,19 +161,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2022/01/11/bintree-llrbt-02/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2022/03/01/numanalysis-01/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">前一篇</strong>
       <div class="article-nav-title">
         
-          左偏红黑树稽古 II 红黑树的节点与神乎其技的旋边
+          数值分析 I 误差
         
       </div>
     </a>
   
   
-    <a href="/2022/01/08/bintree-llrbt-00/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2022/01/15/brief-convlstm/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">左偏红黑树稽古 O 二叉查找树与（二叉）平衡树的简易开启方式</div>
+      <div class="article-nav-title">一点简短的convlstm笔记</div>
     </a>
   
 </nav>
