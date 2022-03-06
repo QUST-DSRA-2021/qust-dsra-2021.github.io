@@ -14,7 +14,7 @@
 <meta property="og:description" content="数值分析与计算方法有什么区别? 单从内容上来说，数值计算方法是包括数值代数、数值分析、微分方程数值解、最优化方法等的统称。数值代数就是代数问题的数值解法，主要是求解(非)线性方程组，以及矩阵特征值的计算。数值分析就是分析问题的数值算法，包括插值、函数逼近、微分和积分的数值计算。微分方程数值解，嗯，就是微分方程的数值解法，包括常微分方程和偏微分方程。最优化方法就是求极值问题的数值算法。从课程安排上讲">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-01T09:39:39.000Z">
-<meta property="article:modified_time" content="2022-03-03T13:31:27.935Z">
+<meta property="article:modified_time" content="2022-03-06T00:46:32.129Z">
 <meta property="article:author" content="Data Scholars from QUST">
 <meta property="article:tag" content="Re-examination">
 <meta property="article:tag" content="Numerical Analysis (数值分析)">
@@ -109,17 +109,33 @@
 <footer><strong>李晓</strong><cite><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/316501188/answer/626338485">「知乎」数值分析与计算方法的区别</a></cite></footer></blockquote>
 <p>其实数值分析就是计算方法, 有的地方还会叫作数值(计算)方法等, 是计算数学(数学下的分支学科)的主要内容.</p>
 <span id="more"></span>
-<h2 id="of-Error"><a href="#of-Error" class="headerlink" title="of Error"></a>of Error</h2><h3 id="Types"><a href="#Types" class="headerlink" title="Types"></a>Types</h3><ul>
+<h2 id="Good-Algorithms"><a href="#Good-Algorithms" class="headerlink" title="Good Algorithms"></a>Good Algorithms</h2><p>好的算法应具有的特点</p>
+<ul>
+<li>结构简单, 便于计算机实现;</li>
+<li>理论上保证方法的收敛性与数值稳定性;</li>
+<li>计算效率高<ul>
+<li>计算速度快: 时间复杂度低;</li>
+<li>占用存储少: 空间复杂度低;</li>
+</ul>
+</li>
+<li>经过数值实验检验, 证明行之有效;</li>
+</ul>
+<h2 id="Error"><a href="#Error" class="headerlink" title="Error"></a>Error</h2><h3 id="Types"><a href="#Types" class="headerlink" title="Types"></a>Types</h3><ul>
 <li>模型误差 (Model Error): 现实问题在抽象为数学问题, 建立数学模型的过程中, 忽略次要因素, 而产生的存在于数学问题与现实问题之间的误差;</li>
 <li>观测误差 (Observation Error);</li>
 <li><p><strong>截断误差 (Truncation Error)</strong>: 由于使用近似数学过程代替准确数学过程而产生的误差, 也称为<strong>方法误差</strong>, 这是计算方法本身所出现的误差, 例如</p>
 <p>$ 根据Taylor公式, $</p>
-<script type="math/tex; mode=display">\sin x = \sum_{k=0}^{\infty} \frac{(-1)^k}{(2k + 1)!}x^{2k + 1} = x - \frac{x^3}6 + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots</script><p>$ |x| 很小时, 可以用 x - \frac{x^3}6 作为 \sin x 的近似值, 后面被省略掉的部分便是该方法的截断误差. $</p>
+<script type="math/tex; mode=display">\begin{align*}
+\sin x &= \sum_{k=0}^{\infty} \frac{(-1)^k}{(2k + 1)!}x^{2k + 1} \\
+&= x - \frac{x^3}6 + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots
+\end{align*}</script><p>$ |x| 很小时, 可以用 x - \frac{x^3}6 作为 \sin x $</p>
+<p>$ 的近似值, 后面被省略掉的部分便是 $</p>
+<p>$ 该方法的截断误差. $</p>
 <p>值得一提的是, 上述例中的截断误差即为Taylor公式的余项<sup><a href="#fn_1" id="reffn_1">1</a></sup>, 其可以表述为</p>
 <ul>
 <li>Peano型余项: $ R_m(x) = \omicron(x^m) $;</li>
 <li><p>Lagrange型余项</p>
-<script type="math/tex; mode=display">R_m(x) = \frac{(-1)^{m + 1}}{(2m + 3)!}{\epsilon}^{2m + 3}, 其中 \epsilon \in (0, x - x_0) = (0, x);</script></li>
+<script type="math/tex; mode=display">R_m(x) = \frac{(-1)^{m + 1}}{(2m + 3)!}{\epsilon}^{2m + 3},</script><script type="math/tex; mode=display">其中 \epsilon \in (0, x - x_0) = (0, x);</script></li>
 </ul>
 </li>
 <li><p><strong>舍入误差 (Round-off Error)</strong>: 由于计算机不能准确表示某些量而引起的误差. 少量的舍入误差微不足道, 但是在进行成千上万次运算后累积的舍入误差可能会十分惊人;</p>
@@ -130,25 +146,55 @@
 <ul>
 <li><strong>误差限 (Error Limit) $ \epsilon(x^\ast) $</strong>: 误差<strong>绝对值</strong>的一个上界. 现实情况下我们无法直接得到准确值, 这不仅是产生误差的原因, 也导致不能直接得到误差的准确值, 此刻只能根据测量工具或计算情况估计得到误差绝对值不会超过某一个正数, 即它的某一个上界;</li>
 <li><p><strong>相对误差 (Relative Error) $ e_r(x^\ast) = \frac{e(x^\ast)}x $</strong>: 误差与准确值的<strong>比值</strong>. 但是需要注意的是, 现实情况下我们无法得到准确值, 因此会用取 $ e_r(x^\ast) = \frac{e(x^\ast)}{x^\ast} $ 代替, 条件是 $ e_r(x^\ast) = \frac{e(x^\ast)}{x^\ast} $ 较小, 此时</p>
-<script type="math/tex; mode=display">\frac{e(x^\ast)}x - \frac{e(x^\ast)}{x^\ast} = \frac{x^\ast - x}{x \cdot x^\ast} e(x^\ast) = \frac{[e(x^\ast)]^2}{x^\ast[x^\ast - e(x^\ast)]} = \frac{[\frac{e(x^\ast)}{x^\ast}]^2}{1 - \frac{e(x^\ast)}{x^\ast}}</script><p>为 $ e_r(x^\ast) $ 的平方级数, 故可以忽略不计;</p>
+<script type="math/tex; mode=display">\begin{align*}
+\frac{e(x^\ast)}x - \frac{e(x^\ast)}{x^\ast} &= \frac{x^\ast - x}{x \cdot x^\ast} e(x^\ast) \\
+&= \frac{[e(x^\ast)]^2}{x^\ast[x^\ast - e(x^\ast)]} \\
+&= \frac{[\frac{e(x^\ast)}{x^\ast}]^2}{1 - \frac{e(x^\ast)}{x^\ast}}
+\end{align*}</script><p>为 $ e_r(x^\ast) $ 的平方级数, 故可以忽略不计;</p>
 <ul>
 <li>相对误差可正可负, 其绝对值上界被称为<strong>相对误差限 (Relative Error Limit)</strong> $ \epsilon_r(x^\ast) = \frac{\epsilon(x^\ast)}{|x^\ast|} $;</li>
 </ul>
 </li>
 </ul>
+<p><em>注: 误差是估计出来的, 而非计算得到的.</em></p>
 <h3 id="Significant-Figure"><a href="#Significant-Figure" class="headerlink" title="Significant Figure"></a>Significant Figure</h3><p><strong><span id="def-1.2">Definition</span> <code>1.2</code></strong>: 如若近似值 $ x^\ast $ 的误差限是某一位的半个单位, 该位到 $ x^\ast $ 的第一位非零数字共有<code>m</code>位, 则称近似值有<code>m</code>位<strong>有效数字 (Significant Figure)</strong>.</p>
 <p><strong><span id="thr-1.1">Theorem</span> <code>1.1</code></strong>: 设近似数 $ x^\ast $ 具有规格化形式</p>
-<script type="math/tex; mode=display">x = \pm \overline{0. a_1 a_2 \cdots a_k \cdots a_m} \times 10^n</script><p>$ 1^\circ $ 如若 $ x^\ast $ 具有<code>m</code>位有效数字, 则其相对误差限为</p>
-<script type="math/tex; mode=display">\epsilon_r^\ast \le \frac{10^{-m + 1}}{2 a_1}</script><p>$ 2^\circ $ 如若</p>
-<script type="math/tex; mode=display">\epsilon_r^\ast \le \frac{10^{-m + 1}}{2(a_1 + 1)}</script><p>则 $ x^\ast $ 至少具有<code>m</code>位有效数字.</p>
-<h3 id="Spreads"><a href="#Spreads" class="headerlink" title="Spreads"></a>Spreads</h3><h3 id="Control"><a href="#Control" class="headerlink" title="Control"></a>Control</h3><h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
+<script type="math/tex; mode=display">x = \pm \overline{0. a_1 a_2 \cdots a_k \cdots a_m} \times 10^n</script><ol>
+<li><p>如若 $ x^\ast $ 具有<code>m</code>位有效数字, 则其相对误差限为</p>
+<script type="math/tex; mode=display">\epsilon_r^\ast \le \frac{10^{-m + 1}}{2 a_1}</script></li>
+<li><p>如若</p>
+<script type="math/tex; mode=display">\epsilon_r^\ast \le \frac{10^{-m + 1}}{2(a_1 + 1)}</script></li>
+</ol>
+<p>则 $ x^\ast $ 至少具有<code>m</code>位有效数字.</p>
+<h4 id="Relation-with-Error-Limits"><a href="#Relation-with-Error-Limits" class="headerlink" title="Relation with Error Limits"></a>Relation with Error Limits</h4><p>在此讨论有效数字与误差限之间的关系.</p>
+<h2 id="Spreads-of-Error"><a href="#Spreads-of-Error" class="headerlink" title="Spreads of Error"></a>Spreads of Error</h2><p>四则运算的误差公式</p>
+<ul>
+<li>$ e(x_1^\ast \pm x_2^\ast) = e(x_1^\ast) \pm e(x_2^\ast) $;</li>
+<li>$ e(x_1^\ast \cdot x_2^\ast) = {x_2^\ast}e(x_1^\ast) + {x_1^\ast}e(x_2^\ast) $;</li>
+<li>$ e(\frac{x_1^\ast}{x_2^\ast}) = \frac{x_2^\ast e(x_1^\ast) - x_1^\ast e(x_2^\ast)}{(x_2^\ast)^2} $;</li>
+</ul>
+<p>及相对误差公式</p>
+<ul>
+<li>$ e_r(x_1^\ast \pm x_2^\ast) = \frac{x_1^\ast e_r(x_1^\ast) \pm x_2^\ast e_r(x_2^\ast)}{x_1^\ast \pm x_2^\ast} $;</li>
+<li>$ e_r(x_1^\ast \cdot x_2^\ast) = e_r(x_1^\ast) + e_r(x_2^\ast)$;</li>
+<li>$ e_r(\frac{x_1^\ast}{x_2^\ast}) = e_r(x_1^\ast) - e_r(x_2^\ast) $;</li>
+</ul>
+<p>但很多时候我们更关心误差限的传播.</p>
+<h3 id="via-Operations"><a href="#via-Operations" class="headerlink" title="via Operations"></a>via Operations</h3><script type="math/tex; mode=display">\begin{align*}
+\epsilon(x_1^\ast \pm x_2^\ast) &= \epsilon(x_1^\ast) + \epsilon(x_2^\ast), \\
+\epsilon(x_1^\ast \cdot x_2^\ast) &\approx |x_2^\ast|\epsilon(x_1^\ast) + |x_1^\ast|\epsilon(x_2^\ast), \\
+\epsilon(\frac{x_1^\ast}{x_2^\ast}) &\approx \frac{ |x_2^\ast|\epsilon(x_1^\ast) + |x_1^\ast|\epsilon(x_2^\ast) }{|x_2^\ast|^2}, \\
+& (即 \frac{\epsilon(x_1^\ast \cdot x_2^\ast)}{|x_2^\ast|^2}); \\
+\end{align*}</script><h3 id="via-Functions"><a href="#via-Functions" class="headerlink" title="via Functions"></a>via Functions</h3><script type="math/tex; mode=display">\epsilon[f(x^\ast)] \approx |f^{(1)}(x^\ast)|\epsilon(x^\ast);</script><p>求证</p>
+<p>推广</p>
+<h3 id="Ill-conditioned-Problem"><a href="#Ill-conditioned-Problem" class="headerlink" title="Ill-conditioned Problem"></a>Ill-conditioned Problem</h3><h3 id="Numerical-Stability"><a href="#Numerical-Stability" class="headerlink" title="Numerical Stability"></a>Numerical Stability</h3><h2 id="Control-of-Error"><a href="#Control-of-Error" class="headerlink" title="Control of Error"></a>Control of Error</h2><h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
 <sup>1</sup>. Taylor公式的余项可以表述为Peano型余项或Lagrange型余项, Peano型余项为定性表述, Lagrange型余项为定量表述, 但两者本质上相同;<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
 </blockquote>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qust-dsra.github.io/2022/03/01/numanalysis-01/" data-id="cl0bzd519000ihwtu8mvsaeuf" data-title="数值分析 I 误差" class="article-share-link">分享</a>
+      <a data-url="https://qust-dsra.github.io/2022/03/01/numanalysis-01/" data-id="cl0eogoww000qg8tu4n9m9bzp" data-title="数值分析 I 误差" class="article-share-link">分享</a>
       
       
         <a href="/2022/03/01/numanalysis-01/#comments" class="article-comment-link">
@@ -290,8 +336,10 @@
 
 
   
-<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+    
+<script src="/js/Valine-1.4.16.min.js"></script>
 
+  
 <script>
     var GUEST_INFO = ['nick','mail','link'];
     var guest_info = 'nick,mail,link'.split(',').filter(function(item){
@@ -303,8 +351,8 @@
         el: '.vcomment',
         notify: notify,
         verify: verify,
-        appId: "BJvasWrnRIBUV00qcgQGbLKo-gzGzoHsz",
-        appKey: "MojnnrK48CIUxLurDH2W3uj9",
+        appId: "UyQ3UNKJNCKXNBOmEPt38O2v-gzGzoHsz",
+        appKey: "yG94wy89SCPQ3x9eCkDIt1PR",
         placeholder: "Just tell and share your feelings...",
         pageSize:'10',
         avatar:'mm',
