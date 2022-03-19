@@ -4,15 +4,21 @@
   <meta charset="utf-8">
   
   
-  <title>标签: Numerical Analysis (数值分析) | QUST Data Science Research Association</title>
+  <title>Python学校课程 I | QUST Data Science Research Association</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="QUST Data Science Research Association">
-<meta property="og:url" content="https://qust-dsra.github.io/tags/Numerical-Analysis-%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90/index.html">
+  <meta name="description" content="聊点易乐谷turtle.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python学校课程 I">
+<meta property="og:url" content="https://qust-dsra.github.io/2022/03/18/pylesson-01/index.html">
 <meta property="og:site_name" content="QUST Data Science Research Association">
+<meta property="og:description" content="聊点易乐谷turtle.">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/18/pylesson-01/elogo.jpeg">
+<meta property="article:published_time" content="2022-03-18T12:26:22.000Z">
+<meta property="article:modified_time" content="2022-03-18T15:28:25.923Z">
 <meta property="article:author" content="Data Scholars from QUST">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qust-dsra.github.io/2022/03/18/pylesson-01/elogo.jpeg">
   
     <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
   
@@ -73,44 +79,100 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/03/01/numanalysis-01/" class="archive-article-date">
-  <time class="dt-published" datetime="2022-03-01T09:39:39.000Z" itemprop="datePublished">3月 1</time>
+        <section id="main"><article id="post-pylesson-01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/18/pylesson-01/" class="article-date">
+  <time class="dt-published" datetime="2022-03-18T12:26:22.000Z" itemprop="datePublished">2022-03-18</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/03/01/numanalysis-01/">数值分析 I 误差</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      Python学校课程 I
     </h1>
   
 
 
   <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>CZK</code></h2>
 
-    </header>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>聊点<del>易乐谷</del><code>turtle</code>.</p>
+<span id="more"></span>
+<h2 id="about-turtle"><a href="#about-turtle" class="headerlink" title="about turtle"></a>about <code>turtle</code></h2><p><code>turtle</code><sup><a href="#fn_1" id="reffn_1">1</a></sup>是个颇具亲切感的库, 它会让你想到小学时坐在微机教室跟着老师的指导玩的易乐谷(<code>ELOGO</code>)<sup><a href="#fn_2" id="reffn_2">2</a></sup> (而其实易乐谷也是基于<code>MSWLOGO</code>的), 如若我没记错的话易乐谷也是一个写程式绘图的工具软件, 而且上面爬的不是海龟君而是一只瓢虫君<sup><a href="#fn_3" id="reffn_3">3</a></sup>:</p>
+<p><img src="/2022/03/18/pylesson-01/elogo.jpeg" alt></p>
+<p>简单记一点单个脚本使用一次<code>turtle</code>的基本方法:</p>
+<h3 id="Basic-Methods"><a href="#Basic-Methods" class="headerlink" title="Basic Methods"></a>Basic Methods</h3><ul>
+<li><code>.setup(width=0.5, height=0.75, startx=None, starty=None)</code>: Set the size and position of the main window;</li>
+<li><code>.pencolor(*args)</code>: Return or set the pencolor;</li>
+<li><code>.pensize(width=None)</code>: Set or return the line Thickness;</li>
+<li><code>.penup()</code>: Pull the pen up — no drawing when moving;</li>
+<li><code>.pendown()</code>: Pull the pen down — drawing when moving;</li>
+<li><code>.forward(distance)</code>: Move the turtle forward by the specified distance;</li>
+<li><code>.seth(to_angle)</code>: Set the orientation of the turtle to to_angle;</li>
+<li><code>.circle(radius, extent=None, steps=None)</code>: Draw a circle with given radius;</li>
+<li><code>.done()</code></li>
+</ul>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
+<sup>1</sup>. <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/turtle.html"><code>turtle</code>: Turtle graphics - Python 3 Documentation</a> <br> (for <code>Python 3.6</code>: <a target="_blank" rel="noopener" href="https://docs.python.org/3.6/library/turtle.html">https://docs.python.org/3.6/library/turtle.html</a>)<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. 百度百科词条 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/易乐谷">易乐谷</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. 百度知道问答 <a target="_blank" rel="noopener" href="https://zhidao.baidu.com/question/684239995849654532.html">易乐谷的介绍</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qust-dsra.github.io/2022/03/18/pylesson-01/" data-id="cl0xf34gc001fdctu3imm6ev0" data-title="Python学校课程 I" class="article-share-link">分享</a>
+      
+      
+        <a href="/2022/03/18/pylesson-01/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2022/03/18/pylesson-01/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/03/18/mathmodeling-02/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          数学建模实验 II 价格和收入变化对需求的影响
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/03/18/numanalysis-homework-02/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">numanalysis-homework-02</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 
+
+  <section id="comments" class="vcomment">
+
+  </section>
 </section>
         
           <aside id="sidebar">
