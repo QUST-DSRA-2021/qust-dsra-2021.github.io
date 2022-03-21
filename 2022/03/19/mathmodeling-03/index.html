@@ -4,17 +4,33 @@
   <meta charset="utf-8">
   
   
-  <title>mathmodeling-03 | QUST Data Science Research Association</title>
+  <title>数学建模实验 III 平面图形的几何变换 | QUST Data Science Research Association</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="article">
-<meta property="og:title" content="mathmodeling-03">
+  <meta name="description" content="简单介绍其基于OpenCV的实现. Problem Description平面图形的几何变换:  使用齐次坐标实现平面图形的旋转, 缩放, 以及平移变换. 任意实例化一个2维平面向量, 要求给出变换公式及程式; 求出 $ 3 \times 3 $ 矩阵, 对应于先乘以 $ 3 $ 的倍乘变换, 然后逆时针旋转 $ \frac{\pi}2 $ , 最后对图形的每个点的坐标加上 $ (-2, 6) $">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数学建模实验 III 平面图形的几何变换">
 <meta property="og:url" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/index.html">
 <meta property="og:site_name" content="QUST Data Science Research Association">
+<meta property="og:description" content="简单介绍其基于OpenCV的实现. Problem Description平面图形的几何变换:  使用齐次坐标实现平面图形的旋转, 缩放, 以及平移变换. 任意实例化一个2维平面向量, 要求给出变换公式及程式; 求出 $ 3 \times 3 $ 矩阵, 对应于先乘以 $ 3 $ 的倍乘变换, 然后逆时针旋转 $ \frac{\pi}2 $ , 最后对图形的每个点的坐标加上 $ (-2, 6) $">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-03-19T05:58:58.000Z">
-<meta property="article:modified_time" content="2022-03-19T05:58:58.072Z">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/ichisaki-01.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/res-01.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/res-02.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/res-03.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/res-04.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/meteor.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/fig-01.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/fig-02.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/fig-03.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/fig-04.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/fig-05.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/ichisaki-02.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/res-05.jpeg">
+<meta property="article:published_time" content="2022-03-19T05:56:39.000Z">
+<meta property="article:modified_time" content="2022-03-21T13:33:55.312Z">
 <meta property="article:author" content="Data Scholars from QUST">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/ichisaki-01.jpeg">
   
     <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
   
@@ -78,7 +94,7 @@
         <section id="main"><article id="post-mathmodeling-03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/03/19/mathmodeling-03/" class="article-date">
-  <time class="dt-published" datetime="2022-03-19T05:58:58.000Z" itemprop="datePublished">2022-03-19</time>
+  <time class="dt-published" datetime="2022-03-19T05:56:39.000Z" itemprop="datePublished">2022-03-19</time>
 </a>
     
   </div>
@@ -89,20 +105,295 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      mathmodeling-03
+      数学建模实验 III 平面图形的几何变换
     </h1>
   
 
+
+  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>CZK</code></h2>
 
       </header>
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <p>简单介绍其基于<code>OpenCV</code>的实现.</p>
+<h2 id="Problem-Description"><a href="#Problem-Description" class="headerlink" title="Problem Description"></a>Problem Description</h2><p>平面图形的几何变换:</p>
+<ol>
+<li>使用齐次坐标实现平面图形的旋转, 缩放, 以及平移变换. 任意实例化一个2维平面向量, 要求给出变换公式及程式;</li>
+<li>求出 $ 3 \times 3 $ 矩阵, 对应于先乘以 $ 3 $ 的倍乘变换, 然后逆时针旋转 $ \frac{\pi}2 $ , 最后对图形的每个点的坐标加上 $ (-2, 6) $ 做平移, 并作实例化;</li>
+<li>利用<code>matlab</code>函数<code>imwarp()</code>, 实现图像的旋转和缩放, 并作实例化(任取一幅图像);</li>
+</ol>
+<span id="more"></span>
+<h2 id="Problem-Analysis"><a href="#Problem-Analysis" class="headerlink" title="Problem Analysis"></a>Problem Analysis</h2><p>使用<code>OpenCV</code><sup><a href="#fn_1" id="reffn_1">1</a></sup>进行实现.</p>
+<p><code>OpenCV</code>是一个跨语言计算机视觉模块, 其拥有把图像读取为三轴张量并存储为数组, 以及对图像数组进行变换的方法.<br>对于其<code>Python</code>实现, 其形式上为使用<code>C++</code>编写的本体上加载<code>Python</code>接口.</p>
+<h3 id="Basic-Methods"><a href="#Basic-Methods" class="headerlink" title="Basic Methods"></a>Basic Methods</h3><ul>
+<li><code>.imread(filename[, flags]) -&gt; retval</code>: Loads an image from a file.<br>根据<code>filename</code>所示路径读取图像文件, 存储为(三轴)张量的方法, 默认以<code>BGR</code>格式进行存储;</li>
+<li><code>.imshow(winname, mat) -&gt; None</code>: Displays an image in the specified window.<br>创建标题为<code>winname</code>的窗体, 显示变量<code>mat</code>所存储的张量对应的图像.<br>需要注意与<code>matplotlib.pyplot</code>的<code>.imshow</code>相区分;<ul>
+<li><code>.imshow(X, cmap=None, norm=None, aspect=None, interpolation=None, alpha=None, vmin=None, vmax=None, origin=None, extent=None, shape=None, filternorm=1, filterrad=4.0, imlim=None, resample=None, url=None, hold=None, data=None, **kwargs)</code>: Display an image on the axes.<br>顾名思义<code>matplotlib.pyplot</code>的<code>.imshow</code>是在画布的坐标轴上显示图像, 但这属于<code>matplotlib</code>的内容, 在此不进行赘述;</li>
+<li>但后面我们会使用<code>matplotlib.pyplot</code>的<code>.imshow</code>;</li>
+</ul>
+</li>
+<li><code>.waitKey([, delay]) -&gt; retval</code>: Waits for a pressed key.<br>通过<code>OpenCV</code>呼出显示图像窗体后使之正常停留在屏幕中, 等待下一动作的方法 <del>, 不使用这个方法的话经常会使窗体卡死</del>;</li>
+<li><code>destroyAllWindows() -&gt; None</code>: Destroys all of the HighGUI windows.<br>用于在程式结束前检查并关闭所有通过<code>OpenCV</code>呼出而未关闭的窗体的函数;</li>
+</ul>
+<h4 id="OpenCV-Method-resize"><a href="#OpenCV-Method-resize" class="headerlink" title="OpenCV Method .resize"></a><code>OpenCV</code> Method <code>.resize</code></h4><p><code>.resize</code>是对图像进行缩放的方法, 查看其说明</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>cv2.resize?</span><br><span class="line">resize(src, dsize[, dst[, fx[, fy[, interpolation]]]]) -&gt; dst</span><br><span class="line">.   @brief Resizes an image.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>可知使用<code>.resize</code>至少需要传入待变换的图像<code>src</code>与变换后的目标尺寸<code>dsize</code>, 可以用参数<code>interpolation</code>指定大小变换的插值方法, 例如</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>cv2.resize(</span><br><span class="line"><span class="meta">... </span>    img_arr,</span><br><span class="line"><span class="meta">... </span>    (img_width // <span class="number">2</span>, img_height // <span class="number">2</span>),</span><br><span class="line"><span class="meta">... </span>    interpolation=cv2.INTER_CUBIC <span class="comment"># Using Cubic Interpolation / 使用二次曲线插值</span></span><br><span class="line"><span class="meta">... </span>    )</span><br></pre></td></tr></table></figure>
+<p>便返回对<code>img_arr</code>缩小至原本的<code>0.5</code>的图像, 并且使用二次曲线插值,</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>cv2.resize(</span><br><span class="line"><span class="meta">... </span>    img_arr,</span><br><span class="line"><span class="meta">... </span>    (img_width * <span class="number">2</span>, img_height * <span class="number">2</span>),</span><br><span class="line"><span class="meta">... </span>    interpolation=cv2.INTER_LINEAR <span class="comment"># Using Linear Interpolation / 使用线性插值</span></span><br><span class="line"><span class="meta">... </span>    )</span><br></pre></td></tr></table></figure>
+<p>便返回对<code>img_arr</code>放大至原本<code>2</code>倍的图像, 并用线性插值.</p>
+<h4 id="OpenCV-Method-warpAffine"><a href="#OpenCV-Method-warpAffine" class="headerlink" title="OpenCV Method .warpAffine"></a><code>OpenCV</code> Method <code>.warpAffine</code></h4><p><code>.warpAffine</code>是对图像进行仿射变换的方法, 查看其说明</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>cv2.warpAffine?</span><br><span class="line">warpAffine(src, M, dsize[, dst[, flags[, borderMode[, borderValue]]]]) -&gt; dst</span><br><span class="line">.   @brief Applies an affine transformation to an image.</span><br><span class="line">.</span><br><span class="line">.   The function warpAffine transforms the source image using the specified matrix:</span><br><span class="line">.</span><br><span class="line">.   \f[\texttt&#123;dst&#125; (x,y) =  \texttt&#123;src&#125; ( \texttt&#123;M&#125; _&#123;<span class="number">11</span>&#125; x +  \texttt&#123;M&#125; _&#123;<span class="number">12</span>&#125; y +  \texttt&#123;M&#125; _&#123;<span class="number">13</span>&#125;, \texttt&#123;M&#125; _&#123;<span class="number">21</span>&#125; x +  \texttt&#123;M&#125; _&#123;<span class="number">22</span>&#125; y +  \texttt&#123;M&#125; _&#123;<span class="number">23</span>&#125;)\f]</span><br></pre></td></tr></table></figure>
+<p>可知其操作便是根据式</p>
+<script type="math/tex; mode=display">\begin{align*}
+\texttt{dst} (x,y) =  \texttt{src} (
+& \texttt{M} _{11} x +  \texttt{M} _{12} y +  \texttt{M} _{13}, \\
+& \texttt{M} _{21} x +  \texttt{M} _{22} y +  \texttt{M} _{23}
+)
+\end{align*}</script><p>从图像变量<code>src</code>生成<code>dst</code>的内容.</p>
+<h3 id="Images-in-Linear-Algebra"><a href="#Images-in-Linear-Algebra" class="headerlink" title="Images in Linear Algebra"></a>Images in Linear Algebra</h3><p>在讲述平面图形的几何变换之前, 我们需要先明确几个概念.</p>
+<ol>
+<li><strong>齐次坐标 (Homogeneous Coordinates) <sup><a href="#fn_3" id="reffn_3">3</a></sup></strong>: <code>m</code>维射影空间 (Projective Space) <sup><a href="#fn_4" id="reffn_4">4</a></sup>的点对应的等价类 (Equivalence Class) <sup><a href="#fn_5" id="reffn_5">5</a></sup>中每个<code>(m+1)</code>元组<sup><a href="#fn_6" id="reffn_6">6</a></sup>.<br> 例如二维坐标点<code>Q(x, y)</code>的齐次坐标便为<code>(hx, hy, h)</code>, <strong>取<code>h=1</code>时</strong>便有<strong>规格化的</strong>齐次坐标<code>(x, y, 1)</code>;</li>
+<li>(图像的)<strong>空间变换 (Spacial Transformation)</strong>: 图像在计算机中(经过采样和量化)存储为一个以像素颜色为元素的矩阵, 虽然各个像素形式上为这个矩阵中的元素, 但其格式也有多种, 包括但不限于<code>RGB</code>(包括<code>BGR</code>等其实都一样的), <code>HSV</code>, <code>CMYK</code>等, 此时对所有的点进行统一的变换即达到对整幅图像进行变换的效果;</li>
+</ol>
+<h2 id="Modeling"><a href="#Modeling" class="headerlink" title="Modeling"></a>Modeling</h2><p>然后我们来考虑几种平面图像的几何变换.</p>
+<h3 id="Image-Resizing"><a href="#Image-Resizing" class="headerlink" title="Image Resizing"></a>Image Resizing</h3><p>图像缩放变换 $ (x, y) \mapsto (s x, t y) $, 可以简单使用矩阵乘法实现</p>
+<script type="math/tex; mode=display">\begin{bmatrix}
+s & 0 & 0 \\
+0 & t & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix} \begin{pmatrix}
+x \\
+y \\
+1 \\
+\end{pmatrix} = \begin{pmatrix}
+s x \\
+t y \\
+1 \\
+\end{pmatrix}</script><p>然后使用<code>.resize</code>即可.</p>
+<h3 id="Image-Shifting"><a href="#Image-Shifting" class="headerlink" title="Image Shifting"></a>Image Shifting</h3><p>图像平移变换 $ (x, y) \mapsto (x + a, y + b) $, 齐次坐标写作 $ (x, y, 1) \mapsto (x + a, y + b, 1) $, 可以简单使用矩阵乘法进行实现</p>
+<script type="math/tex; mode=display">\begin{bmatrix}
+1 & 0 & a \\
+0 & 1 & b \\
+0 & 0 & 1 \\
+\end{bmatrix} \begin{pmatrix}
+x \\
+y \\
+1 \\
+\end{pmatrix} = \begin{pmatrix}
+x + a \\
+y + b \\
+1 \\
+\end{pmatrix}</script><p>而在<code>OpenCV</code>中我们<code>.warpAffine</code>对图像进行变换时, 对其中的参数<code>M</code>传入变换矩阵前两行的 $ 2 \times 3 $ 矩阵即可.</p>
+<h3 id="Image-Rotation"><a href="#Image-Rotation" class="headerlink" title="Image Rotation"></a>Image Rotation</h3><p>图像旋转变换 $ (x, y) \mapsto (x \cos \theta - y \sin \theta , x \sin \theta + y \cos \theta) $, 可以使用矩阵乘法实现</p>
+<script type="math/tex; mode=display">\begin{bmatrix}
+\cos \theta & - \sin \theta & 0 \\
+\sin \theta &   \cos \theta & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix} \begin{pmatrix}
+x \\
+y \\
+1 \\
+\end{pmatrix} \\ = \begin{pmatrix}
+x \cos \theta - y \sin \theta \\
+x \sin \theta + y \cos \theta \\
+1 \\
+\end{pmatrix}</script><p>在<code>OpenCV</code>中需要传入图像旋转的中心点<code>center</code>, 角度<code>angle</code>, 以及缩放尺寸<code>scale</code>, 用<code>.getRotationMatrix2D</code>计算旋转变换的矩阵, 然后作为参数<code>M</code>传入<code>.warpAffine</code>即可.</p>
+<h3 id="Affine-Transformation"><a href="#Affine-Transformation" class="headerlink" title="Affine Transformation"></a>Affine Transformation</h3><p>参考这些文章<sup><a href="#fn_2" id="reffn_2">2</a></sup>.</p>
+<h3 id="Processing-Image-with-OpenCV"><a href="#Processing-Image-with-OpenCV" class="headerlink" title="Processing Image with OpenCV"></a>Processing Image with <code>OpenCV</code></h3><p>在此简要演示<code>OpenCV</code>完整读取与处理图像的用法.<br>首先声明调用<code>NumPy</code>, <code>matplotlib.pyplot</code>及<code>OpenCV</code>等模块</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.style.use(<span class="string">&quot;solarized-light&quot;</span>) <span class="comment"># 我自己做的一个matplotlib配色方案, 这个不是它自带的, 该行可以不写</span></span><br><span class="line"><span class="keyword">import</span> cv2</span><br></pre></td></tr></table></figure>
+<p>我们以如下所示的图片<sup><a href="#fn_7" id="reffn_7">7</a></sup>对上述方法及任务进行演示:</p>
+<p><img src="/2022/03/19/mathmodeling-03/ichisaki-01.jpeg" alt></p>
+<p>我们先通过<code>.imread</code>读取图像并把其对应的张量存入变量<code>arr_icsk</code>,</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>arr_icsk = cv2.imread(<span class="string">&quot;./ichisaki-01.jpeg&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>查看该变量</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>arr_icsk</span><br><span class="line">array([[[<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        ...,</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>]],</span><br><span class="line"></span><br><span class="line">       [[<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        ...,</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>]],</span><br><span class="line"></span><br><span class="line">       ...,</span><br><span class="line"></span><br><span class="line">       [[<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        ...,</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>],</span><br><span class="line">        [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>]]], dtype=uint8)</span><br></pre></td></tr></table></figure>
+<p>可见这其实被直接转化为了一个<code>NumPy</code>的<code>.ndarray</code>对象, 因此我们可以调用属于它固有的成员或方法</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>arr_icsk.ndim <span class="comment"># 查看张量轴数, 由于这是一个彩色非透明图像, 所以会存储为三轴张量, 因此其轴数便为3</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>arr_icsk.shape <span class="comment"># 查看张量尺寸</span></span><br><span class="line">(<span class="number">1440</span>, <span class="number">1727</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>arr_icsk[ : , : , <span class="number">0</span> ].mean() <span class="comment"># 查看蓝色channel的平均亮度值, 由于OpenCV存储图像的格式为BGR而非RGB, 因此蓝色channel对应索引为0</span></span><br><span class="line"><span class="number">230.49256860001287</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>arr_icsk[ : , : , <span class="number">1</span> ].mean() <span class="comment"># 对应索引为1的绿色channel的平均亮度值</span></span><br><span class="line"><span class="number">241.52439040082353</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>arr_icsk[ : , : , <span class="number">2</span> ].mean() <span class="comment"># 对应索引为2的红色channel的平均亮度值</span></span><br><span class="line"><span class="number">254.97663176349482</span></span><br></pre></td></tr></table></figure>
+<p>我们所取用图片的尺寸过大, 因此我们用<code>.resize</code>把它的宽度和高度缩小到原本的<code>1/3.9</code></p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>height, width, num_channels = arr_icsk.shape</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>arr_icsk = cv2.resize(</span><br><span class="line"><span class="meta">... </span>    arr_icsk,</span><br><span class="line"><span class="meta">... </span>    (<span class="built_in">round</span>(width / <span class="number">3.9</span>), <span class="built_in">round</span>(height / <span class="number">3.9</span>)),</span><br><span class="line"><span class="meta">... </span>    interpolation = cv2.INTER_CUBIC</span><br><span class="line"><span class="meta">... </span>    )</span><br></pre></td></tr></table></figure>
+<p>需要注意的是图像存入<code>ndarray</code>的格式是<code>(height, width, num_channels)</code>, 但传入的参数却是<code>(width, height)</code>.<br>然后我们调用<code>.imshow</code>显示图像</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>cv2.imshow(<span class="string">&quot;Image Display&quot;</span>, arr_icsk)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/19/mathmodeling-03/res-01.jpeg" alt></p>
+<p>但是得到的却是一个灰色的窗体, 而且容易卡死, 这时候我们调用<code>.waitKey</code>让其等待动作</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>cv2.waitKey()</span><br><span class="line">-<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/19/mathmodeling-03/res-02.jpeg" alt></p>
+<p>便能正常显示.<br>然后关闭窗口即可结束<code>.waitKey</code>的等待, 此时这个函数本身会返回<code>-1</code>.<br>为了保险起见, 我们可以调用<code>.destroyAllWindows</code>关闭呼出的所有窗体.</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>cv2.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+<p>以上是使用<code>OpenCV</code>的<code>.imread</code>进行图像的显示, 但是我们可以使用我们熟悉的<code>matplotlib</code>相关功能进行类似的操作, 但这里要注意<code>OpenCV</code>存储与读取的是<code>BGR</code>格式, <code>matplotlib</code>读取的是<code>RGB</code>格式, 所以我们要先对张量的通道顺序进行调整</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>arr_icsk = arr_icsk[ : , : , : : (-<span class="number">1</span>) ]</span><br></pre></td></tr></table></figure>
+<p>然后再调用<code>matplotlib.pyplot</code>的<code>.imshow</code></p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>plt.imshow(arr_icsk)</span><br><span class="line">&lt;matplotlib.image.AxesImage at <span class="number">0x20b6a828e80</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>plt.show() <span class="comment"># 显示图像</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/19/mathmodeling-03/res-03.jpeg" alt></p>
+<p>得到如上所示的可视化结果, <code>matplotlib.pyplot</code>还会标注坐标轴, 此外还可以利用子图, 标题等功能对可视化的结果加入其他内容</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>plt.title(<span class="string">&quot;Image ICHISAKI Display via plt.imshow()&quot;</span>) <span class="comment"># 设置标题</span></span><br><span class="line">Text(<span class="number">0.5</span>,<span class="number">1</span>,<span class="string">&#x27;Image ICHISAKI Display via plt.imshow()&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>plt.xlabel(<span class="string">&quot;Axis of width&quot;</span>) <span class="comment"># 设置x轴信息</span></span><br><span class="line">Text(<span class="number">0.5</span>,<span class="number">0</span>,<span class="string">&#x27;Axis of width&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>plt.ylabel(<span class="string">&quot;Axis of height&quot;</span>) <span class="comment"># 设置y轴信息</span></span><br><span class="line">Text(<span class="number">0</span>,<span class="number">0.5</span>,<span class="string">&#x27;Axis of height&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>plt.imshow(arr_icsk)</span><br><span class="line">&lt;matplotlib.image.AxesImage at <span class="number">0x20b6b34fd68</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/19/mathmodeling-03/res-04.jpeg" alt></p>
+<p>这样便能显示带有标题和轴标注的图像.</p>
+<h2 id="Solving"><a href="#Solving" class="headerlink" title="Solving"></a>Solving</h2><p>现在我们考虑题目给出的任务.</p>
+<p><strong><code id="sln-t1">T1</code></strong>: 对于矢量<code>(3, 9)</code>, 进行如下操作便分别有对应结果:</p>
+<ul>
+<li>旋转 $ \frac{\pi}4 $, 得到矢量 $ (3 \cos \frac{\pi}4 - 9 \sin \frac{\pi}4 , 3 \sin \frac{\pi}4 + 9 \cos \frac{\pi}4) = (- 3 \sqrt{2}, 6 \sqrt{2}) $;</li>
+<li>放大<code>2</code>倍, 得到矢量<code>(6, 18)</code>;</li>
+<li>平移<code>(5, 1)</code>得到矢量<code>(8, 10)</code>;</li>
+</ul>
+<p><strong><code id="sln-t2">T2</code></strong>: $ 当 \psi = \frac{\pi}2 时, \sin \psi = 1, \cos \psi = 0. 此时有 $</p>
+<script type="math/tex; mode=display">\begin{align*} \begin{pmatrix}
+x \\ y \\ 1 \\
+\end{pmatrix}
+\xrightarrow[]{缩放} & \begin{bmatrix}
+3 & 0 & 0 \\
+0 & 3 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix} \begin{pmatrix}
+x \\ y \\ 1 \\
+\end{pmatrix} \\
+\xrightarrow[]{旋转} & \begin{bmatrix}
+0 & -1 & 0 \\
+1 &  0 & 0 \\
+0 &  0 & 1 \\
+\end{bmatrix} \begin{bmatrix}
+3 & 0 & 0 \\
+0 & 3 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix} \begin{pmatrix}
+x \\ y \\ 1 \\
+\end{pmatrix} \\
+\xrightarrow[]{平移} & \begin{bmatrix}
+1 & 0 & -2 \\
+0 & 1 &  6 \\
+0 & 0 &  1 \\
+\end{bmatrix} \begin{bmatrix}
+0 & -1 & 0 \\
+1 &  0 & 0 \\
+0 &  0 & 1 \\
+\end{bmatrix} \begin{bmatrix}
+3 & 0 & 0 \\
+0 & 3 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix} \begin{pmatrix}
+x \\ y \\ 1 \\
+\end{pmatrix} \\
+= & \begin{bmatrix}
+0 & -3 & -2 \\
+3 &  0 &  6 \\
+0 &  0 &  1 \\
+\end{bmatrix} \begin{pmatrix}
+x \\ y \\ 1 \\
+\end{pmatrix} \end{align*}</script><p><strong><code id="sln-t3">T3</code></strong>: 对于如下图像<sup><a href="#fn_11" id="reffn_11">11</a></sup></p>
+<p><img src="/2022/03/19/mathmodeling-03/meteor.jpeg" alt></p>
+<p>我们将进行缩放, 平移, 旋转, 以及仿射变换. 完整程式如下</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env Python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">@author: 陈 子坤 (GitHub@sandyzikun)</span></span><br><span class="line"><span class="string">@time: 2022-03-19 18:39</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np, cv2</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.style.use(<span class="string">&quot;solarized-light&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Constants</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    PATH_IMAGE = <span class="string">&quot;./meteor.jpeg&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    plt.rcParams[<span class="string">&quot;figure.figsize&quot;</span>] = (<span class="number">12</span>, <span class="number">4</span>)</span><br><span class="line">    <span class="comment">#plt.rcParams[&quot;figure.facecolor&quot;] = &quot;#fdf6e3&quot;</span></span><br><span class="line">    img_arr = cv2.imread(Constants.PATH_IMAGE)</span><br><span class="line">    img_height, img_width, _ = img_arr.shape</span><br><span class="line">    <span class="comment"># Image Zooming-out / 图像缩小</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    cv2.imshow(</span></span><br><span class="line"><span class="string">        &quot;Image Zooming-out&quot;,</span></span><br><span class="line"><span class="string">        cv2.resize(</span></span><br><span class="line"><span class="string">            img_arr,</span></span><br><span class="line"><span class="string">            (img_width // 2, img_height // 2),</span></span><br><span class="line"><span class="string">            interpolation=cv2.INTER_CUBIC # Using Cubic Interpolation / 使用二次曲线插值</span></span><br><span class="line"><span class="string">            )</span></span><br><span class="line"><span class="string">        )</span></span><br><span class="line"><span class="string">    cv2.waitKey()</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    plt.subplot(<span class="number">121</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;Image Origin&quot;</span>)</span><br><span class="line">    plt.imshow(img_arr[ : , : , : : (-<span class="number">1</span>) ])</span><br><span class="line">    plt.subplot(<span class="number">122</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;Image Zooming-out&quot;</span>)</span><br><span class="line">    plt.imshow(</span><br><span class="line">        cv2.resize(</span><br><span class="line">            img_arr,</span><br><span class="line">            (img_width // <span class="number">2</span>, img_height // <span class="number">2</span>),</span><br><span class="line">            interpolation=cv2.INTER_CUBIC <span class="comment"># Using Cubic Interpolation / 使用二次曲线插值</span></span><br><span class="line">            )[ : , : , : : (-<span class="number">1</span>) ]</span><br><span class="line">        )</span><br><span class="line">    plt.savefig(<span class="string">&quot;./fig-01.jpeg&quot;</span>)</span><br><span class="line">    plt.show()</span><br><span class="line">    plt.clf()</span><br><span class="line">    <span class="comment"># Image Zooming-in / 图像放大</span></span><br><span class="line">    plt.subplot(<span class="number">121</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;Image Origin&quot;</span>)</span><br><span class="line">    plt.imshow(img_arr[ : , : , : : (-<span class="number">1</span>) ])</span><br><span class="line">    plt.subplot(<span class="number">122</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;Image Zooming-in&quot;</span>)</span><br><span class="line">    plt.imshow(</span><br><span class="line">        cv2.resize(</span><br><span class="line">            img_arr,</span><br><span class="line">            (img_width * <span class="number">2</span>, img_height * <span class="number">2</span>),</span><br><span class="line">            interpolation=cv2.INTER_LINEAR <span class="comment"># Using Linear Interpolation / 使用线性插值</span></span><br><span class="line">            )[ : , : , : : (-<span class="number">1</span>) ]</span><br><span class="line">        )</span><br><span class="line">    plt.savefig(<span class="string">&quot;./fig-02.jpeg&quot;</span>)</span><br><span class="line">    plt.show()</span><br><span class="line">    plt.clf()</span><br><span class="line">    <span class="comment"># Image Shifting / 图像平移</span></span><br><span class="line">    plt.subplot(<span class="number">121</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;Image Origin&quot;</span>)</span><br><span class="line">    plt.imshow(img_arr[ : , : , : : (-<span class="number">1</span>) ])</span><br><span class="line">    plt.subplot(<span class="number">122</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;Image Shifted&quot;</span>)</span><br><span class="line">    plt.imshow(</span><br><span class="line">        cv2.warpAffine(</span><br><span class="line">            img_arr,</span><br><span class="line">            np.float32([ <span class="comment"># Transformation (Shifting) Matrix (shape: 2x3)</span></span><br><span class="line">                [ <span class="number">1</span> , <span class="number">0</span> , -<span class="number">164</span> ],</span><br><span class="line">                [ <span class="number">0</span> , <span class="number">1</span> , -<span class="number">128</span> ],</span><br><span class="line">                ]),</span><br><span class="line">            (img_width, img_height)</span><br><span class="line">            )[ : , : , : : (-<span class="number">1</span>) ]</span><br><span class="line">        )</span><br><span class="line">    plt.savefig(<span class="string">&quot;./fig-03.jpeg&quot;</span>)</span><br><span class="line">    plt.show()</span><br><span class="line">    plt.clf()</span><br><span class="line">    <span class="comment"># Image Rotation / 图像旋转</span></span><br><span class="line">    plt.subplot(<span class="number">121</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;Image Origin&quot;</span>)</span><br><span class="line">    plt.imshow(img_arr[ : , : , : : (-<span class="number">1</span>) ])</span><br><span class="line">    plt.subplot(<span class="number">122</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;Image Rotated&quot;</span>)</span><br><span class="line">    plt.imshow(</span><br><span class="line">        cv2.warpAffine(</span><br><span class="line">            img_arr,</span><br><span class="line">            cv2.getRotationMatrix2D(</span><br><span class="line">                (<span class="built_in">round</span>(img_width / <span class="number">2</span>), <span class="built_in">round</span>(img_height / <span class="number">2</span>)),</span><br><span class="line">                <span class="number">39</span>,</span><br><span class="line">                <span class="number">1.28</span></span><br><span class="line">                ),</span><br><span class="line">            (img_width, img_height)</span><br><span class="line">            )[ : , : , : : (-<span class="number">1</span>) ]</span><br><span class="line">        )</span><br><span class="line">    plt.savefig(<span class="string">&quot;./fig-04.jpeg&quot;</span>)</span><br><span class="line">    plt.show()</span><br><span class="line">    plt.clf()</span><br><span class="line">    <span class="comment"># Affine Transformation / 仿射变换</span></span><br><span class="line">    plt.subplot(<span class="number">121</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;Image Origin&quot;</span>)</span><br><span class="line">    plt.imshow(img_arr[ : , : , : : (-<span class="number">1</span>) ])</span><br><span class="line">    plt.subplot(<span class="number">122</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;Image Affine-transformed&quot;</span>)</span><br><span class="line">    plt.imshow(</span><br><span class="line">        cv2.warpAffine(</span><br><span class="line">            img_arr,</span><br><span class="line">            cv2.getAffineTransform(</span><br><span class="line">                np.float32([</span><br><span class="line">                    [  <span class="number">50</span> ,  <span class="number">50</span> ],</span><br><span class="line">                    [ <span class="number">200</span> ,  <span class="number">50</span> ],</span><br><span class="line">                    [  <span class="number">50</span> , <span class="number">200</span> ],</span><br><span class="line">                    ]),</span><br><span class="line">                np.float32([</span><br><span class="line">                    [  <span class="number">10</span> , <span class="number">100</span> ],</span><br><span class="line">                    [ <span class="number">200</span> ,  <span class="number">20</span> ],</span><br><span class="line">                    [ <span class="number">100</span> , <span class="number">250</span> ],</span><br><span class="line">                    ])</span><br><span class="line">                ),</span><br><span class="line">            (img_width, img_height)</span><br><span class="line">            )[ : , : , : : (-<span class="number">1</span>) ]</span><br><span class="line">        )</span><br><span class="line">    plt.savefig(<span class="string">&quot;./fig-05.jpeg&quot;</span>)</span><br><span class="line">    plt.show()</span><br><span class="line">    plt.clf()</span><br></pre></td></tr></table></figure>
+<p>运行结果如下</p>
+<ol>
+<li>Image Zooming-out (图像缩小)<br> <img src="/2022/03/19/mathmodeling-03/fig-01.jpeg" alt></li>
+<li>Image Zooming-in (图像缩大)<br> <img src="/2022/03/19/mathmodeling-03/fig-02.jpeg" alt></li>
+<li>Image Shifting (图像平移)<br> <img src="/2022/03/19/mathmodeling-03/fig-03.jpeg" alt></li>
+<li>Image Rotation (图像旋转)<br> <img src="/2022/03/19/mathmodeling-03/fig-04.jpeg" alt></li>
+<li>Affine Transformation (仿射变换)<br> <img src="/2022/03/19/mathmodeling-03/fig-05.jpeg" alt></li>
+</ol>
+<h2 id="Extend"><a href="#Extend" class="headerlink" title="Extend"></a>Extend</h2><p>事实上图像的相关操作在<code>matlab</code>的<code>Image Processing Toolbox</code>工具箱<sup><a href="#fn_12" id="reffn_12">12</a></sup>中有相关实现, 主要依靠<code>imwarp</code>方法<sup><a href="#fn_13" id="reffn_13">13</a></sup>并把缩放, 平移, 旋转等操作全部以仿射变换的形式完成. 但由于在<code>octave</code>的<code>image</code><sup><a href="#fn_14" id="reffn_14">14</a></sup>包中并无相关实现<sup><a href="#fn_15" id="reffn_15">15</a></sup>, 故在此不再进行赘述.</p>
+<p>于此介绍<code>keras.preprocessing.image</code>中的<code>.apply_transform()</code>方法, <strong><em>需要注意的是! 这个函数只存在于``</em></strong>. 我们先调用</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>keras.preprocessing.image.apply_transform?</span><br></pre></td></tr></table></figure>
+<p>来查看一下它的说明, 得到以下信息</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keras.preprocessing.image.apply_transform(x, transform_matrix, channel_axis=<span class="number">0</span>, fill_mode=<span class="string">&#x27;nearest&#x27;</span>, cval=<span class="number">0.0</span>)</span><br></pre></td></tr></table></figure>
+<p><em>Apply the image transformation specified by a matrix.</em></p>
+<ul>
+<li>Arguments<ul>
+<li><code>x</code>: 2D numpy array, single image.</li>
+<li><code>transform_matrix</code>: Numpy array specifying the geometric transformation.</li>
+<li><code>channel_axis</code>: Index of axis for channels in the input tensor.</li>
+<li><code>fill_mode</code>: Points outside the boundaries of the input are filled according to the given mode (one of <code>&#123;&#39;constant&#39;, &#39;nearest&#39;, &#39;reflect&#39;, &#39;wrap&#39;&#125;</code>).</li>
+<li><code>cval</code>: Value used for points outside the boundaries of the input if <code>mode=&#39;constant&#39;</code>.</li>
+</ul>
+</li>
+<li>Returns<br>The transformed version of the input.</li>
+</ul>
+<p>由此我们可以知道, 这个函数中通过参数<code>x</code>传入待变换的图像张量, 限制为<code>RGB</code>类格式.<br>由于图像张量通常为三轴, 因此需要在参数<code>channel_aixs</code>中指出排列不同通道的轴, 由于<code>OpenCV</code>和<code>Keras</code>调用的<code>PIL</code>都是在最后一个轴排列通道, 故此处我们必须向其指出<code>channel_axis=2</code>, 如若是<code>Theano</code>则需要指定<code>channel_axis=0</code>.<br>图像对坐标变换后常有出现某位置原本有像素点但变换后像素点消失的情况, 对于这一方面的问题我们需要在<code>fill_mode</code>中指定填充缺失位置的填充方案, 在此介绍常用的两种:</p>
+<ul>
+<li><code>constant</code>: 用灰度色彩的常量进行填充, 需要通过参数<code>cval</code>指定填充用的灰度值, 即空出的部分皆会被涂满<code>cval</code>所示亮度的灰度;</li>
+<li><code>nearest</code>: 默认的填充方案, 会选取距离待填充点最近的已填充点的颜色进行填充;</li>
+</ul>
+<p>我们现在来使用如下图片<sup><a href="#fn_16" id="reffn_16">16</a></sup></p>
+<p><img src="/2022/03/19/mathmodeling-03/ichisaki-02.jpeg" alt></p>
+<p>简单演示这个方法的使用.</p>
+<p>现在需要把图片以左上角点为中心缩小到原来的<code>0.8</code>, 而后向下向右分别平移<code>164</code>与<code>128</code>个像素, 最后顺时针旋转 $ 13^\circ $, 对应仿射变换的矩阵分别为</p>
+<script type="math/tex; mode=display">\begin{bmatrix}
+\frac{1}{0.8} & 0 & 0 \\
+0 & \frac{1}{0.8} & 0 \\
+0 & 0 & 1\\
+\end{bmatrix} = \begin{bmatrix}
+\frac{5}4 & 0 & 0 \\
+0 & \frac{5}4 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix}</script><p>与</p>
+<script type="math/tex; mode=display">\begin{bmatrix}
+1 & 0 & -164 \\
+0 & 1 & -128 \\
+0 & 0 & 1\\
+\end{bmatrix}</script><p>以及</p>
+<script type="math/tex; mode=display">\begin{bmatrix}
+\cos 13^\circ & - \sin 13^\circ & 0 \\
+\sin 13^\circ &   \cos 13^\circ & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix}</script><p>因此我们计算仿射变换需要的变换矩阵即为以上各步所对应的变换矩阵的乘积.<br>由于对列矢量进行线性变换时是以变换矩阵对列矢量进行左乘, 故变换矩阵在相乘时自右向左堆叠, 进行相乘.<br>我们对待变换图像调用变换操作的代码大致如下(其中待变换图像的张量存储于变量<code>arr_icsk</code>中)</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">arr_icsk_after_transformation = keras.preprocessing.image.apply_transform(</span><br><span class="line">    arr_icsk,</span><br><span class="line">    (np.array([</span><br><span class="line">        [ np.cos(<span class="number">13</span> / <span class="number">180</span>) , (-<span class="number">1</span>) * np.sin(<span class="number">13</span> / <span class="number">180</span>) , <span class="number">0</span> ],</span><br><span class="line">        [ np.sin(<span class="number">13</span> / <span class="number">180</span>) ,        np.cos(<span class="number">13</span> / <span class="number">180</span>) , <span class="number">0</span> ],</span><br><span class="line">        [                <span class="number">0</span> ,                       <span class="number">0</span> , <span class="number">1</span> ],</span><br><span class="line">    ]) @ np.array([</span><br><span class="line">        [ <span class="number">1</span> , <span class="number">0</span> , -<span class="number">164</span> ],</span><br><span class="line">        [ <span class="number">0</span> , <span class="number">1</span> , -<span class="number">128</span> ],</span><br><span class="line">        [ <span class="number">0</span> , <span class="number">0</span> ,    <span class="number">1</span> ],</span><br><span class="line">    ]) @ np.array([</span><br><span class="line">        [ <span class="number">1.28</span> ,    <span class="number">0</span> , <span class="number">0</span> ],</span><br><span class="line">        [    <span class="number">0</span> , <span class="number">1.28</span> , <span class="number">0</span> ],</span><br><span class="line">        [    <span class="number">0</span> ,    <span class="number">0</span> , <span class="number">1</span> ],</span><br><span class="line">    ]))[ : <span class="number">2</span> ],</span><br><span class="line">    channel_axis=<span class="number">2</span>,</span><br><span class="line">    fill_mode=<span class="string">&quot;constant&quot;</span>,</span><br><span class="line">    cval= <span class="number">255</span> / <span class="number">2</span></span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+<p>得到如下效果</p>
+<p><img src="/2022/03/19/mathmodeling-03/res-05.jpeg" alt></p>
+<p>由此可见, <code>keras.preprocessing.image.apply_transform</code>更适合深度学习中进行图片的变换.</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
+<sup>1</sup>. <a target="_blank" rel="noopener" href="https://opencv.org/"><code>OpenCV</code>: Open Source Computer Vision Library</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. 参考 <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39507748/article/details/104448700/">CSDN博客 opencv学习笔记三：使用<code>cv2.GetAffineTransform()</code>实现图像仿射</a>, 同时也参考了其他文章 <sup><a href="#fn_8" id="reffn_8">8</a></sup> <sup><a href="#fn_9" id="reffn_9">9</a></sup> <sup><a href="#fn_10" id="reffn_10">10</a></sup><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/齐次坐标/511284">百度百科词条 齐次坐标</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/射影空间/4465019">百度百科词条 射影空间</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/等价类/598357">百度百科词条 等价类</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_6">
+<sup>6</sup>. Robin Hartshorne, 代数几何, Springer, 1977<a href="#reffn_6" title="Jump back to footnote [6] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_7">
+<sup>7</sup>. *Rocket_0911, “好久没发了….”, Lofter, 2022, <a target="_blank" rel="noopener" href="https://qikexiu550.lofter.com/post/1fcd09fb_2b46d3769/">post id: <code>1fcd09fb_2b46d3769</code></a><a href="#reffn_7" title="Jump back to footnote [7] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_8">
+<sup>8</sup>. <a target="_blank" rel="noopener" href="https://blog.csdn.net/francislucien2017/article/details/84566679/">CSDN博客 CV-Python核心操作: 图像属性/通道/位运算/色彩空间/缩放/阈值</a><a href="#reffn_8" title="Jump back to footnote [8] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_9">
+<sup>9</sup>. <a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaoniu-666/p/13322556.html">博客园文章 <code>OpenCV</code>之<code>cv2.getAffineTransform</code>+<code>warpAffine</code></a><a href="#reffn_9" title="Jump back to footnote [9] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_10">
+<sup>10</sup>. <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_27261889/article/details/80720359/">CSDN博客 python+opencv图像变换的两种方法<code>cv2.warpAffine</code>和<code>cv2.warpPerspective</code></a><a href="#reffn_10" title="Jump back to footnote [10] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_11">
+<sup>11</sup>. イットリウム, “Under the Starlit Night”, Piapro, 2014, <a target="_blank" rel="noopener" href="https://piapro.jp/t/fCH7">illustration id: <code>fCH7</code></a><a href="#reffn_11" title="Jump back to footnote [11] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_12">
+<sup>12</sup>. <a target="_blank" rel="noopener" href="https://ww2.mathworks.cn/help/images/">Mathworks文档 <code>Image Processing Toolbox</code></a><a href="#reffn_12" title="Jump back to footnote [12] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_13">
+<sup>13</sup>. <a target="_blank" rel="noopener" href="https://ww2.mathworks.cn/help/images/ref/imwarp.html">Mathworks文档 <code>imwarp</code></a><a href="#reffn_13" title="Jump back to footnote [13] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_14">
+<sup>14</sup>. <a target="_blank" rel="noopener" href="https://octave.sourceforge.io/image/index.html">Octave Forge - The <code>image</code> Package</a><a href="#reffn_14" title="Jump back to footnote [14] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_15">
+<sup>15</sup>. <a target="_blank" rel="noopener" href="http://wiki.octave.org/Image_package#Missing_functions">Missing Functions of the <code>image</code> Package</a><a href="#reffn_15" title="Jump back to footnote [15] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_16">
+<sup>16</sup>. 三世, “【啤酒烧烤】集合1”, Lofter, 2021, <a target="_blank" rel="noopener" href="https://sanshi0811.lofter.com/post/1cb43524_2b3f39a5f/">post id: <code>1cb43524_2b3f39a5f</code></a><a href="#reffn_16" title="Jump back to footnote [16] in the text."> &#8617;</a>
+</blockquote>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/" data-id="cl0xthair000ddctu5mhf1zhe" data-title="mathmodeling-03" class="article-share-link">分享</a>
+      <a data-url="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/" data-id="cl10r7pxw000dcktuafavg53x" data-title="数学建模实验 III 平面图形的几何变换" class="article-share-link">分享</a>
       
       
         <a href="/2022/03/19/mathmodeling-03/#comments" class="article-comment-link">
@@ -163,7 +454,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li></ul>
     </div>
   </div>
 
@@ -176,7 +467,7 @@
       <ul>
         
           <li>
-            <a href="/2022/03/19/mathmodeling-03/">mathmodeling-03</a>
+            <a href="/2022/03/19/mathmodeling-03/">数学建模实验 III 平面图形的几何变换</a>
           </li>
         
           <li>
@@ -188,11 +479,11 @@
           </li>
         
           <li>
-            <a href="/2022/03/18/numanalysis-homework-02/">numanalysis-homework-02</a>
+            <a href="/2022/03/01/numanalysis-01/">数值分析 I 误差</a>
           </li>
         
           <li>
-            <a href="/2022/03/01/numanalysis-01/">数值分析 I 误差</a>
+            <a href="/2022/03/01/probstat-01/">概率统计 I 随机事件与概率</a>
           </li>
         
       </ul>
