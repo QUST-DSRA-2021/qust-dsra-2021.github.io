@@ -8,11 +8,11 @@
 
 import turtle
 
-turtle.seth(90)
+turtle.setheading(90)
 
 for k in range(39):
     for l in range(2):
         turtle.left(90)
         turtle.fd(5 * k + 5)
 
-turtle.done()
+turtle.mainloop()

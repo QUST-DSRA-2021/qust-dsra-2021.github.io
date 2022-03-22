@@ -48,7 +48,7 @@ def init(): # The Main Function / 主函数
     turtle.pendown() # Enable the Drawing Function / 落笔
     turtle.pensize(Constants.DEFAULT_PENSIZE) # Setting the Pensize / 设置笔触大小
     turtle.pencolor(Base16Solarized.COLORS["violet"]) # Setting the Pencolor / 设置笔触颜色
-    turtle.seth(Constants.BIAS_ANGLE * (-1)) # Setting the Initial Direction / 设置初始方向偏角
+    turtle.setheading(Constants.BIAS_ANGLE * (-1)) # Setting the Initial Direction / 设置初始方向偏角
 
     for eachkey in [ "red", "cyan", "yellow", "blue" ]: # Colors of Each Phase / 各段的颜色
         turtle.pencolor(Base16Solarized.COLORS[eachkey]) # Setting the Pencolor / 设置笔触颜色
@@ -64,7 +64,7 @@ def init(): # The Main Function / 主函数
     turtle.forward(Constants.LEN_HEAD * 2 / 3)
 
     # Waiting for Manually Exit / 等待手动退出
-    turtle.done()
+    turtle.mainloop()
 
 if __name__ == "__main__":
     init()

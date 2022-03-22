@@ -44,18 +44,18 @@ def init(): # The Main Function / 主函数
     turtle.pendown() # Enable Drawing / 落笔
     for k in range(3): # Repeat Thrice / 重复三次
         turtle.forward(Constants.LEN_EDGE * 2) # Move Forward / 向前进
-        turtle.seth(120 * (k + 1)) # Turn Left via Setting the Direction / 通过设置方向角度来进行左转
+        turtle.setheading(120 * (k + 1)) # Turn Left via Setting the Direction / 通过设置方向角度来进行左转
 
     # Drawing Inner Triangle / 绘制内层三角形
     turtle.penup()
     turtle.forward(Constants.LEN_EDGE) # Move Left to the Starter of Inner Triangle / 向左移至内层三角形的起点
     turtle.pendown()
     for k in range(3): # Repeat Thrice / 重复三次
-        turtle.seth(k * 120 + 60)
+        turtle.setheading(k * 120 + 60)
         turtle.forward(Constants.LEN_EDGE)
 
     # Waiting for Manually Exit / 等待手动退出
-    turtle.done()
+    turtle.mainloop()
 
 if __name__ == "__main__":
     init()

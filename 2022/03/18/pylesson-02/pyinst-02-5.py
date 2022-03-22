@@ -24,4 +24,4 @@ for k in range(4):
     # 转向
     turtle.left(90)
 
-turtle.done()
+turtle.mainloop()
