@@ -24,10 +24,10 @@
 <meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/fig-03.jpeg">
 <meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/fig-04.jpeg">
 <meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/fig-05.jpeg">
-<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/ichisaki-02.jpeg">
-<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/res-05.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/ichisaki-03.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/res-06.jpeg">
 <meta property="article:published_time" content="2022-03-19T05:56:39.000Z">
-<meta property="article:modified_time" content="2022-03-23T03:59:49.628Z">
+<meta property="article:modified_time" content="2022-03-23T16:34:10.944Z">
 <meta property="article:author" content="Data Scholars from QUST">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/ichisaki-01.jpeg">
@@ -317,7 +317,7 @@ x \\ y \\ 1 \\
 <li><code>nearest</code>: 默认的填充方案, 会选取距离待填充点最近的已填充点的颜色进行填充;</li>
 </ul>
 <p>我们现在来使用如下图片<sup><a href="#fn_16" id="reffn_16">16</a></sup></p>
-<p><img src="/2022/03/19/mathmodeling-03/ichisaki-02.jpeg" alt></p>
+<p><img src="/2022/03/19/mathmodeling-03/ichisaki-03.jpeg" alt></p>
 <p>简单演示这个方法的使用.</p>
 <p>现在需要把图片以左上角点为中心缩小到原来的<code>0.8</code>, 而后向下向右分别平移<code>164</code>与<code>128</code>个像素, 最后顺时针旋转 $ 13^\circ $, 对应仿射变换的矩阵分别为</p>
 <script type="math/tex; mode=display">\begin{bmatrix}
@@ -341,7 +341,7 @@ x \\ y \\ 1 \\
 \end{bmatrix}</script><p>因此我们计算仿射变换需要的变换矩阵即为以上各步所对应的变换矩阵的乘积.<br>由于对列矢量进行线性变换时是以变换矩阵对列矢量进行左乘, 故变换矩阵在相乘时自右向左堆叠, 进行相乘.<br>我们对待变换图像调用变换操作的代码大致如下(其中待变换图像的张量存储于变量<code>arr_icsk</code>中)</p>
 <figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">arr_icsk_after_transformation = keras.preprocessing.image.apply_transform(</span><br><span class="line">    arr_icsk,</span><br><span class="line">    (np.array([</span><br><span class="line">        [ np.cos(<span class="number">13</span> / <span class="number">180</span>) , (-<span class="number">1</span>) * np.sin(<span class="number">13</span> / <span class="number">180</span>) , <span class="number">0</span> ],</span><br><span class="line">        [ np.sin(<span class="number">13</span> / <span class="number">180</span>) ,        np.cos(<span class="number">13</span> / <span class="number">180</span>) , <span class="number">0</span> ],</span><br><span class="line">        [                <span class="number">0</span> ,                       <span class="number">0</span> , <span class="number">1</span> ],</span><br><span class="line">    ]) @ np.array([</span><br><span class="line">        [ <span class="number">1</span> , <span class="number">0</span> , -<span class="number">164</span> ],</span><br><span class="line">        [ <span class="number">0</span> , <span class="number">1</span> , -<span class="number">128</span> ],</span><br><span class="line">        [ <span class="number">0</span> , <span class="number">0</span> ,    <span class="number">1</span> ],</span><br><span class="line">    ]) @ np.array([</span><br><span class="line">        [ <span class="number">1.25</span> ,    <span class="number">0</span> , <span class="number">0</span> ],</span><br><span class="line">        [    <span class="number">0</span> , <span class="number">1.25</span> , <span class="number">0</span> ],</span><br><span class="line">        [    <span class="number">0</span> ,    <span class="number">0</span> , <span class="number">1</span> ],</span><br><span class="line">    ]))[ : <span class="number">2</span> ],</span><br><span class="line">    channel_axis=<span class="number">2</span>,</span><br><span class="line">    fill_mode=<span class="string">&quot;constant&quot;</span>,</span><br><span class="line">    cval= <span class="number">255</span> / <span class="number">2</span></span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
 <p>得到如下效果</p>
-<p><img src="/2022/03/19/mathmodeling-03/res-05.jpeg" alt></p>
+<p><img src="/2022/03/19/mathmodeling-03/res-06.jpeg" alt></p>
 <p>由此可见, <code>keras.preprocessing.image.apply_transform</code>更适合深度学习中进行图片的变换.</p>
 <h2 id="Attention"><a href="#Attention" class="headerlink" title="Attention!!"></a>Attention!!</h2><p><strong><em>但是需要注意以下几点</em></strong></p>
 <ul>
@@ -394,7 +394,7 @@ x \\ y \\ 1 \\
 <sup>15</sup>. <a target="_blank" rel="noopener" href="http://wiki.octave.org/Image_package#Missing_functions">Missing Functions of the <code>image</code> Package</a><a href="#reffn_15" title="Jump back to footnote [15] in the text."> &#8617;</a>
 </blockquote>
 <blockquote id="fn_16">
-<sup>16</sup>. 三世, “【啤酒烧烤】集合1”, Lofter, 2021, <a target="_blank" rel="noopener" href="https://sanshi0811.lofter.com/post/1cb43524_2b3f39a5f/">post id: <code>1cb43524_2b3f39a5f</code></a><a href="#reffn_16" title="Jump back to footnote [16] in the text."> &#8617;</a>
+<sup>16</sup>. <!--三世, "【啤酒烧烤】集合1", Lofter, 2021, [post id: `1cb43524_2b3f39a5f`](https://sanshi0811.lofter.com/post/1cb43524_2b3f39a5f/)--> 3434, “icsk部分集合”, Pixiv, 2021, <a target="_blank" rel="noopener" href="https://www.pixiv.net/artworks/95131145/">artwork id: <code>95131145</code></a><a href="#reffn_16" title="Jump back to footnote [16] in the text."> &#8617;</a>
 </blockquote>
 <blockquote><p>「これはそう、今日を諦めなかった故の<ruby>物語<rt>ストーリー</rt></ruby>」<br>这正是，因为没有放弃今天，才有的故事。</p>
 <footer><strong>Jin(自然の敵P) (feat. 初音MIKU)</strong><cite><a target="_blank" rel="noopener" href="https://zh.moegirl.org.cn/Stella(Jin)">Stella</a></cite></footer></blockquote>
@@ -402,7 +402,7 @@ x \\ y \\ 1 \\
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/" data-id="cl1350q84000gq0tu83auaznr" data-title="数学建模实验 III 平面图形几何变换" class="article-share-link">分享</a>
+      <a data-url="https://qust-dsra.github.io/2022/03/19/mathmodeling-03/" data-id="cl13smby4000gcstu1c9r2aqu" data-title="数学建模实验 III 平面图形几何变换" class="article-share-link">分享</a>
       
       
         <a href="/2022/03/19/mathmodeling-03/#comments" class="article-comment-link">
