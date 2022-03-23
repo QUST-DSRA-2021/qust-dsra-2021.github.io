@@ -532,11 +532,7 @@ body {
 #subtitle,
 .nav-icon,
 .main-nav-link {
-  color: #657b83;
-}
-.main-nav-link,
-.nav-icon {
-  background: rgba(253,246,227,0.76);
+  text-shadow: 0 1px 4px #002b36;
 }
 .article {
   margin: 50px 0;
