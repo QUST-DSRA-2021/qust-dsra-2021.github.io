@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Python Lessons III | QUST Data Science Research Association</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="大致是一些有关变量类型的笔记.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python Lessons III">
+<meta property="og:url" content="https://qust-dsra.github.io/2022/03/24/pylesson-03/index.html">
+<meta property="og:site_name" content="QUST Data Science Research Association">
+<meta property="og:description" content="大致是一些有关变量类型的笔记.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-24T05:42:01.000Z">
+<meta property="article:modified_time" content="2022-03-27T06:25:14.399Z">
+<meta property="article:author" content="Data Scholars from QUST">
+<meta property="article:tag" content="Python Lessons">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">QUST Data Science Research Association</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">青岛科技大学 数据科学研究协会</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/downloads">Downloads</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qust-dsra.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-pylesson-03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/24/pylesson-03/" class="article-date">
+  <time class="dt-published" datetime="2022-03-24T05:42:01.000Z" itemprop="datePublished">2022-03-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Python Lessons III
+    </h1>
+  
+
+
+  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>大致是一些有关变量类型的笔记.</p>
+<span id="more"></span>
+<ol>
+<li><p>一般情况下, 整数之间<code>加减法</code>, <code>乘法</code>, <code>乘方</code>, <code>整除</code>运算返回整数</p>
+ <figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">3</span> + <span class="number">9</span></span><br><span class="line"><span class="number">12</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">3</span> - <span class="number">9</span></span><br><span class="line">-<span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">3</span> * <span class="number">9</span></span><br><span class="line"><span class="number">27</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span> ** <span class="number">3939</span></span><br><span class="line"><span class="number">5716798967508453493714192804305490605496026077526169067187526404157774662585244740704047054074121902096017303618635817529673213323940491673776027903866672075290937210344109352184731773030901412680539610806679203355518205805208608618313632784205695757745040946702154910218710413906710234911378989664574640787972977139860640060706935710932920447668820444760900580808259711324568138846382165643481227736988189256152244948885390878064629174385532731900942331161496913988217853963252284120978940332456836838447647542799288317724820692662525122542208804308016464573217427171168059511289459224765488214021372940134206411267302745696677627589737226580177932139798311640319697182992650188685192583687722619865762920218361356162969978008571375356011772264881692753209752030641409554483327454328349912285302997077932993078309280930586159583441747134290086841663924166268842405630614696130920121262777744784246397278688753788898523944746071963553820864212717560115203938846399348144358229218041398530115847850290997279286827878003518330533401624751563120057679904326985382321201837124067889869166774237277768464845019027057393248518241620639392996725996422924666789747361779242589346148957592485888</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">39</span> // <span class="number">4</span></span><br><span class="line"><span class="number">9</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>float</code>运算返回<code>float</code>, 整数间<code>非整除</code>运算返回<code>float</code></p>
+ <figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">9</span> / <span class="number">3</span></span><br><span class="line"><span class="number">3.0</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">3.9</span> + <span class="number">0.1</span></span><br><span class="line"><span class="number">4.0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>三种取整方法效果比较(其中的正号<code>+</code>是为了强调输出为正数, 而非解释器真的在输出时会带有正号)</p>
+ <figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> math, numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">round</span>(<span class="number">3.5</span>)</span><br><span class="line"><span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">round</span>(-<span class="number">3.5</span>)</span><br><span class="line">-<span class="number">4</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Methods \ Values</th>
+<th><code>-3.9</code></th>
+<th><code>-3.2</code></th>
+<th><code>+3.2</code></th>
+<th><code>+3.9</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int() / np.int()</code><sup><a href="#fn_1" id="reffn_1">1</a></sup></td>
+<td><code>-3</code></td>
+<td><code>-3</code></td>
+<td><code>+3</code></td>
+<td><code>+3</code></td>
+</tr>
+<tr>
+<td><code>round()</code></td>
+<td><code>-4</code></td>
+<td><code>-3</code></td>
+<td><code>+3</code></td>
+<td><code>+4</code></td>
+</tr>
+<tr>
+<td><code>math.floor()</code></td>
+<td><code>-4</code></td>
+<td><code>-4</code></td>
+<td><code>+3</code></td>
+<td><code>+3</code></td>
+</tr>
+<tr>
+<td><code>math.ceil()</code></td>
+<td><code>-3</code></td>
+<td><code>-3</code></td>
+<td><code>+4</code></td>
+<td><code>+4</code></td>
+</tr>
+<tr>
+<td><code>np.floor()</code></td>
+<td><code>-4.0</code></td>
+<td><code>-4.0</code></td>
+<td><code>+3.0</code></td>
+<td><code>+3.0</code></td>
+</tr>
+<tr>
+<td><code>np.round()</code></td>
+<td><code>-4.0</code></td>
+<td><code>-3.0</code></td>
+<td><code>+3.0</code></td>
+<td><code>+4.0</code></td>
+</tr>
+<tr>
+<td><code>np.ceil()</code></td>
+<td><code>-3.0</code></td>
+<td><code>-3.0</code></td>
+<td><code>+4.0</code></td>
+<td><code>+4.0</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>由此我们可以看出,</p>
+<ol>
+<li><code>built-in</code>的<code>int()</code>实质为<strong>取<code>整数部分</code></strong>, 所以<ul>
+<li><code>int(正数)</code>表现为向下取整,</li>
+<li><code>int(负数)</code>表现为向上取整;</li>
+</ul>
+</li>
+<li>标准库<code>math</code>的<code>.floor()</code>, <code>.ceil()</code>与<code>built-in</code>的<code>round()</code><br> 为数轴上的向下或上以及舍入取整;</li>
+<li><code>NumPy</code>的<code>.floor()</code>, <code>.round()</code>, <code>.ceil()</code>统一返回<code>NumPy</code>的默认类型,<br> <code>NumPy</code>初始设置的默认类型为<code>float32</code>,<br> 但是运算得到的浮点可以通过<code>.astype(int)</code>进行向整型的转换, 这一点会在日后有关<code>NumPy</code>的部分细讲;</li>
+<li>舍入时统一四舍五入, 不论正负;</li>
+</ol>
+<blockquote id="fn_1">
+<sup>1</sup>. <code>np.int</code>等变量类型转换方法已被弃用, 取而代之的是使用<code>built-in</code>的类名或函数名, 这些传入<code>NumPy</code>的<code>ndarray</code>对象时会自动转换为<code>NumPy</code>中的对应类型, 参见 <a target="_blank" rel="noopener" href="https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations">NumPy 1.20.0 Release Notes - Deprecations</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qust-dsra.github.io/2022/03/24/pylesson-03/" data-id="cl18xfofh0024l4tu1ii8ear7" data-title="Python Lessons III" class="article-share-link">分享</a>
+      
+      
+        <a href="/2022/03/24/pylesson-03/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2022/03/24/pylesson-03/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python-Lessons/" rel="tag">Python Lessons</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/03/22/mathmodeling-04/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">数学建模实验 IV 矩阵密码问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+  <section id="comments" class="vcomment">
+
+  </section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">BST & BT (二叉查找树&平衡树)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">Binary Tree (二叉树)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" rel="tag">Mathematical Modeling (数学建模)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python-Lessons/" rel="tag">Python Lessons</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">RNN (循环神经网络)</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 16px;">BST & BT (二叉查找树&平衡树)</a> <a href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 18px;">Binary Tree (二叉树)</a> <a href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" style="font-size: 14px;">Mathematical Modeling (数学建模)</a> <a href="/tags/Notes/" style="font-size: 20px;">Notes</a> <a href="/tags/Python-Lessons/" style="font-size: 12px;">Python Lessons</a> <a href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">RNN (循环神经网络)</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/03/24/pylesson-03/">Python Lessons III</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/22/mathmodeling-04/">数学建模实验 IV 矩阵密码问题</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/19/mathmodeling-03/">数学建模实验 III 平面图形几何变换</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/18/mathmodeling-02/">数学建模实验 II 价格和收入变化对需求的影响</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/18/pylesson-02/">Python Lessons II</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Data Scholars from QUST<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/downloads" class="mobile-nav-link">Downloads</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  
+    
+<script src="/js/Valine-1.4.16.min.js"></script>
+
+  
+<script>
+    var GUEST_INFO = ['nick','mail','link'];
+    var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+        return GUEST_INFO.indexOf(item) > -1
+    });
+    var notify = 'false' == true;
+    var verify = 'false' == true;
+    new Valine({
+        el: '.vcomment',
+        notify: notify,
+        verify: verify,
+        appId: "UyQ3UNKJNCKXNBOmEPt38O2v-gzGzoHsz",
+        appKey: "yG94wy89SCPQ3x9eCkDIt1PR",
+        placeholder: "Just tell and share your feelings...",
+        pageSize:'10',
+        avatar:'mm',
+        lang:'zh-cn'
+    });
+</script>
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script-->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

@@ -14,8 +14,10 @@
 <meta property="og:description" content="简单介绍Hill加密算法. Problem Description一种矩阵密码问题: 密码学在经济和军事方面起着极其重要的作用.1929年, Hill(希尔)通过线性变换对传输信息进行加密处理, 提出了Hill加密算法.请结合Hill加密算法的基本思想, 建立数学模型回答下面问题:  任意设计一段明文, 求出这段明文的Hill(m)密文(明文字符至少包含数字, 大写英文, 小写英文及标点符号等);">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-22T09:40:39.000Z">
-<meta property="article:modified_time" content="2022-03-23T02:02:32.754Z">
+<meta property="article:modified_time" content="2022-03-27T05:28:16.255Z">
 <meta property="article:author" content="Data Scholars from QUST">
+<meta property="article:tag" content="Notes">
+<meta property="article:tag" content="Mathematical Modeling (数学建模)">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
@@ -113,7 +115,7 @@
 <li>假设你已经获取了通信双方的密文及密钥信息, 请编程实现解密过程;</li>
 </ol>
 <span id="more"></span>
-<h2 id="Problem-Analysis"><a href="#Problem-Analysis" class="headerlink" title="Problem Analysis"></a>Problem Analysis</h2><p>根据题目要求, 使用<code>Hill</code>加密算法<sup><a href="#fn_1" id="reffn_1">1</a></sup>完成任务.</p>
+<h2 id="Problem-Analysis"><a href="#Problem-Analysis" class="headerlink" title="Problem Analysis"></a>Problem Analysis</h2><p>根据题目要求, 使用<code>Hill</code>加密算法 <sup><a href="#fn_1" id="reffn_1">1</a></sup> <sup><a href="#fn_2" id="reffn_2">2</a></sup> 完成任务.</p>
 <h2 id="Modeling"><a href="#Modeling" class="headerlink" title="Modeling"></a>Modeling</h2><h3 id="Naive-Solution"><a href="#Naive-Solution" class="headerlink" title="Naive Solution"></a>Naive Solution</h3><p>先审察古典密码的基本理论.<br>对于正整数<code>r</code>, 记集合 $ Z_r = \{ 0, 1, 2, \cdots, r - 1 \} $.</p>
 <p><strong><span id="def-4.1">Definition</span> <code>4.1</code></strong>: 对于一个元素属于集合 $ Z_r $ 的<code>m</code>阶方阵<code>A</code>, 如若存在一个元素属于集合 $ Z_r $ 的方阵<code>B</code>, 使得</p>
 <script type="math/tex; mode=display">AB = BA = E \pmod{r},</script><p>称<code>A</code>为模<code>r</code>可逆, <code>B</code>为<code>A</code>的模<code>r</code>逆矩阵, 记为 $ B = A^{-1} (\bmod{r}) $;</p>
@@ -122,12 +124,12 @@
 27 & 52 \\
 26 & 53 \\
 \end{bmatrix} (\bmod{26}) = E.</script><p><strong><span id="def-4.2">Definition</span> <code>4.2</code></strong>: 对于 $ Z_r $ 的一个整数<code>a</code>, 如若存在 $ Z_r $ 的一个整数<code>b</code>, 使得 $ a b = 1 (\bmod{r}) $, 称<code>b</code>为<code>a</code>的模<code>r</code>倒数或乘法逆, 记作 $ b = a^{-1} (\bmod{r}) $;</p>
-<p><strong><span id="thr-4.1">Theorem</span> <code>4.1</code></strong>: 元素属于 $ Z_r $ 的方真<code>A</code>模<code>r</code>可逆的等价条件为, <code>m</code>与<code>|A|</code>互素;</p>
+<p><strong><span id="thr-4.1">Theorem</span> <code>4.1</code></strong>: 元素属于 $ Z_r $ 的方阵<code>A</code>模<code>r</code>可逆的等价条件为, <code>m</code>与<code>|A|</code>互素;</p>
 <h3 id="Hill-Cipher"><a href="#Hill-Cipher" class="headerlink" title="Hill Cipher"></a><code>Hill</code> Cipher</h3><p>一般的加密过程为<code>明文=&gt;编码器=&gt;密文=&gt;普通信道=&gt;解码器=&gt;明文</code>, 但在其中<code>=&gt;普通信道=&gt;解码器=&gt;</code>这个环节容易为他人截获并加以分析.</p>
 <p>在<code>Hill</code>加密算法中, 运用的数学手段是矩阵运算, 编码过程如下:</p>
 <ol>
 <li>根据明文字母表值, 把明文信息用数字表示, 设明文信息只需要<code>26</code>个字母, 通信双方给出<code>26</code>个字母表值为<code>&#123; &quot;A&quot;: 0, &quot;B&quot;: 1, &quot;C&quot;: 2, ..., &quot;X&quot;: 23, &quot;Y&quot;: 24, &quot;Z&quot;: 25 &#125;</code>;</li>
-<li>选择一个三阶可逆整数方阵<code>A</code>, 称为 $ {Hill}_3 $ (也写作<code>Hill(3)</code>) 编码的密码矩阵, 这是整个加密算法的<code>Key</code>(这也是加密算法的关键, 仅有通信的双方掌握);</li>
+<li>选择一个三阶可逆整数方阵<code>A</code>, 称为 $ {Hill}_3 $ (也写作<code>Hill(3)</code>) 编码的密钥矩阵, 这是整个加密算法的<code>Key</code>(这也是加密算法的关键, 仅有通信的双方掌握);</li>
 <li>把明文字母逐对分组: <code>Hill(3)</code>密码的编码矩阵为三阶矩阵, 则明文字母每<code>3</code>个为一组(扩展至<code>Hill(m)</code>密码时每<code>m</code>个明文字母为一组).<br> 如若最后一组不足<code>3</code>个字母, 则补充无实义的哑字母, 使每一组皆由<code>3</code>个明文字母组成.<br> 查出每个明文字母的表值, 构成一个三维列矢量 $ \alpha $;</li>
 <li>$ \forall \alpha $, 得到新的三维列矢量 $ \beta = A \alpha $, 查表得到密文字母;</li>
 </ol>
@@ -138,7 +140,7 @@
 1 & 2 & 8 \\
   & 3 & 9 \\
   &   & 1 \\
-\end{bmatrix}</script><p>作为密码矩阵</p>
+\end{bmatrix}</script><p>作为密钥矩阵</p>
 <p>首先, 我们使用<code>正则表达式</code>(也称<code>规则表达式</code>)以及<code>Python</code>中的正则表达式模块<code>re</code>以及其他字符串操作去除明文中的非字母部分, 并全部转化为大写字母, 这一步操作会使得到的明文相比待编码的原文产生少量损失, 可视为一步有损压缩.<br>需要用到的正则表达式为<code>[^A-Za-z]</code>, 我们会把这一部分所匹配不到的部分全部删除, 即转化为长度为零的空字符串.<br>我们先用变量<code>rawtext</code>存储待编码的文字然后进行如下操作</p>
 <figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">rawtext = <span class="string">&quot;Telling and Sharing the World, which Entrusts and Expresses Love and Feelings of VOCALOID&quot;</span></span><br><span class="line">pattern = re.<span class="built_in">compile</span>(<span class="string">r&quot;[^A-Za-z]&quot;</span>) <span class="comment"># 编译我们所需要用到的正则表达式</span></span><br><span class="line">plaintext = pattern.sub(<span class="string">&quot;&quot;</span>, rawtext).upper()</span><br></pre></td></tr></table></figure>
 <p>现在我们查看得到的明文</p>
@@ -154,7 +156,7 @@
 <figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">vectors = []</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(plaintext) // <span class="number">3</span>):</span><br><span class="line">    current = []</span><br><span class="line">    <span class="keyword">for</span> l <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">        current.append(alp2num(plaintext[k * <span class="number">3</span> + l]))</span><br><span class="line">    vectors.append(np.array(current))</span><br><span class="line">mat_origin = np.array(vectors)</span><br></pre></td></tr></table></figure>
 <p>(其实想要压行的话上面那一段二重循环可以借助语法糖写如下)</p>
 <figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mat_origin = np.array([ [ (<span class="keyword">lambda</span> x : (<span class="built_in">ord</span>(x) - <span class="built_in">ord</span>(<span class="string">&quot;A&quot;</span>)) % <span class="number">26</span>)(plaintext[k * <span class="number">3</span> + l]) <span class="keyword">for</span> l <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>) ] <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(plaintext) // <span class="number">3</span>) ])</span><br></pre></td></tr></table></figure>
-<p>然后声明我们的密码矩阵</p>
+<p>然后声明我们的密钥矩阵</p>
 <figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">keymat = np.array([</span><br><span class="line">    [ <span class="number">1</span> , <span class="number">2</span> , <span class="number">8</span> ],</span><br><span class="line">    [ <span class="number">0</span> , <span class="number">3</span> , <span class="number">9</span> ],</span><br><span class="line">    [ <span class="number">0</span> , <span class="number">0</span> , <span class="number">1</span> ],</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
 <p>于是加密后的矩阵便为</p>
 <figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mat_new = (mat_origin @ keymat) % <span class="number">26</span></span><br></pre></td></tr></table></figure>
@@ -163,8 +165,110 @@
 <p>现在使用刚才定义的转义函数, 便可得到密文并存入变量<code>cryptograph</code></p>
 <figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cryptograph = <span class="string">&quot;&quot;</span>.join(num2alp(eachnum) <span class="keyword">for</span> eachnum <span class="keyword">in</span> mat_new.flatten())</span><br></pre></td></tr></table></figure>
 <p>查看变量<code>cryptograph</code>可知密文为<code>TYRLURGMJDILAZFNSVHAKOBQDUVIWLEVMRQWTOCNJFXNYEKEEKXONTANQFWCLURGOQFVJCEBOAF</code>.</p>
-<h2 id="Validation"><a href="#Validation" class="headerlink" title="Validation"></a>Validation</h2><h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
-<sup>1</sup>. <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/希尔密码/2250150">百度百科词条 Hill密码</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+<h2 id="Validation"><a href="#Validation" class="headerlink" title="Validation"></a>Validation</h2><p>由于选取的字母集的长度<code>r = 26</code>, 故方阵<code>A</code>可逆的等价条件为<code>|A| (mod r)</code>不为<code>2</code>或<code>13</code>所整除.<br>如若<code>A</code>满足上述<a href="#def-4.1">定理<code>4.1</code></a>的条件, 不难验证 $ A^{-1} = \frac{1}{|A|} A^\ast $, 其中 $ \frac{1}{|A|} $ 为 $ |A| (\bmod{26}) $ 的倒数.<br>显然, $ |A| (\bmod{26}) $ 是 $ Z_{26} $ 中的数, $ Z_{26} $ 中有模<code>26</code>倒数的整数及其倒数可见下表</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><code>a</code></th>
+<th>1</th>
+<th>3</th>
+<th>5</th>
+<th>7</th>
+<th>9</th>
+<th>11</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$ a^{-1} $</td>
+<td>1</td>
+<td>9</td>
+<td>21</td>
+<td>15</td>
+<td>3</td>
+<td>19</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><code>a</code></th>
+<th>15</th>
+<th>17</th>
+<th>19</th>
+<th>21</th>
+<th>23</th>
+<th>25</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$ a^{-1} $</td>
+<td>7</td>
+<td>23</td>
+<td>11</td>
+<td>5</td>
+<td>17</td>
+<td>25</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>从上表中我们可以得知 $ 3^{-1} = 9 (\bmod{26}) $, 因此可以反演求得</p>
+<script type="math/tex; mode=display">\begin{align*}
+Q^{-1}(\bmod{26}) &= \frac{1}{|Q|} Q^\ast (\bmod{26}) \\
+&= 3^{-1} \begin{bmatrix}
+3 & -2 & -6 \\
+0 &  1 & -9 \\
+0 &  0 &  3 \\
+\end{bmatrix} (\bmod{26}) \\
+&= 9 \begin{bmatrix}
+3 & -2 & -6 \\
+0 &  1 & -9 \\
+0 &  0 &  3 \\
+\end{bmatrix} (\bmod{26}) \\
+&= \begin{bmatrix}
+27 & -18 & -54 \\
+ 0 &   9 & -81 \\
+ 0 &   0 &  27 \\
+\end{bmatrix} (\bmod{26}) \\
+&= \begin{bmatrix}
+1 & 8 & 24 \\
+0 & 9 &  3 \\
+0 & 0 &  1 \\
+\end{bmatrix} = \begin{bmatrix}
+1 & 8 & 24 \\
+  & 9 &  3 \\
+  &   &  1 \\
+\end{bmatrix} \\
+\end{align*}</script><p>这便是解码时所需要用到的密钥矩阵的逆.<br>解码的过程也非常简单, 使用求得密钥矩阵的逆左乘(我们这里是右乘)密文所对应的矢量组, 然后取模, 转义回字母, 便可以得到解出的信息.</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">keydet = np.linalg.det(keymat).astype(<span class="built_in">int</span>) <span class="comment"># 计算密钥矩阵的行列式值,</span></span><br><span class="line"><span class="keyword">assert</span> <span class="number">26</span> % keydet, <span class="string">&quot;&quot;</span> <span class="comment"># 并且为了使其有(模26意义下)倒数, 需要保证其不为26的素因子所整除</span></span><br><span class="line"></span><br><span class="line">keydet_inv = <span class="number">1</span> <span class="comment"># 计算密钥矩阵的行列式值(模26意义下)的倒数</span></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">26</span>):</span><br><span class="line">    <span class="keyword">if</span> (k + <span class="number">1</span>) * keydet % <span class="number">26</span> == <span class="number">1</span>:</span><br><span class="line">        keydet_inv = k + <span class="number">1</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">key_adjugate = (np.linalg.inv(keymat) * keydet).astype(<span class="built_in">int</span>) <span class="comment"># 计算密钥矩阵的伴随矩阵 Q* = |Q|Q^(-1)</span></span><br><span class="line">key_inv = key_adjugate * keydet_inv % <span class="number">26</span> <span class="comment"># 计算密钥矩阵的模逆</span></span><br><span class="line">mat_recover = (mat_new @ key_inv) % <span class="number">26</span> <span class="comment"># 计算解密后的矩阵</span></span><br></pre></td></tr></table></figure>
+<p>现在我们查看密钥矩阵的模逆和解密后的矩阵</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>key_inv</span><br><span class="line">array([[ <span class="number">1</span>,  <span class="number">8</span>, <span class="number">24</span>],</span><br><span class="line">       [ <span class="number">0</span>,  <span class="number">9</span>, <span class="number">23</span>],</span><br><span class="line">       [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">1</span>]], dtype=int32)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>mat_recover</span><br><span class="line">array([[<span class="number">19</span>,  <span class="number">4</span>, <span class="number">11</span>],</span><br><span class="line">       [<span class="number">11</span>,  <span class="number">8</span>, <span class="number">13</span>],</span><br><span class="line">       [ <span class="number">6</span>,  <span class="number">0</span>, <span class="number">13</span>],</span><br><span class="line">       [ <span class="number">3</span>, <span class="number">18</span>,  <span class="number">7</span>],</span><br><span class="line">       [ <span class="number">0</span>, <span class="number">17</span>,  <span class="number">8</span>],</span><br><span class="line">       [<span class="number">13</span>,  <span class="number">6</span>, <span class="number">19</span>],</span><br><span class="line">       [ <span class="number">7</span>,  <span class="number">4</span>, <span class="number">22</span>],</span><br><span class="line">       [<span class="number">14</span>, <span class="number">17</span>, <span class="number">11</span>],</span><br><span class="line">       [ <span class="number">3</span>, <span class="number">22</span>,  <span class="number">7</span>],</span><br><span class="line">       [ <span class="number">8</span>,  <span class="number">2</span>,  <span class="number">7</span>],</span><br><span class="line">       [ <span class="number">4</span>, <span class="number">13</span>, <span class="number">19</span>],</span><br><span class="line">       [<span class="number">17</span>, <span class="number">20</span>, <span class="number">18</span>],</span><br><span class="line">       [<span class="number">19</span>, <span class="number">18</span>,  <span class="number">0</span>],</span><br><span class="line">       [<span class="number">13</span>,  <span class="number">3</span>,  <span class="number">4</span>],</span><br><span class="line">       [<span class="number">23</span>, <span class="number">15</span>, <span class="number">17</span>],</span><br><span class="line">       [ <span class="number">4</span>, <span class="number">18</span>, <span class="number">18</span>],</span><br><span class="line">       [ <span class="number">4</span>, <span class="number">18</span>, <span class="number">11</span>],</span><br><span class="line">       [<span class="number">14</span>, <span class="number">21</span>,  <span class="number">4</span>],</span><br><span class="line">       [ <span class="number">0</span>, <span class="number">13</span>,  <span class="number">3</span>],</span><br><span class="line">       [ <span class="number">5</span>,  <span class="number">4</span>,  <span class="number">4</span>],</span><br><span class="line">       [<span class="number">11</span>,  <span class="number">8</span>, <span class="number">13</span>],</span><br><span class="line">       [ <span class="number">6</span>, <span class="number">18</span>, <span class="number">14</span>],</span><br><span class="line">       [ <span class="number">5</span>, <span class="number">21</span>, <span class="number">14</span>],</span><br><span class="line">       [ <span class="number">2</span>,  <span class="number">0</span>, <span class="number">11</span>],</span><br><span class="line">       [<span class="number">14</span>,  <span class="number">8</span>,  <span class="number">3</span>]], dtype=int32)</span><br></pre></td></tr></table></figure>
+<p>最后我们把矩阵转义回字母</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>textrecover = <span class="string">&quot;&quot;</span>.join(num2alp(eachnum) <span class="keyword">for</span> eachnum <span class="keyword">in</span> mat_recover.flatten())</span><br></pre></td></tr></table></figure>
+<p>查看变量<code>textrecover</code>得到解出的信息为<code>TELLINGANDSHARINGTHEWORLDWHICHENTRUSTSANDEXPRESSESLOVEANDFEELINGSOFVOCALOID</code>.</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>textrecover == plaintext</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>验证无误.</p>
+<h2 id="Extra"><a href="#Extra" class="headerlink" title="Extra"></a>Extra</h2><p>感兴趣的朋友可以看看<a target="_blank" rel="noopener" href="https://github.com/SycAlright/beast_sdk/">兽音译者</a>什么的.</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
+<sup>1</sup>. <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/希尔密码/2250150">百度百科词条 Hill密码</a>, 在网络上可以找到相关工具例如<a target="_blank" rel="noopener" href="https://ctf.bugku.com/tool/hill/"><code>bugku</code>提供的<code>Hill Cipher Tool</code></a>, 并参考其他文章 <sup><a href="#fn_2" id="reffn_2">2</a></sup> <sup><a href="#fn_3" id="reffn_3">3</a></sup> <sup><a href="#fn_4" id="reffn_4">4</a></sup> <sup><a href="#fn_5" id="reffn_5">5</a></sup><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. <code>zhangliu</code>的博客园文章 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhangliu/articles/7157754.html">Hill密码</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. <code>qq_25968195</code>的CSDN博客 <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_25968195/article/details/70343972/">Hill 加密算法</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. 信管网文章 <a target="_blank" rel="noopener" href="https://www.cnitpm.com/pm1/36329.html">信息安全技术知识：Hill 密码、Hillm 密码加密过程</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. <code>0zcl</code>的博客园文章 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/0zcl/p/6106513.html">信息安全－2：python之hill密码算法</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
 </blockquote>
 <blockquote><p>「これで良い、僕のままで良いってさ」<br>这就好，保持着我自己就好了。</p>
 <footer><strong>Papiyon(蝶々P) (feat. GUMI)</strong><cite><a target="_blank" rel="noopener" href="https://zh.moegirl.org.cn/TODO:FIXME">Cryptograph</a></cite></footer></blockquote>
@@ -172,7 +276,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qust-dsra.github.io/2022/03/22/mathmodeling-04/" data-id="cl14gcbgd000n0gtufj1m2oqa" data-title="数学建模实验 IV 矩阵密码问题" class="article-share-link">分享</a>
+      <a data-url="https://qust-dsra.github.io/2022/03/22/mathmodeling-04/" data-id="cl18xfofd001yl4tu6nac2rex" data-title="数学建模实验 IV 矩阵密码问题" class="article-share-link">分享</a>
       
       
         <a href="/2022/03/22/mathmodeling-04/#comments" class="article-comment-link">
@@ -181,11 +285,22 @@
         </a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" rel="tag">Mathematical Modeling (数学建模)</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
+  
+    <a href="/2022/03/24/pylesson-03/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          Python Lessons III
+        
+      </div>
+    </a>
   
   
     <a href="/2022/03/19/mathmodeling-03/" id="article-nav-older" class="article-nav-link-wrap">
@@ -214,7 +329,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">BST & BT (二叉查找树&平衡树)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">Binary Tree (二叉树)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">RNN (循环神经网络)</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">BST & BT (二叉查找树&平衡树)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">Binary Tree (二叉树)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" rel="tag">Mathematical Modeling (数学建模)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python-Lessons/" rel="tag">Python Lessons</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">RNN (循环神经网络)</a></li></ul>
     </div>
   </div>
 
@@ -224,7 +339,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">BST & BT (二叉查找树&平衡树)</a> <a href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 16.67px;">Binary Tree (二叉树)</a> <a href="/tags/Notes/" style="font-size: 20px;">Notes</a> <a href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">RNN (循环神经网络)</a>
+      <a href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 16px;">BST & BT (二叉查找树&平衡树)</a> <a href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 18px;">Binary Tree (二叉树)</a> <a href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" style="font-size: 14px;">Mathematical Modeling (数学建模)</a> <a href="/tags/Notes/" style="font-size: 20px;">Notes</a> <a href="/tags/Python-Lessons/" style="font-size: 12px;">Python Lessons</a> <a href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">RNN (循环神经网络)</a>
     </div>
   </div>
 
@@ -246,6 +361,10 @@
       <ul>
         
           <li>
+            <a href="/2022/03/24/pylesson-03/">Python Lessons III</a>
+          </li>
+        
+          <li>
             <a href="/2022/03/22/mathmodeling-04/">数学建模实验 IV 矩阵密码问题</a>
           </li>
         
@@ -258,11 +377,7 @@
           </li>
         
           <li>
-            <a href="/2022/03/18/pylesson-02/">Python学校课程 II</a>
-          </li>
-        
-          <li>
-            <a href="/2022/01/15/brief-convlstm/">一点简短的convlstm笔记</a>
+            <a href="/2022/03/18/pylesson-02/">Python Lessons II</a>
           </li>
         
       </ul>
@@ -353,6 +468,7 @@
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!--script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script-->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
