@@ -1139,6 +1139,12 @@ a.article-title:hover {
   color: #657b83;
   font-size: 0.85em;
 }
+.v[data-class="v"] pre,
+.v[data-class="v"] code {
+  font-family: "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace;
+  color: #073642 !important;
+  background: #fdf6e3 !important;
+}
 .article-entry pre,
 .article-entry code {
   font-family: "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace;

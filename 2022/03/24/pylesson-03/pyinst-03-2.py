@@ -3,7 +3,7 @@
 
 """
 @author: 陈 子坤 (GitHub@sandyzikun)
-@title: Instance 03-2 天天向上I
+@title: Instance 03-2 天天向上I (Deprecated!!)
 @time: 2022-03-24 13:39
 """
 

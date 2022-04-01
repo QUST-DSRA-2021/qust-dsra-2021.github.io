@@ -20,14 +20,10 @@ def init() -> None:
     if len(s) == 1:
         print(Constants.STR_TRUE)
         return
-    #flag = bool(s == s[ : : (-1) ])
-    #return
     m = int(s)
     while m:
         arr.append(m % 10)
         m //= 10
-    #flag = bool(arr == arr[ : : (-1) ])
-    #return
     for k in range(len(arr) // 2):
         if (arr[k] != arr[-1 - k]):
             flag = False
