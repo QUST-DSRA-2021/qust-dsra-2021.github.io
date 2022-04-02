@@ -4,14 +4,19 @@
   <meta charset="utf-8">
   
   
-  <title>归档: 2022 | QUST Data Science Research Association</title>
+  <title>一点简短的HMM笔记 | QUST Data Science Research Association</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="QUST Data Science Research Association">
-<meta property="og:url" content="https://qust-dsra.github.io/archives/2022/index.html">
+  <meta name="description" content="如题, 希望我不会说得太啰嗦.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一点简短的HMM笔记">
+<meta property="og:url" content="https://qust-dsra.github.io/2022/04/02/brief-hmm/index.html">
 <meta property="og:site_name" content="QUST Data Science Research Association">
+<meta property="og:description" content="如题, 希望我不会说得太啰嗦.">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-02T08:26:39.000Z">
+<meta property="article:modified_time" content="2022-04-02T11:52:56.974Z">
 <meta property="article:author" content="Data Scholars from QUST">
+<meta property="article:tag" content="Notes">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
@@ -77,247 +82,100 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/04/02/brief-hmm/" class="archive-article-date">
-  <time class="dt-published" datetime="2022-04-02T08:26:39.000Z" itemprop="datePublished">4月 2</time>
+        <section id="main"><article id="post-brief-hmm" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/04/02/brief-hmm/" class="article-date">
+  <time class="dt-published" datetime="2022-04-02T08:26:39.000Z" itemprop="datePublished">2022-04-02</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/04/02/brief-hmm/">一点简短的HMM笔记</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      一点简短的HMM笔记
     </h1>
   
 
 
   <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/04/02/mathmodeling-06/" class="archive-article-date">
-  <time class="dt-published" datetime="2022-04-02T02:49:39.000Z" itemprop="datePublished">4月 2</time>
-</a>
+    <div class="e-content article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/04/02/mathmodeling-06/">数学建模实验 VI Markov Chain</a>
-    </h1>
-  
+        <p>如题, 希望我不会说得太啰嗦.</p>
+<span id="more"></span>
+<h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p>这是一种可用于标注问题的统计学模型, 其描述<strong>由隐藏的<code>Markov</code>链随机生成观测序列</strong>的过程, 本质上属于生成模型.</p>
+<p>或将从两个方面切入隐<code>Markov</code>模型: 隐<code>Markov</code>模型的基本概念, 与隐<code>Markov</code>模型的概率计算算法, 学习算法以及预测算法.</p>
+<p><strong><span id="def-stalearn-10.1">Definition</span> <code>10.1</code></strong>: <strong>HMM (Hidden Markov Model, 隐<code>Markov</code>模型) <sup><a href="#fn_1" id="reffn_1">1</a></sup> <sup><a href="#fn_2" id="reffn_2">2</a></sup></strong> 是关于时间序贯的概率模型, 描述由一个隐藏的<code>Markov</code>链生成不可观测的状态随机序列, 再由各个状态生成一个观测而产生观测随机序贯的过程.<br>隐藏的<code>Markov</code>链随机生成的状态所组成的序贯称为<strong>状态序贯 (State Sequence)</strong>; 每个状态生成一个观测, 而由此产生的观测的随机序贯称为<strong>观测序贯 (Observation Sequence)</strong>.<br>序贯的每一个位置又可以看作是一个时刻.</p>
+<p>HMM由<code>初始概率分布</code>, <code>状态转移概率分布</code>, 以及<code>观测概率分布</code>所确定.<br>其形式定义如下: 设</p>
+<ul>
+<li>$ Q = \{ q_1, q_2, \cdots, q_M \} $ 是所有可能的状态的集合, $ V = \{ v_1, v_2, \cdots, v_N \} $ 是所有可能的观测的集合, 其中<code>M</code>为可能的状态数, <code>N</code>为可能的观测数;</li>
+<li>$ I = (i_1, i_2, \cdots, i_T) $ 是长度为<code>T</code>的状态序贯, $ O = (o_1, o_2, \cdots, o_T) $ 为对应的观测序贯;</li>
+<li>$ A = [a_{kl}]_{M \times M} = [ \Pr(i_{\tau + 1} = q_l | i_\tau = q_k) ]_{M \times M} $ 为状态转移概率矩阵, <strong>其中<code>k, l = 1, 2, ..., M</code></strong>, 同时 $ a_{kl} = \Pr(i_{\tau + 1} = q_l | i_\tau = q_k) $ 为在时刻 $ \tau $ 处于状态 $ q_k $ 的条件下在下一时刻( $ \tau + 1 $ )转移到状态 $ q_l $ 的概率;</li>
+<li>$ B = [b_l(j)]_{M \times N} = [\Pr(o_\tau = v_j | i_\tau = q_l)]_{M \times N} $ 为观测概率矩阵, <strong>其中<code>j = 1, 2, ..., N</code></strong>, 同时 $ b_l(j) = \Pr(i_{\tau + 1} = q_l | i_\tau = q_k) $ 为在时刻 $ \tau $ 处于状态 $ q_l $ 条件下生成观测 $ v_j $ 的概率;</li>
+<li>$ \pi = (\Pr(i_1 = q_k))_{k=1}^M $ 为初始状态的概率矢量, 其中的第<code>k</code>个分量为处于状态 $ q_k $ 的概率;</li>
+</ul>
+<p>如上文所属, 隐<code>Markov</code>模型由初始状态概率矢量 $ \pi $, 状态转移概率矩阵<code>A</code>, 与观测概率矩阵<code>B</code>所决定.<br>$ \pi $ 和<code>A</code>决定状态序贯, <code>B</code>决定观测序贯.<br>因此, 隐<code>Markov</code>模型可以用三元组 $ \lambda = (A, B, \pi) $ 表示, 这也称为隐<code>Markov</code>模型的三要素.</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
+<sup>1</sup>. 李航, 统计学习方法 (第一版), 清华大学出版社, 2012, ISBN: <code>978-7-302-27595-4</code><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. 参考 <code>pinard</code>的博客园文章 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/pinard/p/6945257.html">隐马尔科夫模型HMM（一）HMM模型</a> 以及其它资料 <sup><a href="#fn_3" id="reffn_3">3</a></sup> <sup><a href="#fn_4" id="reffn_4">4</a></sup> <sup><a href="#fn_5" id="reffn_5">5</a></sup> <sup><a href="#fn_6" id="reffn_6">6</a></sup><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. <code>liusisi_</code>的CSDN博客 <a target="_blank" rel="noopener" href="https://blog.csdn.net/liusisi_/article/details/108350944/">HMM（隐马尔可夫）简介</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. 百度百科词条 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/隐马尔可夫模型/7932524">隐马尔可夫模型</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. Tecdat <a target="_blank" rel="noopener" href="http://tecdat.cn/隐马尔可夫模型hmm识别不断变化的市场条件/">隐马尔可夫模型hmm识别不断变化的市场条件</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_6">
+<sup>6</sup>. 「隐马尔可夫模型HMM1」你了解隐马尔可夫模型吗？ <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av498230356/">Bilibili: <code>av498230356</code></a><a href="#reffn_6" title="Jump back to footnote [6] in the text."> &#8617;</a>
+</blockquote>
 
-
-  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/03/24/pylesson-03/" class="archive-article-date">
-  <time class="dt-published" datetime="2022-03-24T05:42:01.000Z" itemprop="datePublished">3月 24</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/03/24/pylesson-03/">Python Lessons III</a>
-    </h1>
-  
-
-
-  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/03/22/mathmodeling-04/" class="archive-article-date">
-  <time class="dt-published" datetime="2022-03-22T09:40:39.000Z" itemprop="datePublished">3月 22</time>
-</a>
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qust-dsra.github.io/2022/04/02/brief-hmm/" data-id="cl1hszad2000ru8tu413q1k1j" data-title="一点简短的HMM笔记" class="article-share-link">分享</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/03/22/mathmodeling-04/">数学建模实验 IV 矩阵密码问题</a>
-    </h1>
-  
-
-
-  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/03/19/mathmodeling-03/" class="archive-article-date">
-  <time class="dt-published" datetime="2022-03-19T05:56:39.000Z" itemprop="datePublished">3月 19</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/03/19/mathmodeling-03/">数学建模实验 III 平面图形几何变换</a>
-    </h1>
-  
-
-
-  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/03/18/mathmodeling-02/" class="archive-article-date">
-  <time class="dt-published" datetime="2022-03-18T15:28:50.000Z" itemprop="datePublished">3月 18</time>
-</a>
+        <a href="/2022/04/02/brief-hmm/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2022/04/02/brief-hmm/" itemprop="commentCount"></span>
+          留言
+        </a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/03/18/mathmodeling-02/">数学建模实验 II 价格和收入变化对需求的影响</a>
-    </h1>
-  
-
-
-  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/03/18/pylesson-02/" class="archive-article-date">
-  <time class="dt-published" datetime="2022-03-18T12:26:22.000Z" itemprop="datePublished">3月 18</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/03/18/pylesson-02/">Python Lessons II</a>
-    </h1>
-  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li></ul>
 
-
-  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
-
-    </header>
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/04/02/mathmodeling-06/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">数学建模实验 VI Markov Chain</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/01/15/brief-convlstm/" class="archive-article-date">
-  <time class="dt-published" datetime="2022-01-15T05:36:26.000Z" itemprop="datePublished">1月 15</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/01/15/brief-convlstm/">一点简短的ConvLSTM笔记</a>
-    </h1>
-  
 
 
-  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/01/11/bintree-llrbt-03/" class="archive-article-date">
-  <time class="dt-published" datetime="2022-01-11T08:39:44.000Z" itemprop="datePublished">1月 11</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/01/11/bintree-llrbt-03/">左偏红黑树稽古 III 插入节点的修正方法</a>
-    </h1>
-  
+  <section id="comments" class="vcomment">
 
-
-  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/01/11/bintree-llrbt-02/" class="archive-article-date">
-  <time class="dt-published" datetime="2022-01-11T02:54:09.000Z" itemprop="datePublished">1月 11</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/01/11/bintree-llrbt-02/">左偏红黑树稽古 II 红黑树的节点与神乎其技的旋边</a>
-    </h1>
-  
-
-
-  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
-
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/archives/2022/page/2/">2</a><a class="extend next" rel="next" href="/archives/2022/page/2/">下一页 &raquo;</a>
-  </nav>
-
+  </section>
 </section>
         
           <aside id="sidebar">
