@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>数学建模实验 VI Markov Chain | QUST Data Science Research Association</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="简单介绍 Markov Chain. Problem Description在英国, 保守党成员的第二代加入保守党的概率为0.7, 加入工党的概率为0.2, 加入自由党的概率为0.1; 工党成员的第二代加入保守党的概率为0.4, 加入工党的概率为0.5, 加入自由党的概率为0.1; 而自由党成员的第二代加入保守党的概率为0.2, 加入工党的概率为0.4, 加入自由党的概率为0.4.试建立模型, 解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数学建模实验 VI Markov Chain">
+<meta property="og:url" content="https://qust-dsra.github.io/2022/04/02/mathmodeling-06/index.html">
+<meta property="og:site_name" content="QUST Data Science Research Association">
+<meta property="og:description" content="简单介绍 Markov Chain. Problem Description在英国, 保守党成员的第二代加入保守党的概率为0.7, 加入工党的概率为0.2, 加入自由党的概率为0.1; 工党成员的第二代加入保守党的概率为0.4, 加入工党的概率为0.5, 加入自由党的概率为0.1; 而自由党成员的第二代加入保守党的概率为0.2, 加入工党的概率为0.4, 加入自由党的概率为0.4.试建立模型, 解">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/04/02/mathmodeling-06/markov-state-transition.jpeg">
+<meta property="article:published_time" content="2022-04-02T02:49:39.000Z">
+<meta property="article:modified_time" content="2022-04-02T08:03:52.988Z">
+<meta property="article:author" content="Data Scholars from QUST">
+<meta property="article:tag" content="Notes">
+<meta property="article:tag" content="Mathematical Modeling (数学建模)">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qust-dsra.github.io/2022/04/02/mathmodeling-06/markov-state-transition.jpeg">
+  
+    <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">QUST Data Science Research Association</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">青岛科技大学 数据科学研究协会</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/downloads">Downloads</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qust-dsra.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-mathmodeling-06" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/04/02/mathmodeling-06/" class="article-date">
+  <time class="dt-published" datetime="2022-04-02T02:49:39.000Z" itemprop="datePublished">2022-04-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      数学建模实验 VI Markov Chain
+    </h1>
+  
+
+
+  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>简单介绍 <code>Markov Chain</code>.</p>
+<h2 id="Problem-Description"><a href="#Problem-Description" class="headerlink" title="Problem Description"></a>Problem Description</h2><p>在英国, 保守党成员的第二代加入保守党的概率为<code>0.7</code>, 加入工党的概率为<code>0.2</code>, 加入自由党的概率为<code>0.1</code>; 工党成员的第二代加入保守党的概率为<code>0.4</code>, 加入工党的概率为<code>0.5</code>, 加入自由党的概率为<code>0.1</code>; 而自由党成员的第二代加入保守党的概率为<code>0.2</code>, 加入工党的概率为<code>0.4</code>, 加入自由党的概率为<code>0.4</code>.<br>试建立模型, 解决以下问题:</p>
+<ol>
+<li>求出自由党成员的第三代加入工党的概率;</li>
+<li>在经过较长的时间后, 各党成员的后代加入各党派的概率分布是否具有稳定性》</li>
+<li>用试验说明, 影响第2问中, 概率分布稳定性的主要因素.</li>
+</ol>
+<span id="more"></span>
+<h2 id="Modeling"><a href="#Modeling" class="headerlink" title="Modeling"></a>Modeling</h2><p><strong><code>Markov</code>链(马尔可夫链,马尔科夫链) <sup><a href="#fn_1" id="reffn_1">1</a></sup></strong> 是一种状态转移模型, 其用于描述具有无后效性且存在于离散的指数集合(Index Set)与状态空间(State Space)内的随机过程(Stochastic Process).</p>
+<p><img src="/2022/04/02/mathmodeling-06/markov-state-transition.jpeg" alt></p>
+<p>(如上图所示便是天气状况沿<code>Markov</code>链进行的状态转移模型)</p>
+<p><strong><code>无后效性</code> (Without Aftereffect) <sup><a href="#fn_2" id="reffn_2">2</a></sup></strong> 又称为<code>Markov</code>性质(Markov Property)<sup><a href="#fn_3" id="reffn_3">3</a></sup>, 是概率论中的一个重要概念, 指某一随机过程在给定<code>此刻</code>状态以及<code>过往</code>所有状态的情况下, 其<code>未来</code>状态的条件概率分布依赖且仅依赖于<code>此刻</code>状态, 即其与<code>过往</code>状态均为条件独立的, 则称此随机过程具有 <strong><code>Markov</code>性质</strong>, 具有这样性质的随机过程被称为 <strong><code>Markov</code>过程</strong>, 可以认为 $ \forall 确定的 \tau $ 都有</p>
+<script type="math/tex; mode=display">\Pr(X_{\tau + 1} | X_0, \cdots, X_{\tau - 1}, X_{\tau}) \equiv \Pr(X_{\tau + 1} | X_{\tau})</script><p>或者更简单地表述为, 已知<code>此刻</code>, <code>未来</code>与<code>过往</code>无关, 这一点在动态规划(Dynamic Programming)<sup><a href="#fn_4" id="reffn_4">4</a></sup>中也有广泛应用.</p>
+<p>以如上所述的情况为例, 我们可以得到状态转移概率的列表</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">父母所属党派 \ 子女所属党派</th>
+<th>保守党</th>
+<th>工党</th>
+<th>自由党</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">保守党</td>
+<td><code>0.7</code></td>
+<td><code>0.2</code></td>
+<td><code>0.1</code></td>
+</tr>
+<tr>
+<td style="text-align:center">工党</td>
+<td><code>0.4</code></td>
+<td><code>0.5</code></td>
+<td><code>0.1</code></td>
+</tr>
+<tr>
+<td style="text-align:center">自由党</td>
+<td><code>0.2</code></td>
+<td><code>0.4</code></td>
+<td><code>0.4</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="State-Transition-Theory"><a href="#State-Transition-Theory" class="headerlink" title="State Transition Theory"></a>State Transition Theory</h3><p>根据上表, 我们可以得到 <strong>状态转移矩阵 (State Transition Matrix)</strong> 如下</p>
+<script type="math/tex; mode=display">P = \begin{bmatrix}
+0.7 & 0.2 & 0.1 \\
+0.4 & 0.5 & 0.1 \\
+0.2 & 0.4 & 0.4 \\
+\end{bmatrix}</script><p>这个状态转移矩阵由上一状态向下一状态各个情况的概率组成, 每一行矢量表示<strong>某确定的上一状态转向<code>不同的</code>下一状态的<code>各个</code>概率</strong>.</p>
+<p>因此假设我们某人此刻加入三个党派的概率为 $ \alpha = (p_1, p_2, p_3) $, 那么根据前文所述, 其子女加入三个党派的概率便分别为</p>
+<script type="math/tex; mode=display">\begin{pmatrix}
+0.7 p_1 + 0.4 p_2 + 0.2 p_3 \\
+0.2 p_1 + 0.5 p_2 + 0.4 p_3 \\
+0.1 p_1 + 0.1 p_2 + 0.4 p_3 \\
+\end{pmatrix}^T</script><p>因此如若像这样把某人加入三个党派的概率排成一个行矢量 $ \alpha_0 = (p_1, p_2, p_3) $, 则其子女加入三个党派的概率可以写为</p>
+<script type="math/tex; mode=display">\alpha_1 = \alpha_0 P</script><p>第<code>m</code>代子女加入三个党派的概率可以写为</p>
+<script type="math/tex; mode=display">\alpha_m = \alpha_0 P^m</script><p>对比可知, 如若把<code>m</code>代过程视为一次状态转移, 则这样一次的状态转移的矩阵便是 $ P^m $.</p>
+<p>值得一提的是, 由于 $ \alpha_0 $ 中的 $ p_1 $, $ p_2 $, $ p_3 $ 三个分量之和为<code>1</code>, 所以 $ \alpha_1 = \alpha_0 P $ 的三个分量共九项之和仍为<code>1</code>, 以此类推 $ \forall \tau, \alpha_{\tau} $ 的三个分量恒为<code>1</code>, 这满足了永远是这三个分量对应的三个事件组成全事件的这一事实.</p>
+<h3 id="Convergency"><a href="#Convergency" class="headerlink" title="Convergency"></a>Convergency</h3><p>现在来考虑随机过程沿<code>Markov</code>链不断状态转移的收敛性(Convergency), 但在讲解之前先考虑<code>1</code>次, <code>2</code>次, …, <code>m</code>次状态转移之后的状态转移矩阵 $ P, P^2, \cdots, P^m $.</p>
+<p>根据题目中所给定的概率, 我们创建存储一次状态转移的矩阵变量<code>p_trans</code></p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">p_trans = np.array([</span><br><span class="line">    [ <span class="number">.7</span>, <span class="number">.2</span>, <span class="number">.1</span> ],</span><br><span class="line">    [ <span class="number">.4</span>, <span class="number">.5</span>, <span class="number">.1</span> ],</span><br><span class="line">    [ <span class="number">.2</span>, <span class="number">.4</span>, <span class="number">.4</span> ],</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
+<p>接下来我们审察其多次乘方的结果, 即多次状态转移所对用的矩阵</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">p_cur = p_trans.copy()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;P^01:&quot;</span>, <span class="string">&quot;[%s, %s, %s]&quot;</span> % <span class="built_in">tuple</span>(p_cur))</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">39</span>):</span><br><span class="line">    p_cur = p_cur @ p_trans</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;P^%02d:&quot;</span> % (k + <span class="number">2</span>), <span class="string">&quot;[%s, %s, %s]&quot;</span> % <span class="built_in">tuple</span>(p_cur))</span><br></pre></td></tr></table></figure>
+<p>输出如下</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">P^01: [[<span class="number">0.7</span> <span class="number">0.2</span> <span class="number">0.1</span>], [<span class="number">0.4</span> <span class="number">0.5</span> <span class="number">0.1</span>], [<span class="number">0.2</span> <span class="number">0.4</span> <span class="number">0.4</span>]]</span><br><span class="line">P^02: [[<span class="number">0.59</span> <span class="number">0.28</span> <span class="number">0.13</span>], [<span class="number">0.5</span>  <span class="number">0.37</span> <span class="number">0.13</span>], [<span class="number">0.38</span> <span class="number">0.4</span>  <span class="number">0.22</span>]]</span><br><span class="line">P^03: [[<span class="number">0.551</span> <span class="number">0.31</span>  <span class="number">0.139</span>], [<span class="number">0.524</span> <span class="number">0.337</span> <span class="number">0.139</span>], [<span class="number">0.47</span>  <span class="number">0.364</span> <span class="number">0.166</span>]]</span><br><span class="line">P^04: [[<span class="number">0.5375</span> <span class="number">0.3208</span> <span class="number">0.1417</span>], [<span class="number">0.5294</span> <span class="number">0.3289</span> <span class="number">0.1417</span>], [<span class="number">0.5078</span> <span class="number">0.3424</span> <span class="number">0.1498</span>]]</span><br><span class="line">P^05: [[<span class="number">0.53291</span> <span class="number">0.32458</span> <span class="number">0.14251</span>], [<span class="number">0.53048</span> <span class="number">0.32701</span> <span class="number">0.14251</span>], [<span class="number">0.52238</span> <span class="number">0.33268</span> <span class="number">0.14494</span>]]</span><br><span class="line">P^06: [[<span class="number">0.531371</span> <span class="number">0.325876</span> <span class="number">0.142753</span>], [<span class="number">0.530642</span> <span class="number">0.326605</span> <span class="number">0.142753</span>], [<span class="number">0.527726</span> <span class="number">0.328792</span> <span class="number">0.143482</span>]]</span><br><span class="line">P^07: [[<span class="number">0.5308607</span> <span class="number">0.3263134</span> <span class="number">0.1428259</span>], [<span class="number">0.530642</span>  <span class="number">0.3265321</span> <span class="number">0.1428259</span>], [<span class="number">0.5296214</span> <span class="number">0.327334</span>  <span class="number">0.1430446</span>]]</span><br><span class="line">P^08: [[<span class="number">0.53069303</span> <span class="number">0.3264592</span>  <span class="number">0.14284777</span>], [<span class="number">0.53062742</span> <span class="number">0.32652481</span> <span class="number">0.14284777</span>], [<span class="number">0.5302775</span>  <span class="number">0.32680912</span> <span class="number">0.14291338</span>]]</span><br><span class="line">P^09: [[<span class="number">0.53063836</span> <span class="number">0.32650731</span> <span class="number">0.14285433</span>], [<span class="number">0.53061867</span> <span class="number">0.326527</span>   <span class="number">0.14285433</span>], [<span class="number">0.53050057</span> <span class="number">0.32662541</span> <span class="number">0.14287401</span>]]</span><br><span class="line">P^<span class="number">10</span>: [[<span class="number">0.53062064</span> <span class="number">0.32652306</span> <span class="number">0.1428563</span> ], [<span class="number">0.53061474</span> <span class="number">0.32652897</span> <span class="number">0.1428563</span> ], [<span class="number">0.53057537</span> <span class="number">0.32656243</span> <span class="number">0.1428622</span> ]]</span><br><span class="line">P^<span class="number">11</span>: [[<span class="number">0.53061493</span> <span class="number">0.32652818</span> <span class="number">0.14285689</span>], [<span class="number">0.53061316</span> <span class="number">0.32652995</span> <span class="number">0.14285689</span>], [<span class="number">0.53060017</span> <span class="number">0.32654117</span> <span class="number">0.14285866</span>]]</span><br><span class="line">P^<span class="number">12</span>: [[<span class="number">0.5306131</span>  <span class="number">0.32652983</span> <span class="number">0.14285707</span>], [<span class="number">0.53061257</span> <span class="number">0.32653036</span> <span class="number">0.14285707</span>], [<span class="number">0.53060832</span> <span class="number">0.32653408</span> <span class="number">0.1428576</span> ]]</span><br><span class="line">P^<span class="number">13</span>: [[<span class="number">0.53061252</span> <span class="number">0.32653036</span> <span class="number">0.14285712</span>], [<span class="number">0.53061236</span> <span class="number">0.32653052</span> <span class="number">0.14285712</span>], [<span class="number">0.53061098</span> <span class="number">0.32653174</span> <span class="number">0.14285728</span>]]</span><br><span class="line">P^<span class="number">14</span>: [[<span class="number">0.53061233</span> <span class="number">0.32653053</span> <span class="number">0.14285714</span>], [<span class="number">0.53061228</span> <span class="number">0.32653058</span> <span class="number">0.14285714</span>], [<span class="number">0.53061184</span> <span class="number">0.32653098</span> <span class="number">0.14285718</span>]]</span><br><span class="line">P^<span class="number">15</span>: [[<span class="number">0.53061227</span> <span class="number">0.32653059</span> <span class="number">0.14285714</span>], [<span class="number">0.53061226</span> <span class="number">0.3265306</span>  <span class="number">0.14285714</span>], [<span class="number">0.53061211</span> <span class="number">0.32653073</span> <span class="number">0.14285716</span>]]</span><br><span class="line">P^<span class="number">16</span>: [[<span class="number">0.53061225</span> <span class="number">0.3265306</span>  <span class="number">0.14285714</span>], [<span class="number">0.53061225</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.5306122</span>  <span class="number">0.32653065</span> <span class="number">0.14285715</span>]]</span><br><span class="line">P^<span class="number">17</span>: [[<span class="number">0.53061225</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061225</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061223</span> <span class="number">0.32653062</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">18</span>: [[<span class="number">0.53061225</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061225</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653062</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">19</span>: [[<span class="number">0.53061225</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061225</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">20</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">21</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">22</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">23</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">24</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">25</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">26</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">27</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">28</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">29</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">30</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">31</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">32</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">33</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">34</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">35</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">36</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">37</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">38</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">39</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br><span class="line">P^<span class="number">40</span>: [[<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>], [<span class="number">0.53061224</span> <span class="number">0.32653061</span> <span class="number">0.14285714</span>]]</span><br></pre></td></tr></table></figure>
+<p>我们可以发现, 从 $ P^{20} $ 起, 多次状态转移对应的矩阵皆为</p>
+<script type="math/tex; mode=display">\begin{bmatrix}
+0.53061224 & 0.32653061 & 0.14285714 \\
+0.53061224 & 0.32653061 & 0.14285714 \\
+0.53061224 & 0.32653061 & 0.14285714 \\
+\end{bmatrix}</script><p>其中每一个行矢量皆为</p>
+<script type="math/tex; mode=display">\begin{pmatrix}
+0.53061224 \\
+0.32653061 \\
+0.14285714 \\
+\end{pmatrix}^T</script><p>现在我们得到随机过程沿<code>Markov</code>链不断进行状态转移的收敛性质.<sup><a href="#fn_5" id="reffn_5">5</a></sup><br>如果一个非周期的马尔科夫链有状态转移矩阵<code>P</code>, 并且它的任何两个状态是连通的, 则有:</p>
+<ol>
+<li><script type="math/tex; mode=display">\lim_{m \rightarrow \infty} P^m_{kl} = \pi_l, 且与k无关</script></li>
+<li><script type="math/tex; mode=display">\lim_{m \rightarrow \infty} P^m = \begin{bmatrix} \pi_1 & \pi_2 & \cdots & \pi_l & \cdots \\ \pi_1 & \pi_2 & \cdots & \pi_l & \cdots \\ \vdots & \vdots & \vdots & \vdots & \vdots \\ \pi_1 & \pi_2 & \cdots & \pi_l & \cdots \\ \end{bmatrix}</script></li>
+<li><script type="math/tex; mode=display">\pi_l = \sum_k \pi_k P_{kl}</script></li>
+<li><script type="math/tex; mode=display">\pi = (\pi_1, \pi_2, \cdots, \pi_l, \cdots)</script><p> 是无限多代收敛后的所有情况对应概率所组成的矢量, 称为<code>Markov</code>链的<strong>平稳分布 (Stationary Distribution) <sup><a href="#fn_6" id="reffn_6">6</a></sup></strong>, 满足</p>
+<script type="math/tex; mode=display">\sum_k \pi_k = 1</script></li>
+</ol>
+<p><strong>需要注意的是:</strong></p>
+<ol>
+<li><p><strong>非周期的马尔科夫链</strong>: 这个主要是指马尔科夫链的状态转化不是循环的, 如果是循环的则永远不会收敛…幸运的是我们遇到的马尔科夫链一般都是非周期性的.<br> 用数学方式表述则是: 对于任意某一状态<code>k</code>, 如若</p>
+<script type="math/tex; mode=display">\gcd\{m | m \ge 1, P^m_{kk} > 0\} = 1</script><p> 则该状态为非周期的;</p>
+</li>
+<li><p>任何两个状态是连通的: 这个指的是从任意一个状态可以通过有限步到达其他的任意一个状态, 不会出现条件概率一直为<code>0</code>导致不可达的情况;</p>
+</li>
+<li>马尔科夫链的状态数<strong>可以是有限的, 也可以是无限的</strong>.<br> 因此<strong>可以用于连续概率分布和离散概率分布</strong>;</li>
+</ol>
+<h2 id="Solving"><a href="#Solving" class="headerlink" title="Solving"></a>Solving</h2><p>TODO: 待补充</p>
+<h2 id="Extra"><a href="#Extra" class="headerlink" title="Extra"></a>Extra</h2><p>HMM (Hidden Markov Model, 隐式<code>Markov</code>模型): 参见</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_5">
+<sup>5</sup>. <code>pinard</code>的博客园文章 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/pinard/p/6632399.html">MCMC(二)马尔科夫链</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qust-dsra.github.io/2022/04/02/mathmodeling-06/" data-id="cl1hkjxbp000vrctu2azg22bb" data-title="数学建模实验 VI Markov Chain" class="article-share-link">分享</a>
+      
+      
+        <a href="/2022/04/02/mathmodeling-06/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2022/04/02/mathmodeling-06/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" rel="tag">Mathematical Modeling (数学建模)</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/03/24/pylesson-03/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">Python Lessons III</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+  <section id="comments" class="vcomment">
+
+  </section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">BST & BT (二叉查找树&平衡树)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">Binary Tree (二叉树)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" rel="tag">Mathematical Modeling (数学建模)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python-Lessons/" rel="tag">Python Lessons</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">RNN (循环神经网络)</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 16px;">BST & BT (二叉查找树&平衡树)</a> <a href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 18px;">Binary Tree (二叉树)</a> <a href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" style="font-size: 14px;">Mathematical Modeling (数学建模)</a> <a href="/tags/Notes/" style="font-size: 20px;">Notes</a> <a href="/tags/Python-Lessons/" style="font-size: 12px;">Python Lessons</a> <a href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">RNN (循环神经网络)</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/04/02/mathmodeling-06/">数学建模实验 VI Markov Chain</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/24/pylesson-03/">Python Lessons III</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/22/mathmodeling-04/">数学建模实验 IV 矩阵密码问题</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/19/mathmodeling-03/">数学建模实验 III 平面图形几何变换</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/18/mathmodeling-02/">数学建模实验 II 价格和收入变化对需求的影响</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Data Scholars from QUST<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/downloads" class="mobile-nav-link">Downloads</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  
+    
+<script src="/js/Valine-1.4.16.min.js"></script>
+
+  
+<script>
+    var GUEST_INFO = ['nick','mail','link'];
+    var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+        return GUEST_INFO.indexOf(item) > -1
+    });
+    var notify = 'false' == true;
+    var verify = 'false' == true;
+    new Valine({
+        el: '.vcomment',
+        notify: notify,
+        verify: verify,
+        appId: "UyQ3UNKJNCKXNBOmEPt38O2v-gzGzoHsz",
+        appKey: "yG94wy89SCPQ3x9eCkDIt1PR",
+        placeholder: "Just tell and share your feelings...",
+        pageSize:'10',
+        avatar:'mm',
+        lang:'zh-cn'
+    });
+</script>
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script-->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
