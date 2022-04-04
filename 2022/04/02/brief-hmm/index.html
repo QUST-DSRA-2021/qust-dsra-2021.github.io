@@ -14,7 +14,7 @@
 <meta property="og:description" content="如题, 希望我不会说得太啰嗦.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-02T08:26:39.000Z">
-<meta property="article:modified_time" content="2022-04-02T11:52:56.974Z">
+<meta property="article:modified_time" content="2022-04-04T04:11:31.391Z">
 <meta property="article:author" content="Data Scholars from QUST">
 <meta property="article:tag" content="Notes">
 <meta name="twitter:card" content="summary">
@@ -69,6 +69,8 @@
         
           <a class="main-nav-link" href="/askhere/">Ask Here</a>
         
+          <a class="main-nav-link" href="/tools/">Tools</a>
+        
       </nav>
       <nav id="sub-nav">
         
@@ -111,18 +113,97 @@
       
         <p>如题, 希望我不会说得太啰嗦.</p>
 <span id="more"></span>
-<h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p>这是一种可用于标注问题的统计学模型, 其描述<strong>由隐藏的<code>Markov</code>链随机生成观测序列</strong>的过程, 本质上属于生成模型.</p>
+<h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p>这是一种可用于标注问题的统计学模型, 其描述<strong>由隐藏的<code>Markov</code>链随机生成观测序贯</strong>的过程, 本质上属于生成模型.</p>
 <p>或将从两个方面切入隐<code>Markov</code>模型: 隐<code>Markov</code>模型的基本概念, 与隐<code>Markov</code>模型的概率计算算法, 学习算法以及预测算法.</p>
-<p><strong><span id="def-stalearn-10.1">Definition</span> <code>10.1</code></strong>: <strong>HMM (Hidden Markov Model, 隐<code>Markov</code>模型) <sup><a href="#fn_1" id="reffn_1">1</a></sup> <sup><a href="#fn_2" id="reffn_2">2</a></sup></strong> 是关于时间序贯的概率模型, 描述由一个隐藏的<code>Markov</code>链生成不可观测的状态随机序列, 再由各个状态生成一个观测而产生观测随机序贯的过程.<br>隐藏的<code>Markov</code>链随机生成的状态所组成的序贯称为<strong>状态序贯 (State Sequence)</strong>; 每个状态生成一个观测, 而由此产生的观测的随机序贯称为<strong>观测序贯 (Observation Sequence)</strong>.<br>序贯的每一个位置又可以看作是一个时刻.</p>
+<h2 id="Definitions"><a href="#Definitions" class="headerlink" title="Definitions"></a>Definitions</h2><p><strong><span id="def-stalearn-10.1">Definition</span> <code>10.1</code></strong>: <strong>HMM (Hidden Markov Model, 隐<code>Markov</code>模型) <sup><a href="#fn_1" id="reffn_1">1</a></sup> <sup><a href="#fn_2" id="reffn_2">2</a></sup></strong> 是关于时间序贯的概率模型, 描述由一个隐藏的<code>Markov</code>链生成不可观测的状态随机序贯, 再由各个状态生成一个观测而产生观测随机序贯的过程.<br>隐藏的<code>Markov</code>链随机生成的状态所组成的序贯称为<strong>状态序贯 (State Sequence)</strong>; 每个状态生成一个观测, 而由此产生的观测的随机序贯称为<strong>观测序贯 (Observation Sequence)</strong>.<br>序贯的每一个位置又可以看作是一个时刻.</p>
 <p>HMM由<code>初始概率分布</code>, <code>状态转移概率分布</code>, 以及<code>观测概率分布</code>所确定.<br>其形式定义如下: 设</p>
 <ul>
 <li>$ Q = \{ q_1, q_2, \cdots, q_M \} $ 是所有可能的状态的集合, $ V = \{ v_1, v_2, \cdots, v_N \} $ 是所有可能的观测的集合, 其中<code>M</code>为可能的状态数, <code>N</code>为可能的观测数;</li>
 <li>$ I = (i_1, i_2, \cdots, i_T) $ 是长度为<code>T</code>的状态序贯, $ O = (o_1, o_2, \cdots, o_T) $ 为对应的观测序贯;</li>
 <li>$ A = [a_{kl}]_{M \times M} = [ \Pr(i_{\tau + 1} = q_l | i_\tau = q_k) ]_{M \times M} $ 为状态转移概率矩阵, <strong>其中<code>k, l = 1, 2, ..., M</code></strong>, 同时 $ a_{kl} = \Pr(i_{\tau + 1} = q_l | i_\tau = q_k) $ 为在时刻 $ \tau $ 处于状态 $ q_k $ 的条件下在下一时刻( $ \tau + 1 $ )转移到状态 $ q_l $ 的概率;</li>
-<li>$ B = [b_l(j)]_{M \times N} = [\Pr(o_\tau = v_j | i_\tau = q_l)]_{M \times N} $ 为观测概率矩阵, <strong>其中<code>j = 1, 2, ..., N</code></strong>, 同时 $ b_l(j) = \Pr(i_{\tau + 1} = q_l | i_\tau = q_k) $ 为在时刻 $ \tau $ 处于状态 $ q_l $ 条件下生成观测 $ v_j $ 的概率;</li>
+<li>$ B = [b_l(j)]_{M \times N} = [\Pr(o_\tau = v_j | i_\tau = q_l)]_{M \times N} $ 为观测概率矩阵, <strong>其中<code>j = 1, 2, ..., N</code></strong>, 同时 $ b_l(j) = \Pr(o_\tau = v_j | i_\tau = q_l) $ 为在时刻 $ \tau $ 处于状态 $ q_l $ 条件下生成观测 $ v_j $ 的概率;</li>
 <li>$ \pi = (\Pr(i_1 = q_k))_{k=1}^M $ 为初始状态的概率矢量, 其中的第<code>k</code>个分量为处于状态 $ q_k $ 的概率;</li>
 </ul>
 <p>如上文所属, 隐<code>Markov</code>模型由初始状态概率矢量 $ \pi $, 状态转移概率矩阵<code>A</code>, 与观测概率矩阵<code>B</code>所决定.<br>$ \pi $ 和<code>A</code>决定状态序贯, <code>B</code>决定观测序贯.<br>因此, 隐<code>Markov</code>模型可以用三元组 $ \lambda = (A, B, \pi) $ 表示, 这也称为隐<code>Markov</code>模型的三要素.</p>
+<h2 id="Instance-Boxes-amp-Balls"><a href="#Instance-Boxes-amp-Balls" class="headerlink" title="Instance: Boxes &amp; Balls"></a>Instance: Boxes &amp; Balls</h2><p><strong><span id="ins-stalearn-10.1">Instance</span> <code>10.1</code></strong>: 假设有<code>4</code>个盒子, 每个盒子里都装有青蓝两种颜色的球, 盒子里的青蓝球数如下</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Box ID</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Num of Cyan Balls</td>
+<td>5</td>
+<td>3</td>
+<td>6</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Num of Blue Balls</td>
+<td>5</td>
+<td>7</td>
+<td>4</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>现按照如下方法抽选球, 产生一个球的颜色的观测序贯:</p>
+<ul>
+<li>开始, 从<code>4</code>个盒子里以等概率随机选取<code>1</code>个盒子, 从中随机抽选一个球, 记录颜色后放回;</li>
+<li>然后, 从当前盒子随即转移至下一个盒子, 规则是:<ul>
+<li>如若当前盒子是盒子<code>1</code>, 则下一个盒子一定是盒子<code>2</code>,</li>
+<li>如若当前是盒子<code>2</code>或<code>3</code>, 则分别以概率<code>0.4</code>或<code>0.6</code>转移至左边<code>(id-1)</code>或右边<code>(id+1)</code>的盒子,</li>
+<li>如若当前是盒子<code>4</code>, 则各以<code>0.5</code>的概率停留在盒子<code>4</code>或转移至盒子<code>3</code>;</li>
+</ul>
+</li>
+<li>确定转移的盒子后, 再从这个盒子里随机抽选<code>1</code>个球, 记录其颜色, 放回;</li>
+</ul>
+<p>如此往复, 重复进行<code>5</code>次, 得到一个球的颜色的观测序贯:</p>
+<script type="math/tex; mode=display">O = \{青, 青, 蓝, 蓝, 青\}</script><p>在这个过程中, 观察者只能观测到球的颜色的序贯, 观测不到球是从哪个盒子取出的, 即观测不到盒子的序贯.<br>在这个例子中有两个随机序贯, 一个是盒子的序贯(状态序贯), 一个是球的颜色的观测序贯(观测序贯), 前者是隐藏的, 只有后者是可观测的.<br>这是一个隐马尔可夫模型的例子, 根据所给条件, 可以明确<code>状态集合</code>, <code>观测集合</code>, <code>序贯长度</code>, 以及模型的三要素.</p>
+<p>盒子对应状态, 其集合为</p>
+<script type="math/tex; mode=display">Q = \{盒子1, 盒子2, 盒子3, 盒子4\}, M = 4</script><p>球的颜色对应观测, 其集合为</p>
+<script type="math/tex; mode=display">V = \{青, 蓝\}, N = 2</script><p>状态序贯与观测序贯的长度<code>T=5</code>.</p>
+<p>初始概率分布 $ \pi = (0.25, 0.25, 0.25, 0.25)^T $,</p>
+<p>状态转移概率分布为</p>
+<script type="math/tex; mode=display">A = \begin{bmatrix}
+0   & 1   & 0   & 0 \\
+0.4 & 0   & 0.6 & 0 \\
+0   & 0.4 & 0   & 0.6 \\
+0   & 0   & 0.5 & 0.5 \\
+\end{bmatrix}</script><p>观测概率分布为</p>
+<script type="math/tex; mode=display">B = \begin{bmatrix}
+0.5 & 0.5 \\
+0.3 & 0.7 \\
+0.6 & 0.4 \\
+0.8 & 0.2 \\
+\end{bmatrix}</script><h2 id="Generating-Observation-Sequence"><a href="#Generating-Observation-Sequence" class="headerlink" title="Generating Observation Sequence"></a>Generating Observation Sequence</h2><p>根据HMM定义, 可以把一个长度为<code>T</code>的观测序贯 $ O = \{ o_1, o_2, \cdots, o_T \} $ 的生成过程描述如下:</p>
+<p><strong><span id="algo-stalearn-10.1">Algorithm</span> <code>10.1</code></strong>: 观测序贯的生成</p>
+<ul>
+<li>Input: HMM $ \lambda = (A, B, \pi) $, 观测序贯长度<code>T</code>;</li>
+<li>Output: 观测序贯 $ O = \{ o_1, o_2, \cdots, o_T \} $;</li>
+</ul>
+<ol>
+<li>根据初始状态分布 $ \pi $ 产生状态 $ i_1 $;</li>
+<li>令 $ \tau = 1 $;</li>
+<li>根据状态 $ i_1 $ 的观测概率分布 $ b_{i_\tau}(j) $ 生成 $ o_\tau $;</li>
+<li>根据状态 $ i_1 $ 的状态转移概率分布 $ \{ a_{ {i_\tau}{i_{\tau+1} } } \} $ 产生状态 $ i_{\tau + 1} $, 其值域为<code>&#123;1,...,M&#125;</code>;</li>
+<li>令 $ \tau += 1 $; 如若 $ \tau &lt; T $ 则回到第<code>3</code>步, 否则终止.</li>
+</ol>
+<h2 id="3-Basic-Problems"><a href="#3-Basic-Problems" class="headerlink" title="3 Basic Problems"></a>3 Basic Problems</h2><p>HMM有如下所述的三个基本问题:</p>
+<ol>
+<li>概率计算问题: 给定模型 $ \lambda = (A, B, \pi) $ 和观测序贯 $ O = (o_1, o_2, \cdots, o_T) $, 计算在模型 $ \lambda $ 下观测序贯<code>O</code>出现的概率 $ P(O | \lambda) $;</li>
+<li>学习问题: 已知观测序贯 $ O = (o_1, o_2, \cdots, o_T) $, 估计模型 $ \lambda = (A, B, \pi) $ 参数, 使得在该模型下观测序贯概率 $ P(O | \lambda) $ 最大, 即用极大似然估计的方法估计参数;</li>
+<li>预测问题, 也称为解码(decoding)问题: 已知模型 $ \lambda = (A, B, \pi) $ 和观测序贯 $ O = (o_1, o_2, \cdots, o_T) $, 求对给定观测序贯条件概率 $ P(I|O) $ 最大的状态序贯 $ I = (i_1, i_2, \cdots, i_T) $ 即给定观测序贯, 求最有可能的对应的状态序贯;</li>
+</ol>
+<p>后面会补充这些问题的解法.</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
 <sup>1</sup>. 李航, 统计学习方法 (第一版), 清华大学出版社, 2012, ISBN: <code>978-7-302-27595-4</code><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
 </blockquote>
@@ -145,7 +226,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qust-dsra.github.io/2022/04/02/brief-hmm/" data-id="cl1i2h6i3000rmwtu23u500eb" data-title="一点简短的HMM笔记" class="article-share-link">分享</a>
+      <a data-url="https://qust-dsra.github.io/2022/04/02/brief-hmm/" data-id="cl1k73zld000rdctu064pg2vw" data-title="一点简短的HMM笔记" class="article-share-link">分享</a>
       
       
         <a href="/2022/04/02/brief-hmm/#comments" class="article-comment-link">
@@ -161,6 +242,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2022/04/03/find-doi/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          如何快速寻找文章的DOI号码
+        
+      </div>
+    </a>
   
   
     <a href="/2022/04/02/mathmodeling-06/" id="article-nav-older" class="article-nav-link-wrap">
@@ -221,6 +311,10 @@
       <ul>
         
           <li>
+            <a href="/2022/04/03/find-doi/">如何快速寻找文章的DOI号码</a>
+          </li>
+        
+          <li>
             <a href="/2022/04/02/brief-hmm/">一点简短的HMM笔记</a>
           </li>
         
@@ -234,10 +328,6 @@
         
           <li>
             <a href="/2022/03/22/mathmodeling-04/">数学建模实验 IV 矩阵密码问题</a>
-          </li>
-        
-          <li>
-            <a href="/2022/03/19/mathmodeling-03/">数学建模实验 III 平面图形几何变换</a>
           </li>
         
       </ul>
@@ -271,6 +361,8 @@
     <a href="/downloads/" class="mobile-nav-link">Downloads</a>
   
     <a href="/askhere/" class="mobile-nav-link">Ask Here</a>
+  
+    <a href="/tools/" class="mobile-nav-link">Tools</a>
   
 </nav>
     

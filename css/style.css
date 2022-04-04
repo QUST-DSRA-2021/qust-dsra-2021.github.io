@@ -1146,14 +1146,22 @@ a.article-title:hover {
   background: #fdf6e3 !important;
 }
 .article-entry pre,
-.article-entry code {
+.article-entry code,
+.article-entry kbd {
   font-family: "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace;
 }
-.article-entry code {
+.article-entry code,
+.article-entry kbd {
   background: #f5f2e7;
   text-shadow: 0 1px #fff;
   text-shadow: 0 1px #fdf6e3;
   padding: 0 0.3em;
+}
+.article-entry kbd {
+  border-radius: 3.9px;
+  margin: auto 1.28px;
+  color: #eee8d5;
+  background: #002b36;
 }
 .article-entry pre code {
   background: none;
