@@ -15,7 +15,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://qust-dsra.github.io/2022/04/02/mathmodeling-06/markov-state-transition.jpeg">
 <meta property="article:published_time" content="2022-04-02T02:49:39.000Z">
-<meta property="article:modified_time" content="2022-04-02T14:16:43.154Z">
+<meta property="article:modified_time" content="2022-04-05T00:15:38.128Z">
 <meta property="article:author" content="Data Scholars from QUST">
 <meta property="article:tag" content="Notes">
 <meta property="article:tag" content="Mathematical Modeling (数学建模)">
@@ -72,8 +72,6 @@
         
           <a class="main-nav-link" href="/askhere/">Ask Here</a>
         
-          <a class="main-nav-link" href="/tools/">Tools</a>
-        
       </nav>
       <nav id="sub-nav">
         
@@ -118,7 +116,7 @@
 <h2 id="Problem-Description"><a href="#Problem-Description" class="headerlink" title="Problem Description"></a>Problem Description</h2><p>在英国, 保守党成员的第二代加入保守党的概率为<code>0.7</code>, 加入工党的概率为<code>0.2</code>, 加入自由党的概率为<code>0.1</code>; 工党成员的第二代加入保守党的概率为<code>0.4</code>, 加入工党的概率为<code>0.5</code>, 加入自由党的概率为<code>0.1</code>; 而自由党成员的第二代加入保守党的概率为<code>0.2</code>, 加入工党的概率为<code>0.4</code>, 加入自由党的概率为<code>0.4</code>.<br>试建立模型, 解决以下问题:</p>
 <ol>
 <li>求出自由党成员的第三代加入工党的概率;</li>
-<li>在经过较长的时间后, 各党成员的后代加入各党派的概率分布是否具有稳定性》</li>
+<li>在经过较长的时间后, 各党成员的后代加入各党派的概率分布是否具有稳定性?</li>
 <li>用试验说明, 影响第2问中, 概率分布稳定性的主要因素.</li>
 </ol>
 <span id="more"></span>
@@ -192,7 +190,28 @@
 0.53061224 \\
 0.32653061 \\
 0.14285714 \\
-\end{pmatrix}^T</script><p>现在我们得到随机过程沿<code>Markov</code>链不断进行状态转移的收敛性质.<sup><a href="#fn_5" id="reffn_5">5</a></sup><br>如果一个非周期的马尔科夫链有状态转移矩阵<code>P</code>, 并且它的任何两个状态是连通的, 则有:</p>
+\end{pmatrix}^T</script><p>即此后后代加入各党派概率的分布律收敛如下:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">加入党派 $ \xi $</th>
+<th style="text-align:center">保守党</th>
+<th style="text-align:center">工党</th>
+<th style="text-align:center">自由党</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">对应概率 $ \Pr(\xi) $</td>
+<td style="text-align:center">0.53061224</td>
+<td style="text-align:center">0.32653061</td>
+<td style="text-align:center">0.14285714</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>现在我们得到随机过程沿<code>Markov</code>链不断进行状态转移的收敛性质.<sup><a href="#fn_5" id="reffn_5">5</a></sup><br>如果一个非周期的马尔科夫链有状态转移矩阵<code>P</code>, 并且它的任何两个状态是连通的, 则有:</p>
 <ol>
 <li><script type="math/tex; mode=display">\lim_{m \rightarrow \infty} P^m_{kl} = \pi_l, 且与k无关</script></li>
 <li><script type="math/tex; mode=display">\lim_{m \rightarrow \infty} P^m = \begin{bmatrix} \pi_1 & \pi_2 & \cdots & \pi_l & \cdots \\ \pi_1 & \pi_2 & \cdots & \pi_l & \cdots \\ \vdots & \vdots & \vdots & \vdots & \vdots \\ \pi_1 & \pi_2 & \cdots & \pi_l & \cdots \\ \end{bmatrix}</script></li>
@@ -209,18 +228,45 @@
 </li>
 <li>马尔科夫链的状态数<strong>可以是有限的, 也可以是无限的</strong>.<br> 因此<strong>可以用于连续概率分布和离散概率分布</strong>;</li>
 </ol>
-<h2 id="Solving"><a href="#Solving" class="headerlink" title="Solving"></a>Solving</h2><p>TODO: 待补充</p>
+<h2 id="Solving"><a href="#Solving" class="headerlink" title="Solving"></a>Solving</h2><p>现在我们来考虑开篇提出的问题.</p>
+<p>解: 根据<code>Markov</code>链的性质, 三次状态转移的矩阵为</p>
+<script type="math/tex; mode=display">P^3 = \begin{bmatrix}
+0.7 & 0.2 & 0.1 \\
+0.4 & 0.5 & 0.1 \\
+0.2 & 0.4 & 0.4 \\
+\end{bmatrix}^3 \\ =  \begin{bmatrix}
+0.551 & 0.31  & 0.139 \\
+0.524 & 0.337 & 0.139 \\
+0.47  & 0.364 & 0.166 \\
+\end{bmatrix}</script><p>而根据题意, 初始时刻的概率分布 $ \alpha_0 = (0, 0, 1) $, 因此有</p>
+<script type="math/tex; mode=display">\alpha_3 = \alpha_0 P^3 = \begin{pmatrix}
+0.47 \\
+0.364 \\
+0.166 \\
+\end{pmatrix}^T</script><p>故自由党第三代子女加入工党的概率为<code>0.364</code>.</p>
 <h2 id="Extra"><a href="#Extra" class="headerlink" title="Extra"></a>Extra</h2><ul>
 <li>HMM (Hidden Markov Model, 隐式<code>Markov</code>模型): 参见 <a href="/2022/04/02/brief-hmm/" title="一点简短的HMM笔记">一点简短的HMM笔记</a></li>
 </ul>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_5">
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
+<sup>1</sup>. 百度百科词条 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/动态规划/6171383">动态规划</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. 百度百科词条 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/无后效性/1135283">无后效性</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. 百度百科词条 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/马尔可夫性质/23149887">马尔可夫性质</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. 百度百科词条 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/动态规划/529408">动态规划</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
 <sup>5</sup>. <code>pinard</code>的博客园文章 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/pinard/p/6632399.html">MCMC(二)马尔科夫链</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
 </blockquote>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qust-dsra.github.io/2022/04/02/mathmodeling-06/" data-id="cl1k73zlj0011dctud2msadyj" data-title="数学建模实验 VI Markov Chain" class="article-share-link">分享</a>
+      <a data-url="https://qust-dsra.github.io/2022/04/02/mathmodeling-06/" data-id="cl1p1gewm000q6otu39cn0yq4" data-title="数学建模实验 VI Markov Chain" class="article-share-link">分享</a>
       
       
         <a href="/2022/04/02/mathmodeling-06/#comments" class="article-comment-link">
@@ -247,9 +293,9 @@
     </a>
   
   
-    <a href="/2022/03/24/pylesson-03/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2022/03/29/pylesson-04/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">Python Lessons III</div>
+      <div class="article-nav-title">Python Lessons IV</div>
     </a>
   
 </nav>
@@ -317,11 +363,11 @@
           </li>
         
           <li>
-            <a href="/2022/03/24/pylesson-03/">Python Lessons III</a>
+            <a href="/2022/03/29/pylesson-04/">Python Lessons IV</a>
           </li>
         
           <li>
-            <a href="/2022/03/22/mathmodeling-04/">数学建模实验 IV 矩阵密码问题</a>
+            <a href="/2022/03/24/pylesson-03/">Python Lessons III</a>
           </li>
         
       </ul>
@@ -355,8 +401,6 @@
     <a href="/downloads/" class="mobile-nav-link">Downloads</a>
   
     <a href="/askhere/" class="mobile-nav-link">Ask Here</a>
-  
-    <a href="/tools/" class="mobile-nav-link">Tools</a>
   
 </nav>
     

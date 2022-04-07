@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Python Lessons IV | QUST Data Science Research Association</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="简单说说Python中的流程控制, 可以大致分为如下几类:  条件控制 循环控制 异常捕捉">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python Lessons IV">
+<meta property="og:url" content="https://qust-dsra.github.io/2022/03/29/pylesson-04/index.html">
+<meta property="og:site_name" content="QUST Data Science Research Association">
+<meta property="og:description" content="简单说说Python中的流程控制, 可以大致分为如下几类:  条件控制 循环控制 异常捕捉">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/29/pylesson-04/006faQNTgw1f5wnm0mcxrg30ci07o47l.gif">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/03/29/pylesson-04/006faQNTgw1f5wnm06h3ug30ci08cake.gif">
+<meta property="article:published_time" content="2022-03-29T08:10:39.000Z">
+<meta property="article:modified_time" content="2022-04-07T13:31:20.856Z">
+<meta property="article:author" content="Data Scholars from QUST">
+<meta property="article:tag" content="Python Lessons">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qust-dsra.github.io/2022/03/29/pylesson-04/006faQNTgw1f5wnm0mcxrg30ci07o47l.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">QUST Data Science Research Association</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">青岛科技大学 数据科学研究协会</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">About</a>
+        
+          <a class="main-nav-link" href="/downloads/">Downloads</a>
+        
+          <a class="main-nav-link" href="/askhere/">Ask Here</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qust-dsra.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-pylesson-04" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/29/pylesson-04/" class="article-date">
+  <time class="dt-published" datetime="2022-03-29T08:10:39.000Z" itemprop="datePublished">2022-03-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Python Lessons IV
+    </h1>
+  
+
+
+  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>简单说说<code>Python</code>中的流程控制, 可以大致分为如下几类:</p>
+<ul>
+<li>条件控制</li>
+<li>循环控制</li>
+<li>异常捕捉</li>
+</ul>
+<span id="more"></span>
+<h2 id="Conditions"><a href="#Conditions" class="headerlink" title="Conditions"></a>Conditions</h2><p><img src="/2022/03/29/pylesson-04/006faQNTgw1f5wnm0mcxrg30ci07o47l.gif" alt></p>
+<p>有的时候, 为了应对不止两个分支的情况, 我们使用<code>elif</code>来在不满足<code>if</code>对应的条件的情况下继续判断与执行程序:</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> a % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(a, <span class="string">&quot;is even&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> a % <span class="number">3</span> == <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(a, <span class="string">&quot;is odd and can be devided by 3&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(a, <span class="string">&quot;is odd and cannot be devided by 3&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>这段程式中使用<code>elif</code>进行进一步判断, 如若<code>if</code>对应的条件<code>a % 2 == 0</code>不为真, 那么会进一步判断<code>elif</code>所对应的条件<code>a % 3 == 0</code>.</p>
+<ul>
+<li><p>如若<code>a==56</code>则如上程式中<code>a % 2 == 0</code>这一点是满足的,<br>  那么解释器便<strong>不会考虑下面的其他情况, 直接运行相应的程式</strong>,<br>  在这里便是输出:</p>
+  <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">56</span> <span class="keyword">is</span> even</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如若<code>a==39</code>则如上程式中<code>a % 3 == 0</code>这一点是满足的,<br>  所以根据上述程式, 解释器会运行并输出如下:</p>
+  <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">39</span> <span class="keyword">is</span> odd <span class="keyword">and</span> can be devided by <span class="number">3</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如若在<code>else</code>之前的情况皆不满足, 例如<code>a == 5</code>时, 解释器会运行输出:</p>
+  <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5</span> <span class="keyword">is</span> odd <span class="keyword">and</span> cannot be devided by <span class="number">3</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>总结一下使用<code>if</code>进行条件判断的用法, 便可以简单理解为:</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> &lt;conditon <span class="number">1</span>&gt;:</span><br><span class="line">    (operations) <span class="comment"># 如若满足 condition 1,</span></span><br><span class="line">    (operations) <span class="comment"># 则 condition 1 (的布尔值)为真,</span></span><br><span class="line">    (operations) <span class="comment"># 则运行这些语句.</span></span><br><span class="line">    (operations) <span class="comment"># ----否则考虑下面的条件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> &lt;conditon <span class="number">2</span>&gt;:</span><br><span class="line">    (operations) <span class="comment"># 如若满足 condition 2,</span></span><br><span class="line">    (operations) <span class="comment"># 则 condition 2 (的布尔值)为真,</span></span><br><span class="line">    (operations) <span class="comment"># 则运行这些语句.</span></span><br><span class="line">    (operations) <span class="comment"># ----否则考虑下面的条件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> &lt;conditon <span class="number">3</span>&gt;:</span><br><span class="line">    (operations) <span class="comment"># 如若满足 condition 3,</span></span><br><span class="line">    (operations) <span class="comment"># 则 condition 3 (的布尔值)为真,</span></span><br><span class="line">    (operations) <span class="comment"># 则运行这些语句.</span></span><br><span class="line">    (operations) <span class="comment"># ----否则考虑下面的条件</span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> &lt;conditon m&gt;:</span><br><span class="line">    (operations) <span class="comment"># 如若满足 condition m,</span></span><br><span class="line">    (operations) <span class="comment"># 则 condition m (的布尔值)为真,</span></span><br><span class="line">    (operations) <span class="comment"># 则运行这些语句.</span></span><br><span class="line">    (operations) <span class="comment"># ----否则考虑下面的条件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    (operations) <span class="comment"># 如若上述的 condition 1~m 皆不满足,</span></span><br><span class="line">    (operations) <span class="comment"># 则一定会运行这些语句.</span></span><br></pre></td></tr></table></figure>
+<h2 id="Loops"><a href="#Loops" class="headerlink" title="Loops"></a>Loops</h2><p><img src="/2022/03/29/pylesson-04/006faQNTgw1f5wnm06h3ug30ci08cake.gif" alt></p>
+<p><code>while</code>循环结构的格式类似于如下</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> &lt;condition&gt;:</span><br><span class="line">    (operations) <span class="comment"># 如若满足 condition,</span></span><br><span class="line">    (operations) <span class="comment"># 则会运行这些语句,</span></span><br><span class="line">    (operations) <span class="comment"># 直到不再满足 condition.</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>同时我们也可以发现, 在<code>Python</code>中进行<code>无限循环</code>的方法很简单, 那便是</p>
+  <figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>  <strong><em>为什么要提<code>无限循环</code>? 并不是我们真的想要让解释器无限地重复同一段代码直到机器报废自己退休甚至是下一次小行星重装地球, 而是因为有时在循环体内执行的操作很多, 退出循环体的需求也有很多, 此时便需要在所有需要退出的位置使用<code>break</code>, 这也是我们稍后便要讲的.</em></strong></p>
+</li>
+</ul>
+<p>除了<code>while</code>之外, 我们还可以使用<code>for</code>结构来进行循环, 其格式如下</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> &lt;item&gt; <span class="keyword">in</span> &lt;iterable&gt;:</span><br><span class="line">    (operations) <span class="comment"># 对于 iterable 中的,</span></span><br><span class="line">    (operations) <span class="comment"># 则会运行这些语句,</span></span><br><span class="line">    (operations) <span class="comment"># 直到不再满足 condition.</span></span><br></pre></td></tr></table></figure>
+<p>这个结构比起说是<code>循环</code>, 更像是在<code>遍历</code>, 因为<code>for ... in ...:</code>的意义为”对于<code>某序贯</code>中的<code>每一项</code>, 执行相应的重复操作”, 所以我们每次需要在<code>&lt;item&gt;</code>的位置取临时变量名, 代表从<code>&lt;iterable&gt;</code>中取用的每一个变量, 取执行循环体中的操作.</p>
+<h3 id="break-Usages"><a href="#break-Usages" class="headerlink" title="break Usages"></a><code>break</code> Usages</h3><p><code>break</code>是<code>Python</code>中的关键字, 用于提前结束正在进行的循环.</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">39</span>):</span><br><span class="line">    <span class="keyword">if</span> k &gt;= <span class="number">10</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Interrupted!!&quot;</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">print</span>(k, end=<span class="string">&quot;, &quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>如上程式的输出如下</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, Interrupted!!</span><br></pre></td></tr></table></figure>
+<p>其本应当输出从<code>0</code>到<code>38</code>, 但是只输出到<code>9</code>, 便是因为在<code>k == 10</code>的时候它满足条件<code>k &gt;= 10</code>, 触发了<code>break</code>, 于是提前结束.</p>
+<h2 id="Exceptions"><a href="#Exceptions" class="headerlink" title="Exceptions"></a>Exceptions</h2><figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request, urllib.error</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> eachyear <span class="keyword">in</span> [<span class="number">2015</span>, <span class="number">3939</span>]:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        f = urllib.request.urlopen(<span class="string">&quot;https://magicalmirai.com/%s/&quot;</span> % eachyear)</span><br><span class="line">    <span class="keyword">except</span> urllib.error.HTTPError <span class="keyword">as</span> err:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;HTTPError Occurred!&quot;</span>, end=<span class="string">&quot; &quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> err.code == <span class="number">404</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;The Page /%s/ wasnot Found!&quot;</span> % eachyear)</span><br><span class="line">        <span class="keyword">elif</span> err.code == <span class="number">403</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;The Page /%s/ Forbade to be Visited!&quot;</span> % eachyear)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;which was Unknown!&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Visited the Page /%s/ Successfully!&quot;</span> % eachyear)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Visiting of the Page /%s/ Ends!&quot;</span> % eachyear)</span><br></pre></td></tr></table></figure>
+<p>通过上面这个例子, 我们可以很清楚地看出<code>Python</code>进行异常捕捉的思路: 先进行试探性质的操作(<code>try</code>部分), 然后列举需要捕捉的异常(<code>except</code>部分), 如若程序在没有捕捉到任何异常的基础上, 正常地执行下去, 那么执行<code>else</code>部分的操作, 最后也有不论如何执行都要进行的操作(<code>finally</code>部分).<br><strong><em>当然, 如若中途出现了没有捕捉的异常, 那么程式也会被中断!</em></strong></p>
+<p><code>except</code>关键字可以用于捕捉执行程序过程中出现的异常, 其语法用<code>Python</code>的风格可以写作:</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">except</span> [SomeError [<span class="keyword">as</span> alias]]:</span><br><span class="line">    (operations)</span><br><span class="line">    (operations)</span><br><span class="line">    ...</span><br><span class="line">    (operations)</span><br></pre></td></tr></table></figure>
+<p>如上, 没有任何附加参数时, 单独的<code>except</code>可以捕捉任何异常, 此外可以捕捉指定的异常, 如上例中的<code>except urllib.error.HTTPError</code>(就是<code>HTTP</code>协议相关的异常, 这个有机会的话会在后面网络信息采集里面进行讲解), 当且仅当发生了<code>HTTPError</code><strong>及其子类</strong>时这段<code>except</code>会被激活并对其进行处理, 另外还可以使用<code>as</code>来对捕捉的异常取别名, 方便在处理过程中调用, 例如上例中用<code>err</code>代指<code>HTTPError</code>, 用于读取<code>HTTPError</code>发生时对应的<code>HTTP</code>状态码(就是<code>404 Not Found</code>或者<code>403 Forbidden</code>那一套, 关于这个有个概念就好以后再细讲).</p>
+<p>因此我们可以得到两种可以捕捉任何异常的方法:</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Solution 1.</span></span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    (operations)</span><br><span class="line">    (operations)</span><br><span class="line">    ...</span><br><span class="line">    (operations)</span><br><span class="line"><span class="comment"># Solution 2.</span></span><br><span class="line"><span class="keyword">except</span> Exception: <span class="comment"># also `except Exception as err` or some other aliases ...</span></span><br><span class="line">    (operations)</span><br><span class="line">    (operations)</span><br><span class="line">    ...</span><br><span class="line">    (operations)</span><br></pre></td></tr></table></figure>
+<p><strong><em>但这两者有着本质上的区别!!:</em></strong> 前者是触发<code>except</code>捕捉异常的基础功能, 后者是因为所有异常都是<code>Exception</code>的子类!</p>
+<h3 id="else-Usages"><a href="#else-Usages" class="headerlink" title="else Usages"></a><code>else</code> Usages</h3><p><code>else</code>这个关键字我们可以在很多计算机语言中见到, 不仅是<code>C/C++</code>或<code>Python</code>, 包括<code>R</code>语言在流程控制中我们也可以见到</p>
+<figure class="highlight r"><figcaption><span>R</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x &lt;- <span class="built_in">c</span>(<span class="string">&quot;miku&quot;</span>, <span class="string">&quot;ichika&quot;</span>, <span class="string">&quot;saki&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> (<span class="string">&quot;miku&quot;</span> %in% x) &#123;</span><br><span class="line">    print(<span class="string">&quot;Word miku Found in the List!&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    print(<span class="string">&quot;Word miku not Found.&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(其实文言里面也有<code>若非</code>代替<code>else</code>…)</p>
+<figure class="highlight plaintext"><figcaption><span>文言</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">若三不大於五者。</span><br><span class="line">    乃得「「想當然耳」」。</span><br><span class="line">若非。</span><br><span class="line">    乃得「「怪哉」」。</span><br><span class="line">也。</span><br></pre></td></tr></table></figure>
+<p>然而, 大部分语言中的<code>else</code>只用于狭义的条件语句, 而在<code>Python</code>中, 其还可以用于循环结构或异常处理.<br>方才已经展示了异常处理中的<code>else</code>的用法, 现在我们来看循环结构中使用<code>else</code>:</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;MIKU!&quot;</span>, end=<span class="string">&quot; &quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Finished!&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>此时解释器会输出:</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MIKU! MIKU! MIKU! MIKU! MIKU! Finished!</span><br></pre></td></tr></table></figure>
+<p>我们可以发现: 当循环运行结束之后 , <code>else</code>部分的操作会被执行, 然而,</p>
+<figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    <span class="keyword">if</span> k &gt;= <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;MIKU!&quot;</span>, end=<span class="string">&quot; &quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Finished!&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>此时解释器会输出:</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MIKU! MIKU! MIKU! </span><br></pre></td></tr></table></figure>
+<p>当循环提前结束的时候, <code>else</code>部分便不会再执行.</p>
+<p>我们综合上面看到的几种情况, 可以把<code>else</code>的性质总结如下: <code>else</code>在<code>Python</code>中是一个关键字, 除了在<code>if</code>引导的条件结构外, 可以用于循环结构和异常处理, <strong>当且仅当</strong>这类过程没有被<code>break</code>或抛出的异常打断之时.</p>
+<h2 id="Attentions"><a href="#Attentions" class="headerlink" title="Attentions!!"></a>Attentions!!</h2><p>我们有时会在<code>C/C++</code>中看到如下被称为<code>do-while</code>的循环结构</p>
+<figure class="highlight cpp"><figcaption><span>C++</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    operations; <span class="comment">// 不论如何先把这些代码做一遍,</span></span><br><span class="line">    operations; <span class="comment">// 然后再判断是否满足`condition`即其(布尔值)为真,</span></span><br><span class="line">    operations; <span class="comment">// 如若`condition`为真则继续循环否则退出.</span></span><br><span class="line">    ...;</span><br><span class="line">&#125; <span class="keyword">while</span> (condition);</span><br></pre></td></tr></table></figure>
+<p>这个在<code>Python</code>中是从来都不存在的, 而且你如若需要的话可以在进入循环之前单独写一遍你所需要的过程.</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qust-dsra.github.io/2022/03/29/pylesson-04/" data-id="cl1p1gewp000x6otugjuo4lll" data-title="Python Lessons IV" class="article-share-link">分享</a>
+      
+      
+        <a href="/2022/03/29/pylesson-04/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2022/03/29/pylesson-04/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python-Lessons/" rel="tag">Python Lessons</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/04/02/mathmodeling-06/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          数学建模实验 VI Markov Chain
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/03/24/pylesson-03/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">Python Lessons III</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+  <section id="comments" class="vcomment">
+
+  </section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">BST & BT (二叉查找树&平衡树)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">Binary Tree (二叉树)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" rel="tag">Mathematical Modeling (数学建模)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python-Lessons/" rel="tag">Python Lessons</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">RNN (循环神经网络)</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 16px;">BST & BT (二叉查找树&平衡树)</a> <a href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 18px;">Binary Tree (二叉树)</a> <a href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" style="font-size: 14px;">Mathematical Modeling (数学建模)</a> <a href="/tags/Notes/" style="font-size: 20px;">Notes</a> <a href="/tags/Python-Lessons/" style="font-size: 12px;">Python Lessons</a> <a href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">RNN (循环神经网络)</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/04/03/find-doi/">如何快速寻找文章的DOI号码</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/02/brief-hmm/">一点简短的HMM笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/02/mathmodeling-06/">数学建模实验 VI Markov Chain</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/29/pylesson-04/">Python Lessons IV</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/24/pylesson-03/">Python Lessons III</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Data Scholars from QUST<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">About</a>
+  
+    <a href="/downloads/" class="mobile-nav-link">Downloads</a>
+  
+    <a href="/askhere/" class="mobile-nav-link">Ask Here</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  
+    
+<script src="/js/Valine-1.4.16.min.js"></script>
+
+  
+<script>
+    var GUEST_INFO = ['nick','mail','link'];
+    var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+        return GUEST_INFO.indexOf(item) > -1
+    });
+    var notify = 'false' == true;
+    var verify = 'false' == true;
+    new Valine({
+        el: '.vcomment',
+        notify: notify,
+        verify: verify,
+        appId: "UyQ3UNKJNCKXNBOmEPt38O2v-gzGzoHsz",
+        appKey: "yG94wy89SCPQ3x9eCkDIt1PR",
+        placeholder: "Just tell and share your feelings...",
+        pageSize:'10',
+        avatar:'mm',
+        lang:'zh-cn'
+    });
+</script>
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script-->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
