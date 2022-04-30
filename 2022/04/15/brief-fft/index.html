@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>一点简短的FFT笔记 | QUST Data Science Research Association</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Fourier Transformation, Fourier变换.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一点简短的FFT笔记">
+<meta property="og:url" content="https://qust-dsra.github.io/2022/04/15/brief-fft/index.html">
+<meta property="og:site_name" content="QUST Data Science Research Association">
+<meta property="og:description" content="Fourier Transformation, Fourier变换.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-15T05:11:39.000Z">
+<meta property="article:modified_time" content="2022-04-29T13:36:54.047Z">
+<meta property="article:author" content="Data Scholars from QUST">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">QUST Data Science Research Association</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">青岛科技大学 数据科学研究协会</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">About</a>
+        
+          <a class="main-nav-link" href="/downloads/">Downloads</a>
+        
+          <a class="main-nav-link" href="/askhere/">Ask Here</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qust-dsra.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-brief-fft" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/04/15/brief-fft/" class="article-date">
+  <time class="dt-published" datetime="2022-04-15T05:11:39.000Z" itemprop="datePublished">2022-04-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      一点简短的FFT笔记
+    </h1>
+  
+
+
+  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Fourier Transformation, <code>Fourier</code>变换.</p>
+<span id="more"></span>
+<h2 id="Fourier-Series"><a href="#Fourier-Series" class="headerlink" title="Fourier Series"></a>Fourier Series</h2><p>对于周期 $ T = 2\pi $ 的函数 $ f(x) = f(x \pm 2m\pi) $,</p>
+<script type="math/tex; mode=display">f(x) = \frac{a_0}2 + \sum_{k=1}^\infty (a_k \cos(k x)+ b_k \sin(k x))</script><p>其中:</p>
+<ul>
+<li><script type="math/tex; mode=display">a_m = \pi^{-1} \int_{-\pi}^\pi f(x) \cos(m x) \mathrm{d}x</script>其中 <code>m &gt;= 0</code> (<code>m == 0</code> 的情况可认为是提取均值使之上下位置归零);</li>
+<li><script type="math/tex; mode=display">b_m = \pi^{-1} \int_{-\pi}^\pi f(x) \sin(m x) \mathrm{d}x</script>其中 <code>m &gt;= 1</code>;</li>
+</ul>
+<p>此处以<code>a</code>为例, 简单证明系数<code>a</code>与<code>b</code>由此而来:</p>
+<script type="math/tex; mode=display">\begin{align*}
+\forall & m \in \mathbb{Z^+}, \\
+\because &\quad f(x) = \frac{a_0}2 + \sum_{k=1}^\infty (a_k \cos(k x)+ b_k \sin(k x)) \\
+\therefore &\quad f(x) \cos{(m x)} = \frac{a_0}2 \cos{(m x)} + \cos{(m x)} \sum_{k=1}^\infty (a_k \cos(k x)+ b_k \sin(k x)) \\
+\therefore &\quad \int_{-\pi}^\pi f(x) \cos{(m x)} \mathrm{d}x = \int_{-\pi}^\pi \frac{a_0}2 \cos{(m x)} \mathrm{d}x \\
+&+ \int_{-\pi}^\pi \cos{(m x)} \sum_{k=1}^\infty (a_k \cos(k x)+ b_k \sin(k x)) \mathrm{d}x \\
+&= a_m \int_{-\pi}^\pi \cos^2{(m x)} \mathrm{d}x \quad (这一步使用了三角函系的正交性) \\
+又 &\quad \forall m \in \mathbb{Z^\ast}, \int_{-\pi}^\pi \cos^2{(m x)} \mathrm{d}x = \pi, \\
+\therefore &\quad \int_{-\pi}^\pi f(x) \cos{(m x)} \mathrm{d}x = \pi a_m, \\
+即 &\quad a_m = \pi^{-1} \int_{-\pi}^\pi f(x) \cos(m x) \mathrm{d}x.
+\end{align*}</script><h2 id="in-Arbitrary-Terms"><a href="#in-Arbitrary-Terms" class="headerlink" title="in Arbitrary Terms"></a>in Arbitrary Terms</h2><p>推广至任意周期<code>T</code>, 则有:</p>
+<script type="math/tex; mode=display">f(x) = \frac{a_0}2 + \sum_{k=1}^\infty (a_k \cos(\frac{2\pi}T k x) + b_k \sin(\frac{2\pi}T k x))</script><p>此时:</p>
+<ul>
+<li>$ a_m = \frac{2}T \int_{-\frac{T}2}^\frac{T}2 f(x) \cos(\frac{2\pi}T m x) \mathrm{d}x $;</li>
+<li>$ b_m = \frac{2}T \int_{-\frac{T}2}^\frac{T}2 f(x) \sin(\frac{2\pi}T m x) \mathrm{d}x $;</li>
+</ul>
+<p>需要注意两点:</p>
+<ol>
+<li>系数由 $ \pi^{-1} $ 变为 $ \frac{2}T $ 是因为区间的长度由 $ 2\pi $ 变为<code>T</code>;</li>
+<li>为了使在新的周期中对应原本的位置, 需要以系数 $ \frac{2\pi}T $ 乘<code>kx</code>;</li>
+</ol>
+<h2 id="Eular-Formula"><a href="#Eular-Formula" class="headerlink" title="Eular Formula"></a>Eular Formula</h2><script type="math/tex; mode=display">\exp{\{ \mathrm{j}x \}} = \cos x + \mathrm{j} \sin x</script><p>这是<code>Fourier</code>级数形式上由实数向复数变换的基础.</p>
+<h2 id="Fourier-Series-in-Complex"><a href="#Fourier-Series-in-Complex" class="headerlink" title="Fourier Series in Complex"></a>Fourier Series in Complex</h2><p>复数形式的<code>Fourier</code>级数, 结合<code>Eular</code>公式可以书写如下:</p>
+<script type="math/tex; mode=display">\begin{align*}
+f(x) &= \sum_{k=-\infty}^{+\infty} c_k \exp{\{ \mathrm{j} \omega k x \}} \\
+&= \sum_{k=-\infty}^{+\infty} c_k (\cos(\omega k x) + \mathrm{j} \sin(\omega k x)) \\
+&= \sum_{k=-\infty}^{+\infty} c_k \cos(\omega k x) + \mathrm{j} \sum_{k=-\infty}^{+\infty} c_k \sin(\omega k x) \\
+\end{align*}</script><p>其中 $ \omega = T^{-1} $ 为级数各项的角频率, 而 $ c_m \in \mathbb{C} $ 为复数形式的<code>Fourier</code>系数:</p>
+<script type="math/tex; mode=display">\begin{align*}
+c_m &= T^{-1} \int_{-T/2}^{T/2} f(x) \exp{\{-\mathrm{j} \omega m x\}} \mathrm{d}x \\
+&= T^{-1} \int_{-T/2}^{T/2} f(x) (\cos(\omega m x) - \mathrm{j} \sin(\omega m x)) \mathrm{d}x \\
+&= \frac{1}2 \frac{2}T \int_{-T/2}^{T/2} f(x) \cos(\omega m x) \mathrm{d}x \\
+&- \frac{\mathrm{j}}2 \frac{2}T \int_{-T/2}^{T/2} f(x) \sin(\omega m x) \mathrm{d}x \\
+&= \frac{a_m - \mathrm{j} b_m}2 \\
+同理, c_{-m} &= \frac{a_m + \mathrm{j} b_m}2 \quad (或者以 -m 替换 m 亦可得知) \\
+\end{align*}</script><p>由此, <strong>复数形式的<code>Fourier</code>级数与原本的实数形式一一对应</strong>.</p>
+<p><strong><em>需要注意的是!</em></strong> 此处的<code>m</code>取值是从 $ -\infty $ 到 $ +\infty $ 的全体整数, 而非仅自然数部分.</p>
+<h2 id="Fourier-Transform"><a href="#Fourier-Transform" class="headerlink" title="Fourier Transform"></a>Fourier Transform</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qust-dsra.github.io/2022/04/15/brief-fft/" data-id="cl2l86ywi000q3ktu1h4cbulw" data-title="一点简短的FFT笔记" class="article-share-link">分享</a>
+      
+      
+        <a href="/2022/04/15/brief-fft/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2022/04/15/brief-fft/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/04/03/find-doi/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">如何快速寻找文章的DOI号码</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+  <section id="comments" class="vcomment">
+
+  </section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 16px;">BST & BT (二叉查找树&平衡树)</a> <a href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 18px;">Binary Tree (二叉树)</a> <a href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" style="font-size: 14px;">Mathematical Modeling (数学建模)</a> <a href="/tags/Notes/" style="font-size: 20px;">Notes</a> <a href="/tags/Python-Lessons/" style="font-size: 12px;">Python Lessons</a> <a href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">RNN (循环神经网络)</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/04/15/brief-fft/">一点简短的FFT笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/03/find-doi/">如何快速寻找文章的DOI号码</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/02/brief-hmm/">一点简短的HMM笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/02/mathmodeling-06/">数学建模实验 VI Markov Chain</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/29/pylesson-04/">Python Lesson IV</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Data Scholars from QUST<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">About</a>
+  
+    <a href="/downloads/" class="mobile-nav-link">Downloads</a>
+  
+    <a href="/askhere/" class="mobile-nav-link">Ask Here</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  
+    
+<script src="/js/Valine-1.4.16.min.js"></script>
+
+  
+<script>
+    var GUEST_INFO = ['nick','mail','link'];
+    var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+        return GUEST_INFO.indexOf(item) > -1
+    });
+    var notify = 'false' == true;
+    var verify = 'false' == true;
+    new Valine({
+        el: '.vcomment',
+        notify: notify,
+        verify: verify,
+        appId: "UyQ3UNKJNCKXNBOmEPt38O2v-gzGzoHsz",
+        appKey: "yG94wy89SCPQ3x9eCkDIt1PR",
+        placeholder: "Just tell and share your feelings...",
+        pageSize:'10',
+        avatar:'mm',
+        lang:'zh-cn'
+    });
+</script>
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script-->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
