@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>稽古 (基于x86架构的)汇编语言浅试 | QUST Data Science Research Association</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="如题.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="稽古 (基于x86架构的)汇编语言浅试">
+<meta property="og:url" content="https://qust-dsra.github.io/2022/05/07/brief-asm/index.html">
+<meta property="og:site_name" content="QUST Data Science Research Association">
+<meta property="og:description" content="如题.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-07T08:29:48.000Z">
+<meta property="article:modified_time" content="2022-05-08T05:47:48.722Z">
+<meta property="article:author" content="Data Scholars from QUST">
+<meta property="article:tag" content="Notes">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">QUST Data Science Research Association</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">青岛科技大学 数据科学研究协会</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives/">Archives</a>
+        
+          <a class="main-nav-link" href="/about/">About</a>
+        
+          <a class="main-nav-link" href="/downloads/">Downloads</a>
+        
+          <a class="main-nav-link" href="/askhere/">Ask Here</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qust-dsra.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-brief-asm" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/07/brief-asm/" class="article-date">
+  <time class="dt-published" datetime="2022-05-07T08:29:48.000Z" itemprop="datePublished">2022-05-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      稽古 (基于x86架构的)汇编语言浅试
+    </h1>
+  
+
+
+  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>如题.</p>
+<span id="more"></span>
+<h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p>操作不同架构的处理器的语言不同, 其统称为 <strong>汇编语言 (Assembly Language)</strong>.<br><code>Intel</code>, <code>AMD</code> 等厂家的处理器为<code>x86</code>架构, <code>Apple</code>与树莓派等为<code>arm</code>架构, 此外还有其他类型处理器与相应架构, 于此我们讨论面向<code>x86</code>处理器的汇编语言.</p>
+<p>就算是面向同一架构的汇编语言, 也有不同语法之分, 例如面向<code>x86</code>架构的汇编语言也有<code>AT&amp;T</code>和<code>Intel</code>两种语法:</p>
+<figure class="highlight x86asm"><figcaption><span>X86 Assembly</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mov</span>     <span class="number">$0</span>x6,   %edi    <span class="comment">; AT&amp;T</span></span><br><span class="line"><span class="keyword">mov</span>     <span class="built_in">edi</span>,    <span class="number">0x6</span>     <span class="comment">; Intel</span></span><br></pre></td></tr></table></figure>
+<p>可以看出, <code>AT&amp;T</code>语法中源操作数在目标操作数之前, 而<code>Intel</code>正好相反, 于此我们使用<code>Intel</code>语法.</p>
+<h2 id="Compiler"><a href="#Compiler" class="headerlink" title="Compiler"></a>Compiler</h2><p>面向各种架构的任何汇编语言都是非常典型的编译式语言, 需要 <strong>编译器 (Compiler)</strong> 把 <strong>源程式 (Source)</strong> 编译为 <strong>目标代码 (Object Code)</strong>, 再连接为<strong>可执行文件</strong>.</p>
+<p>面向<code>x86</code>架构的汇编器有<code>Microsoft</code>的<code>masm</code>, <code>Borland</code>的<code>tasm</code>, 而我们今天将要用到的是<code>nasm</code> (Netwide Assembler)<sup><a href="#fn_10" id="reffn_10">10</a></sup>, 它是一个最初是在 <em>Julian Hall</em> 的协助下由 <em>Simon Tatham</em> 开发的, 目前由 <em>Hans Peter Anvin</em> 领导的小团队所维护的 <code>2-clause BSD License</code> 开源项目<sup><a href="#fn_11" id="reffn_11">11</a></sup>.</p>
+<p>在<code>Debian</code>系的<code>Linux</code>中可以直接通过<code>apt</code>进行安装:</p>
+<figure class="highlight sh"><figcaption><span>Shell</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt install nasm</span><br></pre></td></tr></table></figure>
+<h2 id="Structure"><a href="#Structure" class="headerlink" title="Structure"></a>Structure</h2><p>asm (代指<code>汇编语言</code>) 的结构分为 <strong>段落 (Section)</strong> 与其他部分 (这些我们暂且称为过程 (Routine), 因为很多人都这么叫):</p>
+<ol>
+<li><p>Section <code>.text</code>: 用于宣告主程式入口的部分, 一般会宣告为<code>_start</code>:</p>
+ <figure class="highlight x86asm"><figcaption><span>X86 Assembly</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">section</span> .text</span><br><span class="line">        <span class="meta">global</span>  _start</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Section <code>.bss</code>: 全称为 Block Starting Symbol, 其包含整个程式周期中变化的变量们, 可认为是宣告变量名的部分, 一般格式为:</p>
+ <figure class="highlight x86asm"><figcaption><span>X86 Assembly</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">section</span> .bss</span><br><span class="line">        &lt;name&gt;  &lt;type&gt;  &lt;content&gt;</span><br><span class="line">        ...     <span class="comment">; Other Variables</span></span><br></pre></td></tr></table></figure>
+<p> 每行宣告一个变量, <code>&lt;name&gt;</code>处为变量名, <code>&lt;type&gt;</code>为类型, <code>&lt;content&gt;</code>为初始内容, 字节类型的变量可以宣告类型为 <code>resb</code> (Reserve Byte), 于是<code>&lt;name&gt;</code>处的名称便是表示这个变量起始地址的标识, 可以类比<code>C/C++</code>中的 <strong>指针 (Pointer)</strong>, 具体写法可以参考如下:</p>
+ <figure class="highlight x86asm"><figcaption><span>X86 Assembly</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">section</span> .bss</span><br><span class="line">        inst    <span class="built_in">resb</span>    <span class="number">16</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Section <code>.data</code>: 用于宣告程式中不变的数据, 可以视为常量, 宣告形式与<code>.bss</code>中的变量类似, 但是对字节数据的宣告类型为 <code>db</code> (Define Bytes):</p>
+ <figure class="highlight x86asm"><figcaption><span>X86 Assembly</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">section</span> .data</span><br><span class="line">        &lt;name&gt;  &lt;type&gt;  &lt;content&gt;</span><br><span class="line">        ...     <span class="comment">; Other Constants</span></span><br></pre></td></tr></table></figure>
+<p> For Instance:</p>
+ <figure class="highlight x86asm"><figcaption><span>X86 Assembly</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">section</span> .data</span><br><span class="line">        txt1    <span class="built_in">db</span>      <span class="string">&quot;Sharing the World&quot;</span>, <span class="number">0xa</span>, <span class="number">0</span></span><br><span class="line">        txt2    <span class="built_in">db</span>      <span class="string">&quot;We&#x27;re Sharing an Endless Love&quot;</span>, <span class="number">0xa</span>, <span class="number">0</span></span><br><span class="line">        txt3    <span class="built_in">db</span>      <span class="string">&quot;Sharing our World&quot;</span>, <span class="number">0xa</span>, <span class="number">0</span></span><br><span class="line">        txt4    <span class="built_in">db</span>      <span class="string">&quot;Sharing your Sound&quot;</span>, <span class="number">0xa</span>, <span class="number">0</span></span><br><span class="line">        txt5    <span class="built_in">db</span>      <span class="string">&quot;Connecting our Feelings&quot;</span>, <span class="number">0xa</span>, <span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>目前看来, 64位的asm的主过程必须以<code>_start</code>为标识符, 例如:</p>
+ <figure class="highlight x86asm"><figcaption><span>X86 Assembly</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">_start:</span></span><br><span class="line">...     <span class="comment">; do something</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="Operations"><a href="#Operations" class="headerlink" title="Operations"></a>Operations</h2><p>在笔者个人看来, asm实质上是某种函数式执行, 即把数据置于特定的寄存器, 处理器内部的逻辑电路以其方式读取这些寄存器中的数据, 执行相应的操作:</p>
+<figure class="highlight x86asm"><figcaption><span>X86 Assembly</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(_start)</span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rax</span>,    <span class="number">60</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rdi</span>,    <span class="number">0</span></span><br><span class="line">        <span class="keyword">syscall</span></span><br></pre></td></tr></table></figure>
+<p><code>mov</code>指令即move, 但其行为是把源寄存器中的内容向目标寄存器复制, 在这里我们便是设置 <code>rax=60</code>, <code>rdi=0</code>.<br><code>syscall</code> 命令用于根据寄存器中当前存储的值调用相应的系统函数, 在此我们调用的是 <code>sys_exit</code>, 这是表示在程式结束之时退出程式的功能.</p>
+<p>这里我们给出一个列表, 表示不同系统函数调用时应向寄存器中存储的值:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">syscall</th>
+<th style="text-align:center"><code>rax</code></th>
+<th>…</th>
+<th style="text-align:center"><code>rdx</code></th>
+<th>…</th>
+<th style="text-align:center"><code>rdi</code></th>
+<th>…</th>
+<th style="text-align:center"><code>rsi</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>sys_read</code></td>
+<td style="text-align:center">0</td>
+<td></td>
+<td style="text-align:center">读取的最大字节数</td>
+<td></td>
+<td style="text-align:center">0 (表示写入)</td>
+<td></td>
+<td style="text-align:center">表示写入字节的地址的寄存器</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>sys_print</code></td>
+<td style="text-align:center">1</td>
+<td></td>
+<td style="text-align:center">输出的最大字节数</td>
+<td></td>
+<td style="text-align:center">1 (表示输出)</td>
+<td></td>
+<td style="text-align:center">表示输出字节源地址的寄存器</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:center">…</td>
+<td></td>
+<td style="text-align:center"></td>
+<td></td>
+<td style="text-align:center"></td>
+<td></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>sys_exit</code></td>
+<td style="text-align:center">60</td>
+<td></td>
+<td style="text-align:center"></td>
+<td></td>
+<td style="text-align:center">可认为是整个程式的返回值, <strong>一般为0</strong>, 表示正常结束</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Sub-Routine"><a href="#Sub-Routine" class="headerlink" title="Sub Routine"></a>Sub Routine</h2><p>子过程, 用于程式分解与复用:</p>
+<figure class="highlight x86asm"><figcaption><span>X86 Assembly</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">_start:</span></span><br><span class="line">        <span class="keyword">call</span>    _printext</span><br><span class="line">        ...     <span class="comment">; do something</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_printext:</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rax</span>,    <span class="number">1</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rdi</span>,    <span class="number">1</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rsi</span>,    txt1</span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rdx</span>,    <span class="number">18</span></span><br><span class="line">        <span class="keyword">syscall</span></span><br><span class="line">        <span class="keyword">ret</span></span><br></pre></td></tr></table></figure>
+<p>这里可以看出来<code>_printext</code>部分输出了<code>txt1</code>指向的前18格字节, 并通过<code>call</code>命令在主程式中进行了调用.<br>但如若最后不使用<code>ret</code>返回, 则会向下执行后面的程式块, 这一点与<code>C/C++</code>中的<code>goto</code>跳转以及<code>switch-case</code>结构相似.</p>
+<h2 id="Macro"><a href="#Macro" class="headerlink" title="Macro"></a>Macro</h2><blockquote><p>计算机科学里的 <strong>宏 (Macro)</strong> 是一种抽象, 它根据一系列预定义的规则替换一定的文本模式.</p>
+<footer><strong>百度百科词条</strong><cite><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/macro/10429400">macro</a></cite></footer></blockquote>
+<p>在asm中我们可以认为macro是一种比sub-routine更为泛化更为抽象的代码复用机制, 在<code>x86</code>的asm中具体形式如下:</p>
+<figure class="highlight x86asm"><figcaption><span>X86 Assembly</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">%macro  &lt;name&gt;  &lt;num_parameters&gt;</span><br><span class="line">        ...     <span class="comment">; do something</span></span><br><span class="line">%endmacro</span><br></pre></td></tr></table></figure>
+<p>譬如我们定义一个接收一个参数的macro, 用于程式结束:</p>
+<figure class="highlight x86asm"><figcaption><span>X86 Assembly</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">%macro  exit    <span class="number">1</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rax</span>,    <span class="number">60</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rdi</span>,    <span class="subst">%1</span></span><br><span class="line">        <span class="keyword">syscall</span></span><br><span class="line">%endmacro</span><br></pre></td></tr></table></figure>
+<p><code>%1</code>接收的便是提供的第一个参数, 譬如我们使用</p>
+<figure class="highlight x86asm"><figcaption><span>X86 Assembly</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">_start:</span>             <span class="comment">; or any other Routine</span></span><br><span class="line">        ...         <span class="comment">; do something</span></span><br><span class="line">        exit    <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>便等效于以下代码:</p>
+<figure class="highlight x86asm"><figcaption><span>X86 Assembly</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">_start:</span>             <span class="comment">; or any other Routine</span></span><br><span class="line">        ...         <span class="comment">; do something</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rax</span>,    <span class="number">60</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rdi</span>,    <span class="number">0</span></span><br><span class="line">        <span class="keyword">syscall</span></span><br></pre></td></tr></table></figure>
+<h2 id="Program"><a href="#Program" class="headerlink" title="Program"></a>Program</h2><p>于此展示笔者根据视频教程<sup><a href="#fn_2" id="reffn_2">2</a></sup>编写的一份示例:</p>
+<figure class="highlight x86asm"><figcaption><span>X86 Assembly</span><a target="_blank" rel="noopener" href="https://github.com/sandyzikun/asm-trail/blob/init/init-01.asm">init-01.asm</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">section</span> .data</span><br><span class="line">        txt0    <span class="built_in">db</span>      <span class="number">0xa</span>, <span class="number">0</span></span><br><span class="line">        txt1    <span class="built_in">db</span>      <span class="string">&quot;Sharing&quot;</span>, <span class="number">0x20</span>, <span class="number">0</span></span><br><span class="line">        txt     <span class="built_in">db</span>      <span class="string">&quot;Holax, Sekai!&quot;</span>, <span class="number">0xa</span>, <span class="number">0</span></span><br><span class="line">        txt2    <span class="built_in">db</span>      <span class="string">&quot;We&#x27;re Sharing an Endless Love&quot;</span>, <span class="number">0xa</span>, <span class="number">0</span></span><br><span class="line">        dig     <span class="built_in">db</span>      <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="meta">section</span> .bss</span><br><span class="line">        inst    <span class="built_in">resb</span>    <span class="number">16</span></span><br><span class="line"></span><br><span class="line"><span class="meta">section</span> .text</span><br><span class="line">        <span class="meta">global</span>  _start</span><br><span class="line"></span><br><span class="line">%macro  exit    <span class="number">1</span>               <span class="comment">; Declaring the Name and the Num of Parameters of the Macro</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rax</span>,    <span class="number">60</span>      <span class="comment">; Declaring the Function we&#x27;re to call is `sys_exit`</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rdi</span>,    <span class="subst">%1</span>      <span class="comment">; `%[k]` means the k-th Parameter</span></span><br><span class="line">        <span class="keyword">syscall</span>                 <span class="comment">; Calling the Function `sys_exit`</span></span><br><span class="line">%endmacro</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">        <span class="keyword">call</span>    _printext</span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rax</span>,    <span class="number">3</span></span><br><span class="line">        <span class="keyword">call</span>    _printdgrax</span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rax</span>,    <span class="number">9</span></span><br><span class="line">        <span class="keyword">call</span>    _printdgrax</span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rax</span>,    txt0</span><br><span class="line">        <span class="keyword">call</span>    _printstrax</span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rax</span>,    txt1</span><br><span class="line">        <span class="keyword">call</span>    _printstrax</span><br><span class="line">        <span class="keyword">call</span>    _readstr</span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rax</span>,    txt2</span><br><span class="line">        <span class="keyword">call</span>    _printstrax</span><br><span class="line">        exit    <span class="number">0</span>               <span class="comment">; Process of exiting the Program</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_printext:</span>                      <span class="comment">; A Sub-routine calling the Function `sys_write` to print the Bytes to which `rax` pointed</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rax</span>,    <span class="number">1</span>       <span class="comment">; Declaring the Function we&#x27;re to call is `sys_read`</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rdi</span>,    <span class="number">1</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rsi</span>,    txt</span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rdx</span>,    <span class="number">14</span></span><br><span class="line">        <span class="keyword">syscall</span></span><br><span class="line">        <span class="keyword">ret</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_readstr:</span>                       <span class="comment">; A Sub-routine calling the Function `sys_read`(?) to read the String which the User inputs then stored it in `inst`</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rax</span>,    <span class="number">0</span>       <span class="comment">; Declaring the Function we&#x27;re to call is `sys_read`</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rdi</span>,    <span class="number">0</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rsi</span>,    inst</span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rdx</span>,    <span class="number">16</span></span><br><span class="line">        <span class="keyword">syscall</span></span><br><span class="line">        <span class="keyword">ret</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_printdgrax:</span></span><br><span class="line">        <span class="keyword">add</span>     <span class="built_in">rax</span>,    <span class="number">48</span>      <span class="comment">; Add 48 to the Value of `rax`, which refers to the ascii of any digit</span></span><br><span class="line">        <span class="keyword">mov</span>     [dig],  <span class="built_in">al</span>      <span class="comment">; Temporarily storing the Byte of the Digit in `[dig]` from `al`</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rax</span>,    <span class="number">1</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rdi</span>,    <span class="number">1</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rsi</span>,    dig</span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rdx</span>,    <span class="number">1</span></span><br><span class="line">        <span class="keyword">syscall</span></span><br><span class="line">        <span class="keyword">ret</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;input: rax as a pointer to the specified string</span></span><br><span class="line"><span class="comment">;output: print string as rax</span></span><br><span class="line"><span class="symbol">_printstrax:</span></span><br><span class="line">        <span class="keyword">push</span>    <span class="built_in">rax</span>             <span class="comment">; Pushing the Value of `rax` into the Stack</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rbx</span>,    <span class="number">0</span>       <span class="comment">; Setting the Value of `rbx` to zero, for counting Length of the Bytes later</span></span><br><span class="line"><span class="symbol">_prloop:</span></span><br><span class="line">        <span class="keyword">inc</span>     <span class="built_in">rax</span>             <span class="comment">; ++`rax`, which makes it point to the Byte next to the one pointed to previously</span></span><br><span class="line">        <span class="keyword">inc</span>     <span class="built_in">rbx</span>             <span class="comment">; ++`rbx`, which means the Length it recorded is added by one</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="number">ch</span>,     [<span class="built_in">rax</span>]   <span class="comment">; Temporarily storing the Byte in `cl` (or using `ch` is also proper), which `rax` pointed to, for being compared to zero later</span></span><br><span class="line">        <span class="keyword">cmp</span>     <span class="number">ch</span>,     <span class="number">0</span>       <span class="comment">; Compare the Byte to zero,</span></span><br><span class="line">        <span class="keyword">jne</span>     _prloop         <span class="comment">; * if the result is not equal, go back to `_prloop` (`jne` == &quot;Jump when Not Equal&quot;)</span></span><br><span class="line">                                <span class="comment">; * otherwise, execute the program below:</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rax</span>,    <span class="number">1</span>       <span class="comment">; Declaring the Function we&#x27;re to call is `sys_write`, like every time we called it previously</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rdi</span>,    <span class="number">1</span>       <span class="comment">;</span></span><br><span class="line">        <span class="keyword">pop</span>     <span class="built_in">rsi</span>             <span class="comment">; The top of the Stack should be pushed from `rax` previously, which means it refers to the Starter of the String</span></span><br><span class="line">                                <span class="comment">; Now we pop it to `rsi`</span></span><br><span class="line">        <span class="keyword">mov</span>     <span class="built_in">rdx</span>,    <span class="built_in">rbx</span>     <span class="comment">; (Actually we can also operate on `rdx` directly only in this case, nevertheless operating on `rbx` before copying to `rdx` is more of safety</span></span><br><span class="line">        <span class="keyword">syscall</span></span><br><span class="line">        <span class="keyword">ret</span></span><br></pre></td></tr></table></figure>
+<p>执行以下命令即可编译运行:</p>
+<figure class="highlight sh"><figcaption><span>Shell</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ nasm ./init-01.asm -f elf64</span><br><span class="line">$ ld ./init-01.o</span><br><span class="line">$ ./a.out</span><br><span class="line">Holax, sekai!</span><br><span class="line">39</span><br><span class="line">Sharing (the World)</span><br><span class="line">We<span class="string">&#x27;re Sharing an Endless Love</span></span><br></pre></td></tr></table></figure>
+<p>(括号里面的内容<code>the World</code>是用户在终端里面的输入)</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
+<sup>1</sup>. 100秒了解汇编语言 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av213755649/">Bilibili: <code>av213755649</code></a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. 一套 <code>YouTube</code> 上很受欢迎的汇编语言教程, 在 <code>Bilibili</code> 上的搬运: <sup><a href="#fn_3" id="reffn_3">3</a></sup> <sup><a href="#fn_4" id="reffn_4">4</a></sup> <sup><a href="#fn_5" id="reffn_5">5</a></sup> <sup><a href="#fn_6" id="reffn_6">6</a></sup> <sup><a href="#fn_7" id="reffn_7">7</a></sup> <sup><a href="#fn_8" id="reffn_8">8</a></sup> <sup><a href="#fn_9" id="reffn_9">9</a></sup><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. [英语字幕]NASM linux 汇编语言-1 x86_64 Linux Assembly #1 - ‘Hello, World!’ <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av672911046/">Bilibili: <code>av672911046</code></a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. [英语字幕]NASM linux汇编语言 - 2 x86_64 Linux Assembly #2 - “Hello, World!” Breakdown <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av757892807/">Bilibili: <code>av757892807</code></a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. [英语字幕]NASM linux汇编语言 -3 x86_64 Linux Assembly #3 - Jumps, Calls, Comparisons <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av972925372/">Bilibili: <code>av972925372</code></a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_6">
+<sup>6</sup>. [英语字幕]NASM linux汇编语言 -4 x86_64 Linux Assembly #4 - Getting User Input <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av587897493/">Bilibili: <code>av587897493</code></a><a href="#reffn_6" title="Jump back to footnote [6] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_7">
+<sup>7</sup>. [英语字幕]NASM linux汇编语言 -5 x86_64 Linux Assembly #5 - Math Operations and the Stack <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av845445104/">Bilibili: <code>av845445104</code></a><a href="#reffn_7" title="Jump back to footnote [7] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_8">
+<sup>8</sup>. [英语字幕]NASM linux汇编语言 -6 x86_64 Linux Assembly #6 - Subroutine to Print Strings <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av757891011/">Bilibili: <code>av757891011</code></a><a href="#reffn_8" title="Jump back to footnote [8] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_9">
+<sup>9</sup>. [英语字幕]NASM linux汇编语言 -7 x86_64 Linux Assembly #7 - Macros <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av930512566/">Bilibili: <code>av930512566</code></a><a href="#reffn_9" title="Jump back to footnote [9] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_10">
+<sup>10</sup>. <a target="_blank" rel="noopener" href="https://www.nasm.us/">NASM</a><a href="#reffn_10" title="Jump back to footnote [10] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_11">
+<sup>11</sup>. 百度百科词条 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/nasm/10798233">NASM</a><a href="#reffn_11" title="Jump back to footnote [11] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qust-dsra.github.io/2022/05/07/brief-asm/" data-id="cl2wvpfpq000rd425e0f72ibs" data-title="稽古 (基于x86架构的)汇编语言浅试" class="article-share-link">分享</a>
+      
+      
+        <a href="/2022/05/07/brief-asm/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2022/05/07/brief-asm/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/04/15/brief-fourier/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">一点简短的笔记, 有关 Fourier Transformation</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+  <section id="comments" class="vcomment">
+
+  </section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 16px;">BST & BT (二叉查找树&平衡树)</a> <a href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 18px;">Binary Tree (二叉树)</a> <a href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" style="font-size: 14px;">Mathematical Modeling (数学建模)</a> <a href="/tags/Notes/" style="font-size: 20px;">Notes</a> <a href="/tags/Python-Lessons/" style="font-size: 12px;">Python Lessons</a> <a href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">RNN (循环神经网络)</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/07/brief-asm/">稽古 (基于x86架构的)汇编语言浅试</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/15/brief-fourier/">一点简短的笔记, 有关 Fourier Transformation</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/03/find-doi/">如何快速寻找文章的DOI号码</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/02/brief-hmm/">一点简短的HMM笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/02/mathmodeling-06/">数学建模实验 VI Markov Chain</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Data Scholars from QUST<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives/" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about/" class="mobile-nav-link">About</a>
+  
+    <a href="/downloads/" class="mobile-nav-link">Downloads</a>
+  
+    <a href="/askhere/" class="mobile-nav-link">Ask Here</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  
+    
+<script src="/js/Valine-1.4.16.min.js"></script>
+
+  
+<script>
+    var GUEST_INFO = ['nick','mail','link'];
+    var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+        return GUEST_INFO.indexOf(item) > -1
+    });
+    var notify = 'false' == true;
+    var verify = 'false' == true;
+    new Valine({
+        el: '.vcomment',
+        notify: notify,
+        verify: verify,
+        appId: "UyQ3UNKJNCKXNBOmEPt38O2v-gzGzoHsz",
+        appKey: "yG94wy89SCPQ3x9eCkDIt1PR",
+        placeholder: "Just tell and share your feelings...",
+        pageSize:'10',
+        avatar:'mm',
+        lang:'zh-cn'
+    });
+</script>
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script-->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

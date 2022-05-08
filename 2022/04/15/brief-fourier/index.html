@@ -4,19 +4,23 @@
   <meta charset="utf-8">
   
   
-  <title>一点简短的FFT笔记 | QUST Data Science Research Association</title>
+  <title>一点简短的笔记, 有关 Fourier Transformation | QUST Data Science Research Association</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="Fourier Transformation, Fourier变换.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一点简短的FFT笔记">
-<meta property="og:url" content="https://qust-dsra.github.io/2022/04/15/brief-fft/index.html">
+<meta property="og:title" content="一点简短的笔记, 有关 Fourier Transformation">
+<meta property="og:url" content="https://qust-dsra.github.io/2022/04/15/brief-fourier/index.html">
 <meta property="og:site_name" content="QUST Data Science Research Association">
 <meta property="og:description" content="Fourier Transformation, Fourier变换.">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/04/15/brief-fourier/brief-fft/dft-freq.jpeg">
+<meta property="og:image" content="https://qust-dsra.github.io/2022/04/15/brief-fourier/brief-fft/dft-time.jpeg">
 <meta property="article:published_time" content="2022-04-15T05:11:39.000Z">
-<meta property="article:modified_time" content="2022-04-29T13:36:54.047Z">
+<meta property="article:modified_time" content="2022-05-08T05:47:48.750Z">
 <meta property="article:author" content="Data Scholars from QUST">
+<meta property="article:tag" content="Notes">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qust-dsra.github.io/2022/04/15/brief-fourier/brief-fft/dft-freq.jpeg">
   
     <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
   
@@ -83,9 +87,9 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-brief-fft" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-brief-fourier" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2022/04/15/brief-fft/" class="article-date">
+    <a href="/2022/04/15/brief-fourier/" class="article-date">
   <time class="dt-published" datetime="2022-04-15T05:11:39.000Z" itemprop="datePublished">2022-04-15</time>
 </a>
     
@@ -97,7 +101,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      一点简短的FFT笔记
+      一点简短的笔记, 有关 Fourier Transformation
     </h1>
   
 
@@ -113,8 +117,8 @@
 <h2 id="Fourier-Series"><a href="#Fourier-Series" class="headerlink" title="Fourier Series"></a>Fourier Series</h2><p>对于周期 $ T = 2\pi $ 的函数 $ f(x) = f(x \pm 2m\pi) $,</p>
 <script type="math/tex; mode=display">f(x) = \frac{a_0}2 + \sum_{k=1}^\infty (a_k \cos(k x)+ b_k \sin(k x))</script><p>其中:</p>
 <ul>
-<li><script type="math/tex; mode=display">a_m = \pi^{-1} \int_{-\pi}^\pi f(x) \cos(m x) \mathrm{d}x</script>其中 <code>m &gt;= 0</code> (<code>m == 0</code> 的情况可认为是提取均值使之上下位置归零);</li>
-<li><script type="math/tex; mode=display">b_m = \pi^{-1} \int_{-\pi}^\pi f(x) \sin(m x) \mathrm{d}x</script>其中 <code>m &gt;= 1</code>;</li>
+<li>$ a_m = \pi^{-1} \int_{-\pi}^\pi f(x) \cos(m x) \mathrm{d}x $, 其中 <code>m &gt;= 0</code> (<code>m == 0</code> 的情况可认为是提取均值使之上下位置归零);</li>
+<li>$ b_m = \pi^{-1} \int_{-\pi}^\pi f(x) \sin(m x) \mathrm{d}x $, 其中 <code>m &gt;= 1</code>;</li>
 </ul>
 <p>此处以<code>a</code>为例, 简单证明系数<code>a</code>与<code>b</code>由此而来:</p>
 <script type="math/tex; mode=display">\begin{align*}
@@ -126,7 +130,7 @@
 &= a_m \int_{-\pi}^\pi \cos^2{(m x)} \mathrm{d}x \quad (这一步使用了三角函系的正交性) \\
 又 &\quad \forall m \in \mathbb{Z^\ast}, \int_{-\pi}^\pi \cos^2{(m x)} \mathrm{d}x = \pi, \\
 \therefore &\quad \int_{-\pi}^\pi f(x) \cos{(m x)} \mathrm{d}x = \pi a_m, \\
-即 &\quad a_m = \pi^{-1} \int_{-\pi}^\pi f(x) \cos(m x) \mathrm{d}x.
+即 &\quad a_m = \pi^{-1} \int_{-\pi}^\pi f(x) \cos(m x) \mathrm{d}x, 其对 m = 0 的情形也成立. \\
 \end{align*}</script><h2 id="in-Arbitrary-Terms"><a href="#in-Arbitrary-Terms" class="headerlink" title="in Arbitrary Terms"></a>in Arbitrary Terms</h2><p>推广至任意周期<code>T</code>, 则有:</p>
 <script type="math/tex; mode=display">f(x) = \frac{a_0}2 + \sum_{k=1}^\infty (a_k \cos(\frac{2\pi}T k x) + b_k \sin(\frac{2\pi}T k x))</script><p>此时:</p>
 <ul>
@@ -151,27 +155,46 @@ c_m &= T^{-1} \int_{-T/2}^{T/2} f(x) \exp{\{-\mathrm{j} \omega m x\}} \mathrm{d}
 &= \frac{1}2 \frac{2}T \int_{-T/2}^{T/2} f(x) \cos(\omega m x) \mathrm{d}x \\
 &- \frac{\mathrm{j}}2 \frac{2}T \int_{-T/2}^{T/2} f(x) \sin(\omega m x) \mathrm{d}x \\
 &= \frac{a_m - \mathrm{j} b_m}2 \\
-同理, c_{-m} &= \frac{a_m + \mathrm{j} b_m}2 \quad (或者以 -m 替换 m 亦可得知) \\
+同理, c_{-m} &= \frac{a_m + \mathrm{j} b_m}2 = \overline{c_m} \\
 \end{align*}</script><p>由此, <strong>复数形式的<code>Fourier</code>级数与原本的实数形式一一对应</strong>.</p>
 <p><strong><em>需要注意的是!</em></strong> 此处的<code>m</code>取值是从 $ -\infty $ 到 $ +\infty $ 的全体整数, 而非仅自然数部分.</p>
-<h2 id="Fourier-Transform"><a href="#Fourier-Transform" class="headerlink" title="Fourier Transform"></a>Fourier Transform</h2>
+<h2 id="Fourier-Transformation"><a href="#Fourier-Transformation" class="headerlink" title="Fourier Transformation"></a>Fourier Transformation</h2><p>回顾上文提及的<code>Fourier</code>级数, 我们可以发现, 实质上每一个系数 $ a_m $, $ b_m $, $ c_m $ (或 $ c_{-m} $ ), 皆是目标函数分解为正交函数系中不同项的系数, 但是当我们不知道目标函数的周期, 或者它根本不是周期函数的时候, 我们便无法使用<code>Fourier</code>级数进行分析, 这时便要把<code>Fourier</code>级数离散的各项系数取代为连续的函数.</p>
+<p>对于离散的<code>Fourier</code>级数而言, 其各项系数(不论正负)为 $ c_m = T^{-1}\int_{-T/2}^{T/2}f(x)\exp{\{-\mathrm{j} \omega m x\}} $, 那么对于连续的情形而言, <code>Fourier</code>变换可以表示如下:</p>
+<script type="math/tex; mode=display">F(\omega | f(\tau))
+= \int_{-\infty}^{+\infty} f(\tau)
+\exp{\{ -\mathrm{j} \omega \tau \}}
+\mathrm{d} \tau</script><h2 id="Discrete"><a href="#Discrete" class="headerlink" title="Discrete"></a>Discrete</h2><p>离散<code>Fourier</code>变换, 会用到一种被称为<code>蝶形运算</code>的方法:</p>
+<p><img src="/2022/04/15/brief-fourier/brief-fft/dft-freq.jpeg" alt><img src="/2022/04/15/brief-fourier/brief-fft/dft-time.jpeg" alt></p>
+<p>稍作了解即可, 这里暂不赘述.</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qust-dsra.github.io/2022/04/15/brief-fft/" data-id="cl2l86ywi000q3ktu1h4cbulw" data-title="一点简短的FFT笔记" class="article-share-link">分享</a>
+      <a data-url="https://qust-dsra.github.io/2022/04/15/brief-fourier/" data-id="cl2wvpfps000ud42569e086nj" data-title="一点简短的笔记, 有关 Fourier Transformation" class="article-share-link">分享</a>
       
       
-        <a href="/2022/04/15/brief-fft/#comments" class="article-comment-link">
-          <span class="post-comments-count valine-comment-count" data-xid="/2022/04/15/brief-fft/" itemprop="commentCount"></span>
+        <a href="/2022/04/15/brief-fourier/#comments" class="article-comment-link">
+          <span class="post-comments-count valine-comment-count" data-xid="/2022/04/15/brief-fourier/" itemprop="commentCount"></span>
           留言
         </a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Notes/" rel="tag">Notes</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
+  
+    <a href="/2022/05/07/brief-asm/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          稽古 (基于x86架构的)汇编语言浅试
+        
+      </div>
+    </a>
   
   
     <a href="/2022/04/03/find-doi/" id="article-nav-older" class="article-nav-link-wrap">
@@ -209,7 +232,7 @@ c_m &= T^{-1} \int_{-T/2}^{T/2} f(x) \exp{\{-\mathrm{j} \omega m x\}} \mathrm{d}
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li></ul>
     </div>
   </div>
 
@@ -222,7 +245,11 @@ c_m &= T^{-1} \int_{-T/2}^{T/2} f(x) \exp{\{-\mathrm{j} \omega m x\}} \mathrm{d}
       <ul>
         
           <li>
-            <a href="/2022/04/15/brief-fft/">一点简短的FFT笔记</a>
+            <a href="/2022/05/07/brief-asm/">稽古 (基于x86架构的)汇编语言浅试</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/15/brief-fourier/">一点简短的笔记, 有关 Fourier Transformation</a>
           </li>
         
           <li>
@@ -235,10 +262,6 @@ c_m &= T^{-1} \int_{-T/2}^{T/2} f(x) \exp{\{-\mathrm{j} \omega m x\}} \mathrm{d}
         
           <li>
             <a href="/2022/04/02/mathmodeling-06/">数学建模实验 VI Markov Chain</a>
-          </li>
-        
-          <li>
-            <a href="/2022/03/29/pylesson-04/">Python Lesson IV</a>
           </li>
         
       </ul>

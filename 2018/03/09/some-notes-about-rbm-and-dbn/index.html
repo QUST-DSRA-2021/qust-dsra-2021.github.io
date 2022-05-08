@@ -14,7 +14,7 @@
 <meta property="og:description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;rogerchen1983&#x2F;article&#x2F;details&#x2F;79407386&#x2F; https:&#x2F;&#x2F;www.sohu.com&#x2F;a&#x2F;167221030_714863&#x2F; https:&#x2F;&#x2F;blog.csdn.net&#x2F;a819825294&#x2F;article&#x2F;details&#x2F;53608141&#x2F; https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;22794772">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-03-09T04:39:39.000Z">
-<meta property="article:modified_time" content="2022-04-29T12:38:20.030Z">
+<meta property="article:modified_time" content="2022-05-08T05:47:48.846Z">
 <meta property="article:author" content="Data Scholars from QUST">
 <meta name="twitter:card" content="summary">
   
@@ -146,15 +146,30 @@
 <ul>
 <li><a target="_blank" rel="noopener" href="http://www.svms.org/">http://www.svms.org/</a></li>
 </ul>
+<p>about <code>x86</code> Assembly:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4cb16fa18b49/">https://www.jianshu.com/p/4cb16fa18b49/</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_47589072/article/details/119213527/">https://blog.csdn.net/m0_47589072/article/details/119213527/</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/443522525/">https://zhuanlan.zhihu.com/p/443522525/</a></li>
+</ul>
 <p><code>2022-04-09</code>更新:</p>
 <p><code>RBM</code>(Restricted Boltzmann Machine, 受限玻尔兹曼机)是一种概率图模型, 简单记录通过堆叠<code>sklearn.neural_network</code>中的<code>BernoulliRBM</code>实现<code>DBN</code>(Deep Belief Network, 深度信念网络).</p>
 <figure class="highlight py"><figcaption><span>Python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env Python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> sklearn.datasets</span><br><span class="line"><span class="keyword">import</span> sklearn.linear_model</span><br><span class="line"><span class="keyword">import</span> sklearn.neural_network</span><br><span class="line"><span class="keyword">import</span> sklearn.model_selection</span><br><span class="line"><span class="keyword">import</span> sklearn.pipeline</span><br><span class="line"><span class="keyword">import</span> sklearn.metrics</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Constants</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    RANDOM_STATE = <span class="number">39</span></span><br><span class="line">nist = sklearn.datasets.load_digits()</span><br><span class="line">X_Train, X_Test, y_Train, y_Test = sklearn.model_selection.train_test_split(nist.data / nist.data.<span class="built_in">max</span>(), nist.target, test_size=<span class="number">.2</span>, random_state=Constants.RANDOM_STATE)</span><br><span class="line">dbn = sklearn.pipeline.Pipeline([</span><br><span class="line">    (<span class="string">&quot;rbm1&quot;</span>, sklearn.neural_network.BernoulliRBM(n_components=<span class="number">100</span>, learning_rate=<span class="number">.06</span>, n_iter=<span class="number">100</span>, verbose=<span class="number">1</span>, random_state=Constants.RANDOM_STATE)),</span><br><span class="line">    <span class="comment">#(&quot;rbm2&quot;, sklearn.neural_network.BernoulliRBM(n_components=80, learning_rate=.06, n_iter=100, verbose=1, random_state=Constants.RANDOM_STATE)),</span></span><br><span class="line">    <span class="comment">#(&quot;rbm3&quot;, sklearn.neural_network.BernoulliRBM(n_components=60, learning_rate=.06, n_iter=100, verbose=1, random_state=Constants.RANDOM_STATE)),</span></span><br><span class="line">    (<span class="string">&quot;logistic&quot;</span>, sklearn.linear_model.LogisticRegression(C=<span class="number">100</span>))</span><br><span class="line">    ]).fit(X_Train, y_Train)</span><br><span class="line">y_Pred = dbn.predict(X_Test)</span><br><span class="line"><span class="built_in">print</span>(sklearn.metrics.classification_report(y_Test, y_Pred))</span><br></pre></td></tr></table></figure>
 <p>about <code>Enigma</code> Machine: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/sunchao1984/p/5089020.html">https://www.cnblogs.com/sunchao1984/p/5089020.html</a></p>
+<p>about <code>UTF-8</code>, <code>UTF-16</code>, <code>UTF-32</code>: <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/55bd8d7dfc64/">https://www.jianshu.com/p/55bd8d7dfc64/</a></p>
+<p>about Cryptography:</p>
+<ul>
+<li>与佛论禅:<ul>
+<li>Tool: <a target="_blank" rel="noopener" href="https://www.keyfc.net/bbs/tools/tudoucode.aspx">https://www.keyfc.net/bbs/tools/tudoucode.aspx</a></li>
+<li>原理: <a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/028c1eddf9b069dc5022aaea998fcc22bdd14358.html">https://wenku.baidu.com/view/028c1eddf9b069dc5022aaea998fcc22bdd14358.html</a> 说是本质上为<code>AES</code>加密</li>
+</ul>
+</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qust-dsra.github.io/2018/03/09/some-notes-about-rbm-and-dbn/" data-id="cl2l86ywr00173ktu23unbwz3" data-title="some-notes-about-rbm-and-dbn" class="article-share-link">分享</a>
+      <a data-url="https://qust-dsra.github.io/2018/03/09/some-notes-about-rbm-and-dbn/" data-id="cl2wvpfqh001ed425c6qb1m6s" data-title="some-notes-about-rbm-and-dbn" class="article-share-link">分享</a>
       
       
         <a href="/2018/03/09/some-notes-about-rbm-and-dbn/#comments" class="article-comment-link">
@@ -209,7 +224,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li></ul>
     </div>
   </div>
 
@@ -222,7 +237,11 @@
       <ul>
         
           <li>
-            <a href="/2022/04/15/brief-fft/">一点简短的FFT笔记</a>
+            <a href="/2022/05/07/brief-asm/">稽古 (基于x86架构的)汇编语言浅试</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/15/brief-fourier/">一点简短的笔记, 有关 Fourier Transformation</a>
           </li>
         
           <li>
@@ -235,10 +254,6 @@
         
           <li>
             <a href="/2022/04/02/mathmodeling-06/">数学建模实验 VI Markov Chain</a>
-          </li>
-        
-          <li>
-            <a href="/2022/03/29/pylesson-04/">Python Lesson IV</a>
           </li>
         
       </ul>
