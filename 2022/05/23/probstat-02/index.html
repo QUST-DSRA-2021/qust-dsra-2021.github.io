@@ -4,16 +4,20 @@
   <meta charset="utf-8">
   
   
-  <title>probstat-02 | QUST Data Science Research Association</title>
+  <title>概率统计 II 随机变量及其分布 | QUST Data Science Research Association</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="article">
-<meta property="og:title" content="probstat-02">
+  <meta name="description" content="随机变量及其分布">
+<meta property="og:type" content="article">
+<meta property="og:title" content="概率统计 II 随机变量及其分布">
 <meta property="og:url" content="https://qust-dsra.github.io/2022/05/23/probstat-02/index.html">
 <meta property="og:site_name" content="QUST Data Science Research Association">
+<meta property="og:description" content="随机变量及其分布">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-23T07:05:30.000Z">
-<meta property="article:modified_time" content="2022-05-23T15:05:30.355Z">
+<meta property="article:modified_time" content="2022-05-23T17:30:51.508Z">
 <meta property="article:author" content="Data Scholars from QUST">
+<meta property="article:tag" content="Preliminary Examination">
+<meta property="article:tag" content="Probability &amp; Statistic (概率论与数理统计)">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
@@ -95,20 +99,118 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      probstat-02
+      概率统计 II 随机变量及其分布
     </h1>
   
 
+
+  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
 
       </header>
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <p>随机变量及其分布</p>
+<span id="more"></span>
+<h2 id="Definitions-Theorems-and-Properties"><a href="#Definitions-Theorems-and-Properties" class="headerlink" title="Definitions, Theorems, and Properties"></a>Definitions, Theorems, and Properties</h2><ol>
+<li><strong>随机变量 (Random Variable) (Def <code>2.1.1</code>)</strong>: 表示为 <code>X, Y, Z</code> 等大写字母或 $ \xi, \eta, \zeta $ 等希腊字母, 取值记为 <code>x, y, z</code> 等对应小写字母;<ul>
+<li>离散 <strong>(Discrete)</strong>: 仅可能取有限个, 可列个或可数个值的随机变量称为<strong>离散随机变量</strong></li>
+<li>连续 <strong>(Continuous)</strong>: 其可能取值充满数轴上的某一个区间<code>(a, b)</code>, 其中 $ a 可取 -\infty $, $ b 可取 +\infty $;</li>
+</ul>
+</li>
+<li>概率的描述<ul>
+<li><strong>概率分布 (Probability Distribution) (Def <code>2.1.3</code>)</strong>: 又称为分布律或分布列, 指某<strong>离散</strong>随机变量所有可能取值对应的概率;</li>
+<li><strong>Prop <code>2.1.1</code></strong>: 满足 <strong>非负性 (Non-negativity)</strong> 与 <strong>正则性 (Regularity)</strong>;</li>
+<li><strong>概率密度 (Probability Density) (Def <code>2.1.4</code>)</strong>: 又称为密度函数, 指某<strong>连续</strong>随机变量可能取值与对应变量的关系函数;</li>
+<li><strong>Prop <code>2.1.2</code></strong>: 满足 <strong>非负性 (Non-negativity)</strong> 与 <strong>正则性 (Regularity)</strong>;</li>
+</ul>
+</li>
+<li><p><strong>分布函数 (Distribution Function) (Def <code>2.1.2</code>)</strong>: 设 $ \xi $ 为一个随机变量, 对任意实数<code>x</code>, 称</p>
+<script type="math/tex; mode=display">F_\xi(x) = \Pr\{ \xi \le x \}</script><p> 为随机变量 $ \xi $ 的分布函数, 且称 $ \xi $ 服从于 $ F_\xi(x) $, 记为 $ \xi \sim F_\xi(x) $, 此处<code>F(x)</code>以 $ \xi $ 为下标表示其为关于随机变量 $ \xi $ 的分布函数;</p>
+<ul>
+<li><strong>Thr <code>2.1.1</code></strong><ol>
+<li>单调性(Monotonicity)与有界性(Boundedness): $ \forall -\infty &lt; x_1 &lt; x_2 &lt; +\infty, 0 = F(-\infty) \le F(x_1) \le F(x_2) \le F(+\infty) = 1 $;</li>
+<li>右连续性(Right-continuity): $ F(x_0 + 0) = F(x_0) $;</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>数学期望 (Mathematic Expectation)</strong>: 试验中每次可能结果的概率乘以其结果的总和, 是最基本的数学特征之一, 它反映随机变量平均取值的大小, 可以理解为随机变量所有取值的加权平均, 此处的<code>权</code>即为概率分布或概率密度, 其物理意义为<code>重心</code>;<ul>
+<li><strong>Prop <code>2.2.1</code></strong>: $ E(c) = c $;</li>
+<li><strong>Prop <code>2.2.2</code></strong>: $ E(a\xi) = a E(\xi) $;</li>
+<li><strong>Prop <code>2.2.3</code></strong>: $ E(g(\xi) \pm h(\xi)) = E(g(\xi)) \pm E(h(\xi)) $;</li>
+</ul>
+</li>
+<li><p><strong>方差 (Variance)</strong>: 衡量随机变量或一组数据时离散程度的度量, 用于描述随机变量的不集中程度, 其定义为</p>
+<script type="math/tex; mode=display">Var(\xi) = E[[ \xi - E(\xi) ]^2]</script><p> 而 <strong>标准差 (Standard Variance)</strong> $ \sigma(\xi) = \sqrt{Var(\xi)} $ 则是其算术平方根;</p>
+<ul>
+<li><strong>Prop <code>2.3.1</code></strong>: $ Var(\xi) = E(\xi^2) - E^2(\xi) $ (展开式);</li>
+<li><strong>Prop <code>2.3.2</code></strong>: $ Var(c) = 0 $;</li>
+<li><strong>Prop <code>2.3.3</code></strong>: $ Var(a\xi+b) = a^2 Var(\xi) $;</li>
+</ul>
+</li>
+<li><p><strong>Chebyshev’s Inequation (Thr <code>2.3.1</code>) <sup><a href="#fn_1" id="reffn_1">1</a></sup></strong>: 设随机变量 $ \xi $ 的期望与方差皆存在, 则 $ \forall \epsilon &gt; 0 $,</p>
+<script type="math/tex; mode=display">\Pr\{ | \xi - E(\xi) | \ge \epsilon \} \le \frac{Var(\xi)}{\epsilon^2}</script><p> 对于连续随机变量我们简单求证如下: (设 $ \mu = E(\xi) $)</p>
+<script type="math/tex; mode=display">\begin{align*}
+ \Pr\{ | \xi - \mu | \ge \epsilon \} &= \int_{\{x: |x - \mu| \ge \epsilon \}} p_\xi(x) \mathrm{d}x \\
+ &\le \int_{\{x: |x - \mu| \ge \epsilon \}} \frac{(x - \mu)^2}{\epsilon^2} p_\xi(x) \mathrm{d}x \\
+ &= \frac{1}{\epsilon^2} \int_{\{x: |x - \mu| \ge \epsilon \}} (x - \mu)^2 p_\xi(x) \mathrm{d}x \\
+ &\le \frac{1}{\epsilon^2} \int_{-\infty}^{+\infty} (x - \mu)^2 p_\xi(x) \mathrm{d}x \\
+ &= \frac{E[(x - \mu)^2]}{\epsilon^2} = \frac{Var(\xi)}{\epsilon^2} \\
+ \end{align*}</script></li>
+</ol>
+<p>Table 1: Common Formula Correspondence between Discrete and Continuous</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Discrete</th>
+<th>Continuous</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Non-negativity</td>
+<td>$ \forall k, p_\xi(x_k) \ge 0 $</td>
+<td>$ \forall x, p_\xi(x) \ge 0 $</td>
+</tr>
+<tr>
+<td>Regularity</td>
+<td>$ \sum_k {p_\xi(x_k)} = 1 $</td>
+<td>$ \int_{-\infty}^{+\infty} {p_\xi(x)} \mathrm{d}x = 1 $</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>$ F(x) = \sum_{x_k \le x} {p_\xi(x_k)} $</td>
+<td>$ \int_{-\infty}^x {p_\xi(\tau)} \mathrm{d}\tau $</td>
+</tr>
+<tr>
+<td>Expectation</td>
+<td>$ E(\xi) = \sum_k {x_k p_\xi(x_k)} $<br><strong>(Def <code>2.2.1</code>)</strong></td>
+<td>$ E(\xi) = \int_{-\infty}^{+\infty} {x p_\xi(x)} \mathrm{d}x $<br><strong>(Def <code>2.2.2</code>)</strong></td>
+</tr>
+<tr>
+<td><strong>Thr <code>2.2.1</code></strong></td>
+<td>$ E[g(\xi)] = \sum_k {g(x_k) p_\xi(x_k)} $</td>
+<td>$ E[g(\xi)] = \int_{-\infty}^{+\infty} {g(x) p_\xi(x)} \mathrm{d}x $</td>
+</tr>
+<tr>
+<td><strong>Def <code>2.3.1</code></strong></td>
+<td>$ Var(\xi) = \sum_k {(x_k - E(\xi)) p_\xi(x_k)} $</td>
+<td>$ Var(\xi) = \int_{-\infty}^{+\infty} {(x - E(\xi)) p_\xi(x)} \mathrm{d}x $</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
+<sup>1</sup>. Пафну́тий Льво́вич Чебышёв, 1821-1894;<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qust-dsra.github.io/2022/05/23/probstat-02/" data-id="cl3ivbq2y0017y5257qplaciq" data-title="probstat-02" class="article-share-link">分享</a>
+      <a data-url="https://qust-dsra.github.io/2022/05/23/probstat-02/" data-id="cl3j0b0ex0013gv2579fi0viv" data-title="概率统计 II 随机变量及其分布" class="article-share-link">分享</a>
       
       
         <a href="/2022/05/23/probstat-02/#comments" class="article-comment-link">
@@ -117,6 +219,8 @@
         </a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Preliminary-Examination/" rel="tag">Preliminary Examination</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Probability-Statistic-%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/" rel="tag">Probability & Statistic (概率论与数理统计)</a></li></ul>
+
     </footer>
   </div>
   
@@ -159,7 +263,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 16px;">BST & BT (二叉查找树&平衡树)</a> <a href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 18px;">Binary Tree (二叉树)</a> <a href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" style="font-size: 14px;">Mathematical Modeling (数学建模)</a> <a href="/tags/Notes/" style="font-size: 20px;">Notes</a> <a href="/tags/Python-Lessons/" style="font-size: 12px;">Python Lessons</a> <a href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">RNN (循环神经网络)</a>
+      <a href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 16px;">BST & BT (二叉查找树&平衡树)</a> <a href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 18px;">Binary Tree (二叉树)</a> <a href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" style="font-size: 14px;">Mathematical Modeling (数学建模)</a> <a href="/tags/Notes/" style="font-size: 20px;">Notes</a> <a href="/tags/Preliminary-Examination/" style="font-size: 10px;">Preliminary Examination</a> <a href="/tags/Probability-Statistic-%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/" style="font-size: 10px;">Probability & Statistic (概率论与数理统计)</a> <a href="/tags/Python-Lessons/" style="font-size: 12px;">Python Lessons</a> <a href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">RNN (循环神经网络)</a>
     </div>
   </div>
 
@@ -185,7 +289,7 @@
           </li>
         
           <li>
-            <a href="/2022/05/23/probstat-02/">probstat-02</a>
+            <a href="/2022/05/23/probstat-02/">概率统计 II 随机变量及其分布</a>
           </li>
         
           <li>
@@ -292,7 +396,7 @@
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<!--script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script-->
-<script src="https://cdn.jsdelivr.net/npm/mathjax@latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!--script src="https://cdn.jsdelivr.net/npm/mathjax@latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script-->
 </body>
 </html>
