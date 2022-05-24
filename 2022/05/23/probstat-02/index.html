@@ -14,7 +14,7 @@
 <meta property="og:description" content="随机变量及其分布">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-23T07:05:30.000Z">
-<meta property="article:modified_time" content="2022-05-23T17:30:51.508Z">
+<meta property="article:modified_time" content="2022-05-24T09:24:02.129Z">
 <meta property="article:author" content="Data Scholars from QUST">
 <meta property="article:tag" content="Preliminary Examination">
 <meta property="article:tag" content="Probability &amp; Statistic (概率论与数理统计)">
@@ -128,9 +128,12 @@
 <li><p><strong>分布函数 (Distribution Function) (Def <code>2.1.2</code>)</strong>: 设 $ \xi $ 为一个随机变量, 对任意实数<code>x</code>, 称</p>
 <script type="math/tex; mode=display">F_\xi(x) = \Pr\{ \xi \le x \}</script><p> 为随机变量 $ \xi $ 的分布函数, 且称 $ \xi $ 服从于 $ F_\xi(x) $, 记为 $ \xi \sim F_\xi(x) $, 此处<code>F(x)</code>以 $ \xi $ 为下标表示其为关于随机变量 $ \xi $ 的分布函数;</p>
 <ul>
-<li><strong>Thr <code>2.1.1</code></strong><ol>
-<li>单调性(Monotonicity)与有界性(Boundedness): $ \forall -\infty &lt; x_1 &lt; x_2 &lt; +\infty, 0 = F(-\infty) \le F(x_1) \le F(x_2) \le F(+\infty) = 1 $;</li>
-<li>右连续性(Right-continuity): $ F(x_0 + 0) = F(x_0) $;</li>
+<li><p><strong>Thr <code>2.1.1</code></strong></p>
+<ol>
+<li><p><strong>单调性(Monotonicity)</strong>与<strong>有界性(Boundedness)</strong>:</p>
+<script type="math/tex; mode=display">\forall -\infty < x_1 < x_2 < +\infty,</script><script type="math/tex; mode=display">0 = F(-\infty) \le F(x_1) \le F(x_2) \le F(+\infty) = 1</script></li>
+<li><p><strong>右连续性(Right-continuity)</strong>: $ F(x_0 + 0) = F(x_0) $;</p>
+</li>
 </ol>
 </li>
 </ul>
@@ -147,19 +150,53 @@
 <li><strong>Prop <code>2.3.1</code></strong>: $ Var(\xi) = E(\xi^2) - E^2(\xi) $ (展开式);</li>
 <li><strong>Prop <code>2.3.2</code></strong>: $ Var(c) = 0 $;</li>
 <li><strong>Prop <code>2.3.3</code></strong>: $ Var(a\xi+b) = a^2 Var(\xi) $;</li>
+<li><p><strong>Chebyshev’s Inequation (Thr <code>2.3.1</code>) <sup><a href="#fn_1" id="reffn_1">1</a></sup></strong>: 设随机变量 $ \xi $ 的期望与方差皆存在, 则 $ \forall \epsilon &gt; 0 $,</p>
+<script type="math/tex; mode=display">\Pr\{ | \xi - E(\xi) | \ge \epsilon \} \le \frac{Var(\xi)}{\epsilon^2}</script><p>对于连续随机变量我们简单求证如下: (设 $ \mu = E(\xi) $)</p>
+<script type="math/tex; mode=display">\begin{align*}
+\Pr\{ | \xi - \mu | \ge \epsilon \} &= \int_{\{x: |x - \mu| \ge \epsilon \}} p_\xi(x) \mathrm{d}x \\
+&\le \int_{\{x: |x - \mu| \ge \epsilon \}} \frac{(x - \mu)^2}{\epsilon^2} p_\xi(x) \mathrm{d}x \\
+&= \frac{1}{\epsilon^2} \int_{\{x: |x - \mu| \ge \epsilon \}} (x - \mu)^2 p_\xi(x) \mathrm{d}x \\
+&\le \frac{1}{\epsilon^2} \int_{-\infty}^{+\infty} (x - \mu)^2 p_\xi(x) \mathrm{d}x \\
+&= \frac{E[(x - \mu)^2]}{\epsilon^2} = \frac{Var(\xi)}{\epsilon^2} \\
+\end{align*}</script></li>
+<li><p><strong>Thr <code>2.3.2</code></strong>: 如若随机变量 $ \xi $ 的方差存在, 则</p>
+<script type="math/tex; mode=display">Var(\xi) = 0 \iff \Pr\{\xi=a\} = 1</script><p>即 $ \xi $ 几乎处处为某个常数<code>a</code>;</p>
+</li>
 </ul>
 </li>
-<li><p><strong>Chebyshev’s Inequation (Thr <code>2.3.1</code>) <sup><a href="#fn_1" id="reffn_1">1</a></sup></strong>: 设随机变量 $ \xi $ 的期望与方差皆存在, 则 $ \forall \epsilon &gt; 0 $,</p>
-<script type="math/tex; mode=display">\Pr\{ | \xi - E(\xi) | \ge \epsilon \} \le \frac{Var(\xi)}{\epsilon^2}</script><p> 对于连续随机变量我们简单求证如下: (设 $ \mu = E(\xi) $)</p>
+<li><p>离散随机变量的函数也是离散随机变量, 对于原离散随机变量 $ \xi $ 的取值中任意的 $ x_k $, 便是 $ g(x_k) $ 对应的概率为原本的 $ \Pr\{\xi = x_k\} $, 但要注意不同 $ g(x_k) $ 值相等时对应概率会合并, 然而连续随机变量的函数不一定为连续随机变量, 因此我们分情况讨论连续随机变量的函数:</p>
+<ol>
+<li>当 $ \eta = g(\xi) $ 为离散随机变量时, 我们只能将 $ \eta = g(\xi) $ 的取值逐个列出, 把 $ \eta $ 取各种可能值的对应概率求和即可;</li>
+<li><p>当 $ g(x) $ 为严格单调函数时, 我们有以下定理:</p>
+<ul>
+<li><p><strong>Thr <code>2.6.1</code></strong>: 设 $ \xi $ 为连续随机变量, 其密度函数为 $ p_\xi(x) $, $ \eta = g(\xi) $ 为另一个连续随机变量, 如若 $ y = g(x) $ 严格单调且其反函数 $ g^{-1}(x) $ 具有连续导函数, 则其密度函数为</p>
+<script type="math/tex; mode=display">p_\eta(y) = p_\xi[g^{-1}(y)] | \frac{\mathrm{d}}{\mathrm{d}y} g^{-1}(y) |, y \in (a, b)</script><p>where $ a = \min\{g(-\infty), g(+\infty)\}, b = \max\{g(-\infty), g(+\infty)\} $,<br>其实这个定理我们非常好理解, 以<code>g(x)</code>为严格单调递增函数的情况为例我们有:</p>
 <script type="math/tex; mode=display">\begin{align*}
- \Pr\{ | \xi - \mu | \ge \epsilon \} &= \int_{\{x: |x - \mu| \ge \epsilon \}} p_\xi(x) \mathrm{d}x \\
- &\le \int_{\{x: |x - \mu| \ge \epsilon \}} \frac{(x - \mu)^2}{\epsilon^2} p_\xi(x) \mathrm{d}x \\
- &= \frac{1}{\epsilon^2} \int_{\{x: |x - \mu| \ge \epsilon \}} (x - \mu)^2 p_\xi(x) \mathrm{d}x \\
- &\le \frac{1}{\epsilon^2} \int_{-\infty}^{+\infty} (x - \mu)^2 p_\xi(x) \mathrm{d}x \\
- &= \frac{E[(x - \mu)^2]}{\epsilon^2} = \frac{Var(\xi)}{\epsilon^2} \\
- \end{align*}</script></li>
+F_\eta(y) &= \Pr\{\eta \le y\} \\
+&= \Pr\{g(\xi) \le y\} \\
+&= \Pr\{\xi \le g^{-1}(y)\} \\
+&= \int_{-\infty}^{g^{-1}(y)} p_\xi(x) \mathrm{d}x \\
+\end{align*}</script><p>然后对<code>y</code>求导即可得证;</p>
+</li>
+<li><strong>Thr <code>2.6.2</code></strong>: 设随机变量 $ \xi $ 服从常态分布 $ N(\mu, \sigma^2) $ 则当 $ a \ne 0 $ 时有 $ a\xi+b \sim N(a\mu+b, a^2\sigma^2) $;</li>
+</ul>
+</li>
+<li>对于其他形式, 我们将直接由 $ \eta $ 的分布函数 $ F_\eta(y) = \Pr\{ \eta = g(\xi) \le y \} $ 出发, 根据函数 $ g(x) $ 的特点作个案处理;</li>
 </ol>
-<p>Table 1: Common Formula Correspondence between Discrete and Continuous</p>
+<ul>
+<li><p><strong>Thr <code>2.6.5</code></strong>: 如若随机变量 $ \xi $ 的分布函数 $ F_\xi(x) $ 为严格单调递增的连续函数, 其反函数 $ F_\xi^{-1}(y) $ 存在, 则 $ \eta = F_\xi(\xi) \sim U(0, 1) $, 这是因为当 $ 0 \le y &lt; 1 $ 时,</p>
+<script type="math/tex; mode=display">\begin{align*}
+F_\eta(y) &= \Pr\{\eta \le y\} \\
+&= \Pr\{F_\xi(\xi) \le y\} \\
+&= \Pr\{\xi \le F_\xi^{-1}(y)\} \\
+&= F_\xi(F_\xi^{-1}(y)) \\
+&= y \\
+\end{align*}</script><p>而 $ \eta = F_\xi(\xi) \in [0, 1] $, 因此 $ y &lt; 0 $ 时 $ \{\eta \le y\} $ 与 $ y \ge 1 $ 时 $ \{\eta \le y\} $ 分别为<code>不可能事件</code>与<code>必然事件</code>, 从而命题得证;</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="Discrete-Distributions"><a href="#Discrete-Distributions" class="headerlink" title="Discrete Distributions"></a>Discrete Distributions</h2><h3 id="Binomial"><a href="#Binomial" class="headerlink" title="Binomial"></a>Binomial</h3><h3 id="Poisson"><a href="#Poisson" class="headerlink" title="Poisson"></a>Poisson</h3><h3 id="Hyper-geometric"><a href="#Hyper-geometric" class="headerlink" title="Hyper-geometric"></a>Hyper-geometric</h3><h2 id="Continuous-Distributions"><a href="#Continuous-Distributions" class="headerlink" title="Continuous Distributions"></a>Continuous Distributions</h2><h3 id="Normal"><a href="#Normal" class="headerlink" title="Normal"></a>Normal</h3><h3 id="Uniform"><a href="#Uniform" class="headerlink" title="Uniform"></a>Uniform</h3><h3 id="Exponential"><a href="#Exponential" class="headerlink" title="Exponential"></a>Exponential</h3><h2 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h2><p>Table I. Common Formula Correspondence between Discrete and Continuous</p>
 <div class="table-container">
 <table>
 <thead>
@@ -203,6 +240,7 @@
 </tbody>
 </table>
 </div>
+<p>Table II.</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><blockquote id="fn_1">
 <sup>1</sup>. Пафну́тий Льво́вич Чебышёв, 1821-1894;<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
 </blockquote>
@@ -210,7 +248,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qust-dsra.github.io/2022/05/23/probstat-02/" data-id="cl3j0b0ex0013gv2579fi0viv" data-title="概率统计 II 随机变量及其分布" class="article-share-link">分享</a>
+      <a data-url="https://qust-dsra.github.io/2022/05/23/probstat-02/" data-id="cl3jye5n70013wk25e2zyd1kq" data-title="概率统计 II 随机变量及其分布" class="article-share-link">分享</a>
       
       
         <a href="/2022/05/23/probstat-02/#comments" class="article-comment-link">
