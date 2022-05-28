@@ -4,16 +4,20 @@
   <meta charset="utf-8">
   
   
-  <title>probstat-03 | QUST Data Science Research Association</title>
+  <title>概率统计 III 多维随机变量及其分布 | QUST Data Science Research Association</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="article">
-<meta property="og:title" content="probstat-03">
+  <meta name="description" content="随机矢量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="概率统计 III 多维随机变量及其分布">
 <meta property="og:url" content="https://qust-dsra.github.io/2022/05/23/probstat-03/index.html">
 <meta property="og:site_name" content="QUST Data Science Research Association">
+<meta property="og:description" content="随机矢量">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-23T07:05:37.000Z">
-<meta property="article:modified_time" content="2022-05-23T15:05:37.919Z">
+<meta property="article:modified_time" content="2022-05-28T09:43:11.168Z">
 <meta property="article:author" content="Data Scholars from QUST">
+<meta property="article:tag" content="Preliminary Examination">
+<meta property="article:tag" content="Probability &amp; Statistic (概率论与数理统计)">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="QUST Data Science Research Association" type="application/atom+xml">
@@ -23,8 +27,10 @@
   
   
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+      
+<link rel="stylesheet" href="/css/typeface-source-code-pro-0.0.71.css">
 
+    
   
   
 <link rel="stylesheet" href="/css/style.css">
@@ -95,20 +101,133 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      probstat-03
+      概率统计 III 多维随机变量及其分布
     </h1>
   
 
+
+  <h2 class="article-entry" style="padding-top: 25.6px;">Author: <code>sandyzikun</code></h2>
 
       </header>
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <p>随机矢量</p>
+<span id="more"></span>
+<h2 id="Definitions-Theorems-and-Properties"><a href="#Definitions-Theorems-and-Properties" class="headerlink" title="Definitions, Theorems, and Properties"></a>Definitions, Theorems, and Properties</h2><ol>
+<li><p><strong>随机矢量 (Random Vector) (Def <code>3.1.1</code>)</strong>: 如若 $ \xi_1(\omega), \xi_2(\omega), \cdots, \xi_m(\omega) $ 是定义在同一个样本空间 $ \Omega = \{\omega\} $ 上的<code>m</code>个随机变量, 则称</p>
+<script type="math/tex; mode=display">\xi(\omega) = (\xi_1(\omega), \xi_2(\omega), \cdots, \xi_m(\omega))</script><p> 为 <strong><code>m</code>维随机变量 (Multiple Random Variable)</strong> 或随机矢量;</p>
+</li>
+<li><p><strong>联合分布函数 (Joint Distribution Function) (Def <code>3.1.2</code>)</strong>: 对任意<code>m</code>个实数 $ x_1, x_2, \cdots, x_m $, <code>m</code>个事件</p>
+<script type="math/tex; mode=display">\{\xi_1 \le x_1\}, \{\xi_2 \le x_2\}, \cdots, \{\xi_m \le x_m\}</script><p> 同时发生的概率</p>
+<script type="math/tex; mode=display">F(x_1, x_2, \cdots, x_m) = \Pr\{\xi_1 \le x_1, \xi_2 \le x_2, \cdots, \xi_m \le x_m\}</script><ul>
+<li>注: 这实际上相当于一个<code>且</code>事件;</li>
+<li><p><strong>Thr <code>3.1.1</code></strong>: 任一二维联合分布函数 $ F(x, y) $ 必具有如下四条基本性质:</p>
+<ol>
+<li><strong>单调性 (Monotonicity)</strong>: $ F(x, y) $ 分别对<code>x</code>或<code>y</code>是单调非减的;</li>
+<li><p><strong>有界性 (Boundedness)</strong>: $ \forall x, y, 0 \le F(x, y) \le 1 $, 且</p>
+<script type="math/tex; mode=display">\begin{align*}
+ F(-\infty, y) &= \lim_{x \rightarrow -\infty} F(x, y) = 0, \\
+ F(x, -\infty) &= \lim_{y \rightarrow -\infty} F(x, y) = 0, \\
+ F(+\infty, +\infty) &= \lim_{x, y \rightarrow +\infty} F(x, y) = 1, \\
+ \end{align*}</script></li>
+<li><p><strong>右连续性 (Right-continuity)</strong>: 对每个变量都是右连续的, 即</p>
+<script type="math/tex; mode=display">\begin{align*}
+ F(x + 0, y) &= F(x, y), \\
+ F(x, y + 0) &= F(x, y), \\
+ \end{align*}</script></li>
+<li><p><strong>非负性 (Non-negative)</strong>: $ \forall a &lt; b, c &lt; d $, 有</p>
+<script type="math/tex; mode=display">\begin{align*}
+ \Pr\{a < \xi \le b, c < \eta \le d\}
+ &= F(b, d) - F(a, d) \\
+ &- F(b, c) + F(a, c) \\
+ &\ge 0 \\
+ \end{align*}</script></li>
+</ol>
+</li>
+<li><p>相关描述</p>
+<ul>
+<li><p><strong>联合分布律 (Joint Distribution Law) (Def <code>3.1.3</code>)</strong>: 如若二维随机变量 $ (\xi, \eta) $ 只取有限个或可列个数对 $ (x_k, y_k) $, 则称 $ (\xi, \eta) $ 为<strong>二维离散随机变量 (2-dimensional Discrete Random Variable)</strong>, 称</p>
+<script type="math/tex; mode=display">p_{k,l} = \Pr\{\xi = x_k, \eta = y_l\}, k, l = 1, 2, \cdots</script><p>为 $ (\xi, \eta) $ 的联合分布律;</p>
+<ul>
+<li><strong>Prop <code>3.1.1</code></strong>: 满足 <strong>非负性 (Non-negativity)</strong> 与 <strong>正则性 (Regularity)</strong>;</li>
+</ul>
+</li>
+<li><p><strong>联合密度函数 (Joint Density Function) (Def <code>3.1.4</code>)</strong>: 如若存在二元非负函数 $ p(x, y) $ 使得二维随机变量 $ (\xi, \eta) $ 的分布函数 $ F(x, y) $ 可表示为</p>
+<script type="math/tex; mode=display">F(x, y) = \int_{-\infty}^x \int_{-\infty}^y p(v, u) \mathrm{d}u \mathrm{d}v</script><p>则称 $ (\xi, \eta) $ 为<strong>二维连续随机变量 (2-dimensional Continuous Random Variable)</strong>, 称 $ p(x, y) $ 为 $ (\xi, \eta) $ 的联合密度函数;</p>
+<ul>
+<li><strong>Prop <code>3.1.2</code></strong>: 满足 <strong>非负性 (Non-negativity)</strong> 与 <strong>正则性 (Regularity)</strong>;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>边际分布 (Marginal Distribution)</strong>: 如若在二维随机变量 $ (\xi, \eta) $ 的联合分布函数 $ F(x, y) $ 中使 $ y \rightarrow +\infty $, 由于 $ \{ y &lt; +\infty \} $ 为必然事件, 故有</p>
+<script type="math/tex; mode=display">\lim_{y \rightarrow +\infty} F(x, y) = \Pr\{ \xi \le x, \eta < +\infty \} = \Pr\{\xi \le x\},</script><p> 此为由 $ (\xi, \eta) $ 的联合分布函数 $ F(x, y) $ 求得的 $ \xi $ 的分布函数, 被称为 $ \xi $ 的边际分布或<strong>边缘分布</strong>;</p>
+</li>
+<li><p>随机变量之间的独立性 (<strong>Def <code>3.2.1</code></strong>): 设随机矢量 $ \xi_1, \xi_2, \cdots, \xi_m $ 的联合分布函数为 $ F(x_1, x_2, \cdots, x_m) $, $ F(x_k) $ 为 $ \xi_k $ 的分布函数, 如若 $ \forall x_1, x_2, \cdots, x_m $ 皆有</p>
+<script type="math/tex; mode=display">F(x_1, x_2, \cdots, x_m) = \prod_{k=1}^m p_k(x_k),</script><p> 则称 $ \xi_1, \xi_2, \cdots, \xi_m $ 相互 <strong>独立 (Indpendent)</strong>;</p>
+</li>
+<li>随机矢量函数的分布<ol>
+<li>卷积 (Convolution) 公式;</li>
+<li>最值分布;</li>
+</ol>
+</li>
+<li><p>随机矢量的特征数</p>
+<ol>
+<li>随机矢量的数学期望 <strong>(Thr <code>3.4.1</code>)</strong>;</li>
+<li><p>数学期望与方差的运算性质</p>
+<ul>
+<li><p><strong>Prop <code>3.4.1</code></strong>: 设 $ (\xi, \eta) $ 为二维随机变量 <strong>(不要求相互独立)</strong>, 则有</p>
+<script type="math/tex; mode=display">E(\xi + \eta) = E(\xi) + E(\eta)</script><p>因为 (以<strong>连续</strong>情形为例)</p>
+<script type="math/tex; mode=display">\begin{align*}
+E(\xi + \eta)
+&= \int_{-\infty}^{+\infty} \int_{-\infty}^{+\infty} (x + y) p(x, y) \mathrm{d}x \mathrm{d}y \\
+&= \int_{-\infty}^{+\infty} x [\int_{-\infty}^{+\infty} p(x, y) \mathrm{d}y] \mathrm{d}x \\
+&+ \int_{-\infty}^{+\infty} y [\int_{-\infty}^{+\infty} p(x, y) \mathrm{d}x] \mathrm{d}y \\
+&= \int_{-\infty}^{+\infty} x p_\xi(x) \mathrm{d}x + \int_{-\infty}^{+\infty} y p_\eta(y) \mathrm{d}y \\
+&= E(\xi) + E(\eta) \\
+\end{align*}</script><ul>
+<li><p>Extend: 对<code>m</code>维随机变量有</p>
+<script type="math/tex; mode=display">E(\sum_{k=1}^m \xi_k) = \sum_{k=1}^m E(\xi_k)</script></li>
+</ul>
+</li>
+<li><p><strong>Prop <code>3.4.2</code></strong>: 如若随机变量 $ \xi, \eta $ <strong>相互独立</strong>, 则有</p>
+<script type="math/tex; mode=display">E(\xi\eta) = E(\xi) E(\eta)</script><p>因为 (以<strong>离散</strong>情形为例)<br>由于 $ \xi, \eta $ 相互独立, 因此</p>
+<script type="math/tex; mode=display">p(x_k, y_l) = p_\xi(x_k) p_\eta(y_l)</script><p>从而</p>
+<script type="math/tex; mode=display">\begin{align*}
+E(\xi\eta)
+&= \sum_{k=1}^\infty \sum_{l=1}^\infty x_k y_l p_\xi(x_k) p_\eta(y_l) \\
+&= \sum_{k=1}^\infty x_k p_\xi(x_k) \sum_{l=1}^\infty y_l p_\eta(y_l) \\
+&= E(\xi) E(\eta) \\
+\end{align*}</script><ul>
+<li><p>Extend: 对<code>m</code>维<strong>相互独立的</strong>随机变量有</p>
+<script type="math/tex; mode=display">E(\prod_{k=1}^m \xi_k) = \prod_{k=1}^m E(\xi_k)</script></li>
+</ul>
+</li>
+<li><p><strong>Prop <code>3.4.3</code></strong>: 如若随机变量 $ \xi, \eta $ <strong>相互独立</strong>, 则有</p>
+<script type="math/tex; mode=display">Var(\xi \pm \eta) = Var(\xi) + Var(\eta)</script></li>
+</ul>
+</li>
+<li><p>协方差 (Covariance)</p>
+<script type="math/tex; mode=display">\begin{align*}
+ Cov(\xi, \eta)
+ &= E((\xi - E(\xi))(\eta - E(\eta))) \\
+ &= E(\xi\eta) - E(\xi) E(\eta) \\
+ \end{align*}</script></li>
+<li><p>相关系数 (Correlation Coefficient)</p>
+<script type="math/tex; mode=display">Corr(\xi, \eta) = \frac{Cov(\xi, \eta)}{\sqrt{Var(\xi)Var(\eta)}}</script></li>
+</ol>
+</li>
+<li><p>条件分布与条件期望： Bayes公式 应用</p>
+</li>
+</ol>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qust-dsra.github.io/2022/05/23/probstat-03/" data-id="cl3ohf9ta0015un259wo16iz4" data-title="probstat-03" class="article-share-link">分享</a>
+      <a data-url="https://qust-dsra.github.io/2022/05/23/probstat-03/" data-id="cl3pvsh170010qv25hy7536tc" data-title="概率统计 III 多维随机变量及其分布" class="article-share-link">分享</a>
       
       
         <a href="/2022/05/23/probstat-03/#comments" class="article-comment-link">
@@ -117,6 +236,8 @@
         </a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Preliminary-Examination/" rel="tag">Preliminary Examination</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Probability-Statistic-%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/" rel="tag">Probability & Statistic (概率论与数理统计)</a></li></ul>
+
     </footer>
   </div>
   
@@ -150,7 +271,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 16px;">BST & BT (二叉查找树&平衡树)</a> <a href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 18px;">Binary Tree (二叉树)</a> <a href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" style="font-size: 14px;">Mathematical Modeling (数学建模)</a> <a href="/tags/Notes/" style="font-size: 20px;">Notes</a> <a href="/tags/Preliminary-Examination/" style="font-size: 10px;">Preliminary Examination</a> <a href="/tags/Probability-Statistic-%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/" style="font-size: 10px;">Probability & Statistic (概率论与数理统计)</a> <a href="/tags/Python-Lessons/" style="font-size: 12px;">Python Lessons</a> <a href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">RNN (循环神经网络)</a>
+      <a href="/tags/BST-BT-%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91-%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 16.67px;">BST & BT (二叉查找树&平衡树)</a> <a href="/tags/Binary-Tree-%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 18.33px;">Binary Tree (二叉树)</a> <a href="/tags/Mathematical-Modeling-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" style="font-size: 15px;">Mathematical Modeling (数学建模)</a> <a href="/tags/Notes/" style="font-size: 20px;">Notes</a> <a href="/tags/Preliminary-Examination/" style="font-size: 11.67px;">Preliminary Examination</a> <a href="/tags/Probability-Statistic-%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/" style="font-size: 11.67px;">Probability & Statistic (概率论与数理统计)</a> <a href="/tags/Python-Lessons/" style="font-size: 13.33px;">Python Lessons</a> <a href="/tags/RNN-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">RNN (循环神经网络)</a>
     </div>
   </div>
 
@@ -172,7 +293,7 @@
       <ul>
         
           <li>
-            <a href="/2022/05/23/probstat-03/">probstat-03</a>
+            <a href="/2022/05/23/probstat-03/">概率统计 III 多维随机变量及其分布</a>
           </li>
         
           <li>
@@ -283,7 +404,8 @@
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<!--script src="https://cdn.jsdelivr.net/npm/mathjax@latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script-->
+<!--script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!--script src="js/MathJax-2.7.1.js"></script-->
 </body>
 </html>
